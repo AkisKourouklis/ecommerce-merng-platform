@@ -1,8 +1,18 @@
-export const resolvers = {
+import { findAllUsers, findUserByEmail, register, updateUser, deleteUser, login } from '../Users/users.resolvers';
+
+export default {
   Query: {
-    hello: () => {
-      return 'hello';
-    }
+    hello: () => 'Welcome to the ecommmerce-graphql-api',
+    // Users
+    findAllUsers,
+    findUserByEmail
   },
-  Mutation: {}
+  Mutation: {
+    hello: () => 'Welcome to the ecommmerce-graphql-api',
+    // Users
+    register,
+    updateUser,
+    deleteUser,
+    login
+  }
 };

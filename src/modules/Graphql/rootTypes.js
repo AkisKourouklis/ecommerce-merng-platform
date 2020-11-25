@@ -1,7 +1,13 @@
 import { gql } from 'apollo-server-express';
+import userTypeDefs from '../Users/users.typeDefs';
 
-export default gql`
+const rootTypes = gql`
   type Query {
     hello: String
   }
+  type Mutation {
+    hello: String
+  }
 `;
+
+export default [rootTypes, userTypeDefs];

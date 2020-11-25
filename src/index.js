@@ -5,14 +5,13 @@ import { ApolloServer } from 'apollo-server-express';
 
 import { connectDb } from './mongodb';
 import { port } from './config/vars';
-import rootTypes from './modules/Graphql/rootTypes';
-
-const typeDefs = [rootTypes];
-const resolvers = {};
+import typeDefs from './modules/Graphql/rootTypes';
+import resolvers from './modules/Graphql/rootResolvers';
 
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req }) });
 const app = express();
-server.applyMiddleware({ app });
+const path = '/graphql/v1';
+server.applyMiddleware({ app, path });
 app.use(cors());
 
 connectDb().then(async () => {
