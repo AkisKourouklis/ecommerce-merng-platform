@@ -1,0 +1,25 @@
+services:
+  api:
+    container_name: api
+    restart: always
+    build: ./api
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./api:/usr/src/app/api
+    links:
+      - mongo
+  dashboard:
+    container_name: dashboard
+    restart: always
+    build: ./dashboard
+    volumes:
+      - ./dashboard:/usr/src/app/dashboard
+    ports:
+      - "3000:3000"
+  mongo:
+    hostname: mongo
+    restart: always
+    image: mongo
+    ports:
+      - "27017:27017"

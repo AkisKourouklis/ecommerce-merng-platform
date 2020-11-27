@@ -1,4 +1,3 @@
-import ImageModel from './images.model';
 import jwtAuthentication from '../../middleware/auth.middleware';
 import { graphqlError } from '../Errors/error';
 import path from 'path';

@@ -1,17 +1,16 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
+  type ImageResult {
+    images: [Image]
+    currentPage: Int
+    totalPages: Int
+  }
   type Image {
     id: ID
     alt: String
     url: String
     size: Int
-  }
-
-  type ImageResult {
-    images: [Image]
-    currentPage: Int
-    totalPages: Int
   }
 
   input ImageInput {
@@ -20,11 +19,11 @@ export default gql`
     size: Int!
   }
   extend type Query {
-    findAllImages(search: String, page: Int, limit: Int): ImagesResult
+    findAllImages(search: String, page: Int, limit: Int): ImageResult
   }
   extend type Mutation {
     uploadImage(file: Upload!): String!
-    createImage(imageInput: ImageInput): Images!
+    createImage(imageInput: ImageInput): Image!
     removeImage(_id: ID): Image!
   }
 `;
