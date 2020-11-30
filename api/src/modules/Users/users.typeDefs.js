@@ -37,5 +37,6 @@ export default gql`
     updateUser(userInput: UserInput!, _id: ID): User!
     deleteUser(_id: ID): User!
     login(email: String, password: String): Token!
+    checkToken(token: String!): Token!
   }
 `;

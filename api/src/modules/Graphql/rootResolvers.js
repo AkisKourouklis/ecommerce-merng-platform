@@ -1,4 +1,12 @@
-import { findAllUsers, findUserByEmail, register, updateUser, deleteUser, login } from '../Users/users.resolvers';
+import {
+  findAllUsers,
+  findUserByEmail,
+  register,
+  updateUser,
+  deleteUser,
+  login,
+  checkToken
+} from '../Users/users.resolvers';
 import { findAllImages, removeImage, uploadImage } from '../Images/images.resolvers';
 
 export default {
@@ -17,6 +25,8 @@ export default {
     updateUser,
     deleteUser,
     login,
+    checkToken,
+
     // Images
     removeImage,
     uploadImage

@@ -138,3 +138,12 @@ export const deleteUser = async (_, { _id }, context) => {
     return graphqlError(error);
   }
 };
+
+export const checkToken = async (_, { token }) => {
+  try {
+    const response = await jwtAuthentication.checkToken(token);
+    return response;
+  } catch (error) {
+    return new ApolloError(`There was an error: ${error}`);
+  }
+};

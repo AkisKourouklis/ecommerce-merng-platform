@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Container,
   Card,
@@ -12,22 +12,50 @@ import {
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { useForm } from "react-hook-form";
+import decode from "jwt-decode";
+import { update } from "react-addons-update";
 import useStyles from "./Login.styles";
+import { AuthContext } from "../Context/Context";
+import GraphQlRquest from "../../graphql/graphql-request";
+import { AUTH_LOGIN } from "./authQuery";
 
 export default () => {
   const { handleSubmit, register } = useForm();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { auth, setAuth } = useContext(AuthContext);
+
+  const clearError = () => {
+    setAuth(
+      update(auth, {
+        error: { $set: null }
+      })
+    );
+  };
 
   const onSubmit = async (values) => {
     setLoading(false);
-    setError(false);
-    console.log(values);
-  };
+    clearError();
+    try {
+      const { email, password } = values;
 
-  const clearError = () => {
-    setError(null);
+      const response = await GraphQlRquest().request(AUTH_LOGIN, { email, password });
+
+      const decoded = decode(response.login.token);
+      setAuth({
+        isAuthenticated: true,
+        error: null,
+        id: decoded.id,
+        fullname: decoded.fullname,
+        token: response.login.token
+      });
+    } catch (err) {
+      setAuth(
+        update(auth, {
+          error: { $set: err }
+        })
+      );
+    }
   };
 
   return (
@@ -63,14 +91,14 @@ export default () => {
                   vertical: "top",
                   horizontal: "right"
                 }}
-                open={error != null}
+                open={auth.error != null}
                 autoHideDuration={4000}
                 onClose={clearError}
               >
                 <Alert onClose={clearError} severity="error">
-                  {error === "User not exists"
+                  {auth.error === "User not exists"
                     ? "Αυτό ο χρήστης δεν υπάρχει."
-                    : error === "Passwords don't match"
+                    : auth.error === "Passwords don't match"
                     ? "Ο κωδικός πρόσβασης είναι λάθος."
                     : null}
                 </Alert>
