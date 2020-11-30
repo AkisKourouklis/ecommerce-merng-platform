@@ -1,6 +1,8 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 240;
+const drawerBackground = "#f1f1f1";
+const navbarBackground = "#f1f1f1";
 
 export default makeStyles((theme) => ({
   root: {
@@ -21,6 +23,9 @@ export default makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen
     })
   },
+  appbarBg: {
+    background: navbarBackground
+  },
   menuButton: {
     marginRight: 36
   },
@@ -31,6 +36,9 @@ export default makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap"
+  },
+  drawerBg: {
+    background: drawerBackground
   },
   drawerOpen: {
     width: drawerWidth,
@@ -60,6 +68,6 @@ export default makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3)
+    paddingTop: theme.spacing(10)
   }
 }));

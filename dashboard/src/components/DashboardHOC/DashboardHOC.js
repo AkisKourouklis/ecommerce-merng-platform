@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import Drawer from "@material-ui/core/Drawer";
+import {
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  CssBaseline,
+  Typography,
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Container
+} from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
-import AppBar from "@material-ui/core/AppBar";
 import MoveToInboxIcon from "@material-ui/icons/MoveToInbox";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import ListItemText from "@material-ui/core/ListItemText";
+import { Link } from "react-router-dom";
 import useStyles from "./DashboardHOC.styles";
 
 export default ({ children }) => {
@@ -39,6 +43,9 @@ export default ({ children }) => {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
         })}
+        classes={{ colorDefault: classes.appbarBg }}
+        color="default"
+        variant="outlined"
       >
         <Toolbar>
           <IconButton
@@ -53,7 +60,7 @@ export default ({ children }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Mini variant drawer
+            <img alt="sovrakofanela.gr-logo" src="/logo.svg" width="200px" />
           </Typography>
         </Toolbar>
       </AppBar>
@@ -66,7 +73,8 @@ export default ({ children }) => {
         classes={{
           paper: clsx({
             [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open
+            [classes.drawerClose]: !open,
+            [classes.drawerBg]: true
           })
         }}
       >
@@ -81,7 +89,7 @@ export default ({ children }) => {
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary="Home" />
+            <ListItemText primary="Home" component={Link} to="/" />
           </ListItem>
           <ListItem button key="Orders">
             <ListItemIcon>
@@ -89,7 +97,7 @@ export default ({ children }) => {
             </ListItemIcon>
             <ListItemText primary="Orders" />
           </ListItem>
-          <ListItem button key="Products">
+          <ListItem button key="Products" component={Link} to="/products">
             <ListItemIcon>
               <LocalOfferIcon />
             </ListItemIcon>
@@ -104,7 +112,9 @@ export default ({ children }) => {
         </List>
         <Divider />
       </Drawer>
-      <main className={classes.content}>{children}</main>
+      <main className={classes.content}>
+        <Container>{children}</Container>
+      </main>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { apiUrl } from "../config/vars";
 
 export default new ApolloClient({
-  uri: apiUrl,
+  uri: "http://localhost:5001/graphql/v1",
   cache: new InMemoryCache()
 });
