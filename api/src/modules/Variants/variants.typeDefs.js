@@ -31,7 +31,7 @@ export default gql`
   }
 
   extend type Query {
-    findAllVariants(search: String, page: String, limit: Int): VariantsResult
+    findAllVariants(search: String, page: Int, limit: Int): VariantsResult
   }
 
   extend type Mutation {

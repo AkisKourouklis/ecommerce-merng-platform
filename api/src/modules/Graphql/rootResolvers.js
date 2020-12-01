@@ -23,6 +23,7 @@ import {
   editTaxClass,
   addTaxClassToProduct
 } from '../TaxClasses/taxClasses.resolvers';
+import { graphqlError } from '../Errors/error';
 
 export default {
   Query: {
@@ -69,6 +70,9 @@ export default {
     createTaxClass,
     removeTaxClassFromProduct,
     editTaxClass,
-    addTaxClassToProduct
+    addTaxClassToProduct,
+
+    //Errors
+    graphqlError
   }
 };

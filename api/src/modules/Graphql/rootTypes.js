@@ -5,6 +5,7 @@ import variantsTypeDefs from '../Variants/variants.typeDefs';
 import tagsTypeDefs from '../Tags/tags.typeDefs';
 import taxClassesTypeDefs from '../TaxClasses/taxClasses.typeDefs';
 import productTypeDefs from '../Products/products.typeDefs';
+import errorTypeDefs from '../Errors/error.TypeDefs';
 
 const rootTypes = gql`
   type GeneralPrice {
@@ -33,5 +34,6 @@ export default [
   variantsTypeDefs,
   tagsTypeDefs,
   taxClassesTypeDefs,
-  productTypeDefs
+  productTypeDefs,
+  errorTypeDefs
 ];

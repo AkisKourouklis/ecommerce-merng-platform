@@ -68,6 +68,6 @@ export default makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    paddingTop: theme.spacing(10)
+    paddingTop: theme.spacing(11)
   }
 }));

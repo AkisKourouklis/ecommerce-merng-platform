@@ -22,6 +22,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import { Link } from "react-router-dom";
 import useStyles from "./DashboardHOC.styles";
+import ErrorAlert from "../Error/Error";
 
 export default ({ children }) => {
   const classes = useStyles();
@@ -113,7 +114,9 @@ export default ({ children }) => {
         <Divider />
       </Drawer>
       <main className={classes.content}>
-        <Container>{children}</Container>
+        <ErrorAlert>
+          <Container>{children}</Container>
+        </ErrorAlert>
       </main>
     </div>
   );

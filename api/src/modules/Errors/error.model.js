@@ -2,7 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 
 const errorsSchema = new mongoose.Schema(
   {
-    error: String
+    error: String,
+    uuid: String
   },
   { timestamps: true }
 );
