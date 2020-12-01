@@ -3,6 +3,7 @@ import { graphqlError } from '../Errors/error';
 import path from 'path';
 import fs from 'fs';
 import { apiUrl } from '../../config/vars';
+import Image from './images.model';
 
 export const findAllImages = async (_, { search = null, page = 1, limit = 20 }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);

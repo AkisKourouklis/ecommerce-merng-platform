@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import {
   Drawer,
@@ -85,11 +85,11 @@ export default ({ children }) => {
         </div>
         <Divider />
         <List>
-          <ListItem button key="Home">
+          <ListItem button key="Home" component={Link} to="/home">
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary="Home" component={Link} to="/" />
+            <ListItemText primary="Home" />
           </ListItem>
           <ListItem button key="Orders">
             <ListItemIcon>

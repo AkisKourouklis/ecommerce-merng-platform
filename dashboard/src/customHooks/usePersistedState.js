@@ -1,12 +1,12 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import Cookie from "js-cookie";
 
 export default (key, defaultValue) => {
-  const [state, setState] = React.useState(() => {
+  const [state, setState] = useState(() => {
     const persistedState = Cookie.get(key);
     return persistedState ? JSON.parse(persistedState) : defaultValue;
   });
-  React.useEffect(() => {
+  useEffect(() => {
     Cookie.set(key, state);
   }, [state, key]);
   return [state, setState];

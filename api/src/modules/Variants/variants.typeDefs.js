@@ -19,7 +19,7 @@ export default gql`
     images: [Image]
   }
 
-  input VariantInfo {
+  input VariantInput {
     size: String
     color: String
     material: String
@@ -31,11 +31,11 @@ export default gql`
   }
 
   extend type Query {
-    findAllVariants(search: Int, page: String, limit: Int): VariantsResult
+    findAllVariants(search: String, page: String, limit: Int): VariantsResult
   }
 
   extend type Mutation {
-    createVariant(variantInfo: VariantInfo): Variant!
-    removeVariantFromProduct(variantInfo: VariantInfo, ProductInput: ProductInput): Product!
+    createVariant(variantInput: VariantInput): Variant!
+    updateVariant(variantInput: VariantInput): Variant!
   }
 `;

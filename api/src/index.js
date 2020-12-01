@@ -14,6 +14,10 @@ const path = '/graphql/v1';
 server.applyMiddleware({ app, path });
 app.use(cors());
 
-connectDb().then(async () => {
-  app.listen(port, () => console.log(`Server is running on port ${port}.\nDatabase is connected successfully.`));
-});
+connectDb()
+  .then(async () => {
+    app.listen(port, () => console.log(`Server is running on port ${port}.\nDatabase is connected successfully.`));
+  })
+  .catch((err) => {
+    console.log(err);
+  });

@@ -7,7 +7,7 @@ export default gql`
     totalPages: Int
   }
   type Image {
-    id: ID
+    _id: ID
     alt: String
     url: String
     size: Int

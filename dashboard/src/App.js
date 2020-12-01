@@ -22,12 +22,10 @@ function App() {
     async function checkIfTokenIsValid() {
       try {
         const { token } = auth;
-        const response = await graphqlRequest().request(AUTH_CHECK, { token: `Bearer ${token}` });
-        console.log(response);
+        await graphqlRequest().request(AUTH_CHECK, { token: `Bearer ${token}` });
         setLoading(false);
       } catch (error) {
         setAuth({ isAuthenticated: false, error: null, id: null, fullname: null, token: null });
-        console.log(error);
         setLoading(false);
         // i need to redirect user if error
       }
@@ -36,8 +34,6 @@ function App() {
     checkIfTokenIsValid();
   }, []);
 
-  console.log(auth.isAuthenticated);
-
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {loading ? (
@@ -45,16 +41,17 @@ function App() {
       ) : (
         <Router>
           <Switch>
-            <Route
-              exact
-              path="/"
-              render={() => {
-                return auth.isAuthenticated ? <Redirect to="/home" /> : <Redirect to="/login" />;
-              }}
-            />
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/products" component={Products} />
+            {!auth.isAuthenticated ? (
+              <>
+                <Redirect to="/login" />
+                <Route exact path="/login" component={Login} />
+              </>
+            ) : (
+              <>
+                <Route exact path="/home" component={Home} />
+                <Route exact path="/products" component={Products} />
+              </>
+            )}
           </Switch>
         </Router>
       )}

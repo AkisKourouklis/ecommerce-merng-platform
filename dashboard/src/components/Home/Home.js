@@ -1,5 +1,4 @@
 import { Grid, Paper } from "@material-ui/core";
-import React from "react";
 import DashboardHOC from "../DashboardHOC/DashboardHOC";
 
 export default () => {
