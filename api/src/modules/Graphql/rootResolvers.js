@@ -23,11 +23,15 @@ import {
   editTaxClass,
   addTaxClassToProduct
 } from '../TaxClasses/taxClasses.resolvers';
-import { graphqlError } from '../Errors/error';
+import { graphqlError, findAllErrors } from '../Errors/error';
 
 export default {
   Query: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',
+
+    // Errors
+    findAllErrors,
+
     // Users
     findAllUsers,
     findUserByEmail,
