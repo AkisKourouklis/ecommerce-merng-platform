@@ -35,7 +35,7 @@ export default gql`
   }
 
   type ProductImages {
-    url: String
+    path: String
     alt: String
     size: Int
   }
@@ -76,7 +76,7 @@ export default gql`
 
   input ProductImagesInput {
     _id: ID
-    url: String
+    path: String
     alt: String
     size: Int
   }

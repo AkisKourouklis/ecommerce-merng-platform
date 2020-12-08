@@ -21,7 +21,7 @@ export const findAllVariants = async (_, { search = null, page = 1, limit = 20 }
     }
 
     const variants = await VariantModel.find(searchQuery)
-      .populate('images')
+      .populate('Image')
       .limit(limit)
       .skip((page - 1) * limit)
       .lean();
@@ -41,7 +41,7 @@ export const findAllVariants = async (_, { search = null, page = 1, limit = 20 }
 export const createVariant = async (_, { variantInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
-    const { color, size, price, quantity, sku, barcode, images } = JSON.parse(JSON.stringify(variantInfo));
+    const { color, size, price, material, quantity, sku, barcode, images } = variantInput;
     const newVariant = new VariantModel({
       color,
       size,
@@ -49,7 +49,8 @@ export const createVariant = async (_, { variantInput }, context) => {
       quantity,
       sku,
       barcode,
-      images: images.id
+      images,
+      material
     });
     await newVariant.save();
     return newVariant;

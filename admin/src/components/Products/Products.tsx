@@ -5,7 +5,12 @@ import DashboardHOC from "../DashboardHOC/DashboardHOC";
 import useStyles from "./Products.styles";
 import Variants from "./Tabs/Variants/Variants";
 
-const TabPanel: React.FC<{ classes: any; value: number; index: number }> = ({ classes, children, value, index }) => {
+const TabPanel: React.FC<{ classes: Record<"tabs" | "paper", string>; value: number; index: number }> = ({
+  classes,
+  children,
+  value,
+  index
+}) => {
   return (
     <div
       role="tabpanel"

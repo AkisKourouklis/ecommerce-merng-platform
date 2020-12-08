@@ -6,8 +6,9 @@ import { FETCH_VARIANTS } from "./VariantsQuery";
 import { AuthContext } from "../../../Authentication/AuthContext";
 import SingleVariant from "./SingleVariant";
 import { VariantData } from "./VariantTypes";
+import CreateVariant from "./CreateVariant";
 
-const Variants: React.FC<{ classes: any }> = ({ classes }) => {
+const Variants: React.FC<{ classes: Record<"tabs" | "paper", string> }> = ({ classes }) => {
   const { auth } = useContext(AuthContext);
   const [variants, setVariants] = useState<VariantData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,11 @@ const Variants: React.FC<{ classes: any }> = ({ classes }) => {
           <Typography variant="h5">Variants</Typography>
         </Grid>
         <Grid item xs={6}>
+          <Box textAlign="end">
+            <CreateVariant />
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
           <Box textAlign="end">
             <FormControlLabel
               control={<Switch checked={false} name="checkedB" color="primary" />}
