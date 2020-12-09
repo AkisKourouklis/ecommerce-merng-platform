@@ -68,6 +68,9 @@ export default makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    paddingTop: theme.spacing(11)
+    paddingTop: theme.spacing(11),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    overflow: "hidden"
   }
 }));

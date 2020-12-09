@@ -24,6 +24,7 @@ import {
   addTaxClassToProduct
 } from '../TaxClasses/taxClasses.resolvers';
 import { graphqlError, findAllErrors } from '../Errors/error';
+import { findAllProducts } from '../Products/products.resolvers';
 
 export default {
   Query: {
@@ -45,7 +46,10 @@ export default {
     findAllTags,
 
     //TaxClasses
-    findAllTaxClasses
+    findAllTaxClasses,
+
+    //Products
+    findAllProducts
   },
   Mutation: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',

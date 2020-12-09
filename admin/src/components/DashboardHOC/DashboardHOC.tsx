@@ -11,8 +11,7 @@ import {
   IconButton,
   ListItem,
   ListItemIcon,
-  ListItemText,
-  Container
+  ListItemText
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import MoveToInboxIcon from "@material-ui/icons/MoveToInbox";
@@ -113,13 +112,9 @@ const DashboardHOC: React.FC = ({ children }) => {
         </List>
         <Divider />
       </Drawer>
-      <main className={classes.content}>
-        <ErrorAlert>
-          <Container>
-            <>{children}</>
-          </Container>
-        </ErrorAlert>
-      </main>
+      <ErrorAlert>
+        <main className={classes.content}>{children}</main>
+      </ErrorAlert>
     </div>
   );
 };

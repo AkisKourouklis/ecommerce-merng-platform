@@ -63,4 +63,5 @@ export interface VariantFormData {
   comparePrice: string;
   costPrice: string;
   images?: ISingleImage[];
+  productId: string;
 }

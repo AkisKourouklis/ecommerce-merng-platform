@@ -51,7 +51,15 @@ const Products: React.FC = () => {
     <>
       <DashboardHOC>
         <AppBar position="static" className={classes.tabs} color="default">
-          <Tabs value={value} onChange={handleChange} aria-label="Products Tabs" className={classes.tabs}>
+          <Tabs
+            indicatorColor="primary"
+            value={value}
+            onChange={handleChange}
+            aria-label="Products Tabs"
+            className={classes.tabs}
+            variant="scrollable"
+            scrollButtons="on"
+          >
             <Tab label="Variants" {...a11yProps(0)} />
             <Tab label="Products" {...a11yProps(1)} />
             <Tab label="Tags" {...a11yProps(2)} />

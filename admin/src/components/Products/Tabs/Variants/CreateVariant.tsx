@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Modal,
   Backdrop,
@@ -21,6 +21,11 @@ import GraphqlRequest from "../../../../graphql/graphql-request";
 import { UPLOAD_IMAGE } from "../../../FileUpload/FileUploadQueries";
 import { AuthContext } from "../../../Authentication/AuthContext";
 import { CREATE_VARIANT } from "./VariantsQuery";
+import { useDispatch } from "react-redux";
+import { CreateError } from "../../../Error/ErrorActions";
+import { FIND_ALL_PRODUCTS } from "../../ProductQueries";
+import { IProduct } from "../../ProductTypes";
+import { Autocomplete, Skeleton } from "@material-ui/lab";
 
 const CreateVariant: React.FC = () => {
   const classes = useStyles();
@@ -28,7 +33,10 @@ const CreateVariant: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [images, setImages] = useState<File[] | []>([]);
   const [loadingFileUpload, setLoadingFileUpload] = useState<boolean>(false);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const { auth } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const handleOpen = () => {
     setOpen(true);
@@ -47,11 +55,11 @@ const CreateVariant: React.FC = () => {
     comparePrice,
     costPrice,
     quantity,
-    material
+    material,
+    productId
   }: VariantFormData): Promise<void> => {
     const uploadedImages = await uploadFiles();
-    console.log(uploadedImages);
-    const createdVariant = await createNewVariant({
+    await createNewVariant({
       color,
       size,
       sku,
@@ -61,9 +69,9 @@ const CreateVariant: React.FC = () => {
       costPrice,
       quantity,
       material,
-      images: uploadedImages
+      images: uploadedImages,
+      productId
     });
-    console.log(createdVariant);
     setLoadingFileUpload(false);
   };
 
@@ -82,10 +90,12 @@ const CreateVariant: React.FC = () => {
         quantity: parseInt(variant.quantity),
         sku: variant.sku,
         barcode: variant.barcode,
-        images: variant.images
+        images: variant.images,
+        productId: variant.productId
       });
     } catch (error) {
       console.log(error);
+      // dispatch(CreateError({ error, token: auth.token || "Bearer " }));
     }
   };
 
@@ -94,14 +104,30 @@ const CreateVariant: React.FC = () => {
       setLoadingFileUpload(true);
       const response = await GraphqlRequest(auth.token).request(UPLOAD_IMAGE, { files: images });
       return response.uploadImage;
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      dispatch(CreateError({ error, token: auth.token || "Bearer " }));
     }
   };
 
   const handleImageChange = (files: File[]) => {
     setImages(files);
   };
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await GraphqlRequest(auth.token).request(FIND_ALL_PRODUCTS);
+      setProducts(response.findAllProducts.products);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      dispatch(CreateError({ error, token: auth.token || "Bearer " }));
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <div>
@@ -135,66 +161,81 @@ const CreateVariant: React.FC = () => {
                 <Typography variant="overline">Images</Typography>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <FormGroup>
-                    <TextField
-                      className={classes.input}
-                      inputRef={register}
-                      id="outlined-color"
-                      type="text"
-                      name="color"
-                      label="Color"
-                      variant="outlined"
-                      fullWidth
-                    />
-                    <TextField
-                      className={classes.input}
-                      inputRef={register}
-                      id="outlined-size"
-                      type="text"
-                      name="size"
-                      label="Size"
-                      variant="outlined"
-                      fullWidth
-                    />
-                    <TextField
-                      className={classes.input}
-                      inputRef={register}
-                      id="outlined-material"
-                      type="text"
-                      name="material"
-                      label="Material"
-                      variant="outlined"
-                      fullWidth
-                    />
-                    <TextField
-                      className={classes.input}
-                      inputRef={register}
-                      id="outlined-sku"
-                      type="text"
-                      name="sku"
-                      label="SKU"
-                      variant="outlined"
-                      fullWidth
-                    />
-                    <TextField
-                      className={classes.input}
-                      inputRef={register}
-                      id="outlined-bardcode"
-                      type="text"
-                      name="barcode"
-                      label="Barcode"
-                      variant="outlined"
-                      fullWidth
-                    />
-                    <TextField
-                      className={classes.input}
-                      inputRef={register}
-                      id="outlined-quantity"
-                      type="number"
-                      name="quantity"
-                      label="quantity"
-                      variant="outlined"
-                      fullWidth
-                    />
+                    <Grid container direction="row" spacing={1}>
+                      <Grid item xs={6}>
+                        <TextField
+                          className={classes.input}
+                          inputRef={register}
+                          id="outlined-color"
+                          type="text"
+                          name="color"
+                          label="Color"
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          className={classes.input}
+                          inputRef={register}
+                          id="outlined-size"
+                          type="text"
+                          name="size"
+                          label="Size"
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          className={classes.input}
+                          inputRef={register}
+                          id="outlined-material"
+                          type="text"
+                          name="material"
+                          label="Material"
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          className={classes.input}
+                          inputRef={register}
+                          id="outlined-sku"
+                          type="text"
+                          name="sku"
+                          label="SKU"
+                          required
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          className={classes.input}
+                          inputRef={register}
+                          id="outlined-bardcode"
+                          type="text"
+                          name="barcode"
+                          label="Barcode"
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          className={classes.input}
+                          inputRef={register}
+                          id="outlined-quantity"
+                          type="number"
+                          name="quantity"
+                          label="quantity"
+                          variant="outlined"
+                          fullWidth
+                        />
+                      </Grid>
+                    </Grid>
                     <Grid container direction="row" spacing={1}>
                       <Grid item xs={4}>
                         <TextField
@@ -240,6 +281,34 @@ const CreateVariant: React.FC = () => {
                             startAdornment: <InputAdornment position="start">€</InputAdornment>
                           }}
                         />
+                      </Grid>
+                      <Grid item xs={12}>
+                        {loading ? (
+                          <Skeleton className={classes.input} height={56} variant="rect" />
+                        ) : (
+                          <Autocomplete
+                            options={products}
+                            renderInput={(params) => (
+                              <TextField
+                                className={classes.input}
+                                inputRef={register}
+                                required
+                                label="Select Product"
+                                variant="outlined"
+                                name="productId"
+                                {...params}
+                              />
+                            )}
+                            getOptionLabel={(option) => option._id}
+                            renderOption={(product) => {
+                              return (
+                                <Typography noWrap>
+                                  sku: {product.sku} | {product.name}
+                                </Typography>
+                              );
+                            }}
+                          />
+                        )}
                       </Grid>
                     </Grid>
                   </FormGroup>

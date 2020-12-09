@@ -28,6 +28,7 @@ export default gql`
     sku: String
     barcode: String
     images: [ImageInput]
+    productId: ID
   }
 
   extend type Query {

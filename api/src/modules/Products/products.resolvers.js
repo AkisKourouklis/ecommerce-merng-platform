@@ -45,7 +45,8 @@ export const findAllProducts = async (_, { search = null, page = 1, limit = 20 }
       currentPage: page
     };
   } catch (error) {
-    graphqlError(error);
+    console.log(error);
+    // graphqlError(error);
   }
 };
 

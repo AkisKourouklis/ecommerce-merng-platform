@@ -35,6 +35,7 @@ export const CREATE_VARIANT = gql`
     $sku: String!
     $barcode: String
     $images: [ImageInput]
+    $productId: ID
   ) {
     createVariant(
       variantInput: {
@@ -46,6 +47,7 @@ export const CREATE_VARIANT = gql`
         sku: $sku
         barcode: $barcode
         images: $images
+        productId: $productId
       }
     ) {
       _id
