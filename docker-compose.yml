@@ -1,20 +1,20 @@
 services:
-  api:
+  server:
     container_name: api
     restart: always
     build: ./api
     ports:
       - "5001:5001"
     volumes:
-      - ./api:/usr/src/app/api
+      - ./server:/usr/src/app/api
     links:
       - mongo
-  dashboard:
-    container_name: dashboard
+  client:
+    container_name: admin
     restart: always
-    build: ./dashboard
+    build: ./client
     volumes:
-      - ./dashboard:/usr/src/app/dashboard
+      - ./admin:/usr/src/app/admin
     ports:
       - "3000:3000"
   mongo:

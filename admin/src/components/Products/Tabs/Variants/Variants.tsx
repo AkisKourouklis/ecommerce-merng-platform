@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, FormControlLabel, Grid, Switch, Typography, CircularProgress, LinearProgress } from "@material-ui/core";
+import { Box, FormControlLabel, Grid, Switch, Typography, LinearProgress } from "@material-ui/core";
 import { useContext, useEffect, useState } from "react";
 import GraphQlRequest from "../../../../graphql/graphql-request";
 import { FETCH_VARIANTS } from "./VariantsQuery";
