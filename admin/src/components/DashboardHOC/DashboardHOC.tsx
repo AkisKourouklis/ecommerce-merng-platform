@@ -11,7 +11,8 @@ import {
   IconButton,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Container
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import MoveToInboxIcon from "@material-ui/icons/MoveToInbox";
@@ -22,6 +23,7 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import { Link } from "react-router-dom";
 import useStyles from "./DashboardHOC.styles";
 import ErrorAlert from "../Error/Error";
+import NotificationAlert from "../Notification/Notification";
 
 const DashboardHOC: React.FC = ({ children }) => {
   const classes = useStyles();
@@ -113,7 +115,13 @@ const DashboardHOC: React.FC = ({ children }) => {
         <Divider />
       </Drawer>
       <ErrorAlert>
-        <main className={classes.content}>{children}</main>
+        <NotificationAlert>
+          <main className={classes.content}>
+            <Container>
+              <>{children}</>
+            </Container>
+          </main>
+        </NotificationAlert>
       </ErrorAlert>
     </div>
   );

@@ -6,7 +6,7 @@ import { FETCH_VARIANTS } from "./VariantsQuery";
 import { AuthContext } from "../../../Authentication/AuthContext";
 import SingleVariant from "./SingleVariant";
 import { VariantData } from "./VariantTypes";
-import CreateVariant from "./CreateVariant";
+import CreateVariant from "./CreateVariant/CreateVariant";
 
 const Variants: React.FC<{ classes: Record<"tabs" | "paper", string> }> = ({ classes }) => {
   const { auth } = useContext(AuthContext);
