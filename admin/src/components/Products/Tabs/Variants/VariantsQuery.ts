@@ -17,6 +17,8 @@ export const FETCH_VARIANTS = gql`
         barcode
         images {
           _id
+          alt
+          path
         }
       }
       totalPages

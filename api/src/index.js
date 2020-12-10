@@ -10,11 +10,10 @@ import resolvers from './modules/Graphql/rootResolvers';
 
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req }) });
 const app = express();
+app.use(express.static('public'));
 const pathUrl = '/graphql/v1';
 server.applyMiddleware({ app, path: pathUrl });
 app.use(cors());
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 connectDb()
   .then(async () => {

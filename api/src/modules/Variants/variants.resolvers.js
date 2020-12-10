@@ -22,7 +22,7 @@ export const findAllVariants = async (_, { search = null, page = 1, limit = 20 }
     }
 
     const variants = await VariantModel.find(searchQuery)
-      .populate('Image')
+      .populate('images')
       .limit(limit)
       .skip((page - 1) * limit)
       .lean();

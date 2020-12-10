@@ -43,17 +43,19 @@ export const uploadImage = async (_, { files }, context) => {
 
         const newUuid = uuid();
         const file = `public/images/${newUuid}-${filename}`;
+        const savePath = `/images/${newUuid}-${filename}`;
 
-        const response = await stream.pipe(createWriteStream(file)).on('data', async () => {
+        await stream.pipe(createWriteStream(file)).on('data', async () => {
           await ImageProcess(file, 60);
         });
 
         const newImage = new Image({
           alt: filename,
-          path: response.path
+          path: savePath
         });
+        newImage.save();
 
-        return { _id: newImage._id, path: response.path, alt: filename };
+        return { _id: newImage._id, path: savePath, alt: filename };
       })
     );
     return result;

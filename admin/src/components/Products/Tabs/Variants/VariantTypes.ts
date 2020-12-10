@@ -12,9 +12,7 @@ export interface VariantData {
         costPrice: number;
       };
       barcode: string;
-      images: {
-        _id: string;
-      };
+      images: ISingleImage[];
     }
   ];
 }
@@ -31,9 +29,7 @@ export interface VariantMapedData {
     costPrice: number;
   };
   barcode: string;
-  images: {
-    _id: string;
-  };
+  images: ISingleImage[];
 }
 
 export interface IImages {

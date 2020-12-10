@@ -11,6 +11,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(2),
     maxWidth: "600px"
   },
+  innerPaper: {
+    padding: theme.spacing(2)
+  },
   title: {
     marginBottom: theme.spacing(1)
   },

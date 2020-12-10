@@ -68,7 +68,7 @@ const Products: React.FC = () => {
           </Tabs>
         </AppBar>
         <TabPanel value={value} classes={classes} index={0}>
-          <Variants classes={classes} />
+          <Variants />
         </TabPanel>
         <TabPanel value={value} classes={classes} index={1}>
           Item Two
