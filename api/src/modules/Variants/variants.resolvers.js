@@ -1,4 +1,5 @@
 import VariantModel from './variants.model';
+import ProductModel from '../Products/products.model';
 import jwtAuthentication from '../../middleware/auth.middleware';
 import { graphqlError } from '../Errors/error';
 
@@ -41,18 +42,33 @@ export const findAllVariants = async (_, { search = null, page = 1, limit = 20 }
 export const createVariant = async (_, { variantInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
-    const { color, size, price, quantity, sku, barcode, images } = JSON.parse(JSON.stringify(variantInfo));
-    const newVariant = new VariantModel({
-      color,
-      size,
-      price,
-      quantity,
-      sku,
-      barcode,
-      images: images.id
-    });
-    await newVariant.save();
-    return newVariant;
+    const { color, size, price, material, quantity, sku, barcode, images, productId } = variantInput;
+
+    const duplicateVariant = await VariantModel.findOne({ sku: sku });
+    if (duplicateVariant) {
+      graphqlError('Variant with that sku already exists');
+    } else {
+      const newVariant = new VariantModel({
+        color,
+        size,
+        price,
+        quantity,
+        sku,
+        barcode,
+        images,
+        material
+      });
+      await newVariant.save().then((data) => {
+        ProductModel.findByIdAndUpdate({ _id: productId }, { $push: { variants: data._id } }, { new: true })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+      return newVariant;
+    }
   } catch (error) {
     return graphqlError(error);
   }

@@ -5,7 +5,12 @@ import DashboardHOC from "../DashboardHOC/DashboardHOC";
 import useStyles from "./Products.styles";
 import Variants from "./Tabs/Variants/Variants";
 
-const TabPanel: React.FC<{ classes: any; value: number; index: number }> = ({ classes, children, value, index }) => {
+const TabPanel: React.FC<{ classes: Record<"tabs" | "paper", string>; value: number; index: number }> = ({
+  classes,
+  children,
+  value,
+  index
+}) => {
   return (
     <div
       role="tabpanel"
@@ -46,7 +51,15 @@ const Products: React.FC = () => {
     <>
       <DashboardHOC>
         <AppBar position="static" className={classes.tabs} color="default">
-          <Tabs value={value} onChange={handleChange} aria-label="Products Tabs" className={classes.tabs}>
+          <Tabs
+            indicatorColor="primary"
+            value={value}
+            onChange={handleChange}
+            aria-label="Products Tabs"
+            className={classes.tabs}
+            variant="scrollable"
+            scrollButtons="on"
+          >
             <Tab label="Variants" {...a11yProps(0)} />
             <Tab label="Products" {...a11yProps(1)} />
             <Tab label="Tags" {...a11yProps(2)} />
@@ -55,7 +68,7 @@ const Products: React.FC = () => {
           </Tabs>
         </AppBar>
         <TabPanel value={value} classes={classes} index={0}>
-          <Variants classes={classes} />
+          <Variants />
         </TabPanel>
         <TabPanel value={value} classes={classes} index={1}>
           Item Two

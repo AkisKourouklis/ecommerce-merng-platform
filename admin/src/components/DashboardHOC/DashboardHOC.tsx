@@ -23,6 +23,7 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import { Link } from "react-router-dom";
 import useStyles from "./DashboardHOC.styles";
 import ErrorAlert from "../Error/Error";
+import NotificationAlert from "../Notification/Notification";
 
 const DashboardHOC: React.FC = ({ children }) => {
   const classes = useStyles();
@@ -113,13 +114,15 @@ const DashboardHOC: React.FC = ({ children }) => {
         </List>
         <Divider />
       </Drawer>
-      <main className={classes.content}>
-        <ErrorAlert>
-          <Container>
-            <>{children}</>
-          </Container>
-        </ErrorAlert>
-      </main>
+      <ErrorAlert>
+        <NotificationAlert>
+          <main className={classes.content}>
+            <Container>
+              <>{children}</>
+            </Container>
+          </main>
+        </NotificationAlert>
+      </ErrorAlert>
     </div>
   );
 };

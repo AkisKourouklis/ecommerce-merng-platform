@@ -2,7 +2,7 @@ import jwtAuthentication from '../../middleware/auth.middleware';
 import { ApolloError } from 'apollo-server';
 import Error from './error.model';
 
-export const graphqlError = async (_, { error }, context) => {
+export const graphqlError = async (error) => {
   try {
     const newError = new Error(error);
     newError.save();

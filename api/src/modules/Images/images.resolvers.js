@@ -1,9 +1,10 @@
 import jwtAuthentication from '../../middleware/auth.middleware';
 import { graphqlError } from '../Errors/error';
-import path from 'path';
-import fs from 'fs';
-import { apiUrl } from '../../config/vars';
+import fs, { createWriteStream } from 'fs';
 import Image from './images.model';
+import { v4 as uuid } from 'uuid';
+import { ImageProcess } from '../../utils/image-processing';
+import { camelize } from '../../utils/camelize';
 
 export const findAllImages = async (_, { search = null, page = 1, limit = 20 }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
@@ -30,22 +31,36 @@ export const findAllImages = async (_, { search = null, page = 1, limit = 20 }, 
   };
 };
 
-export const uploadImage = async (_, { file }, context) => {
+export const uploadImage = async (_, { files }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
 
   try {
-    //save image to directory
-    const { createReadStream, filename } = await file;
+    const loadedFiles = await Promise.all(files);
+    const result = Promise.all(
+      loadedFiles.map(async (data) => {
+        const stream = data.createReadStream();
+        const filename = camelize(data.filename);
 
-    const stream = createReadStream();
-    const pathname = path.join(__dirname, `/public/images/${filename}`);
-    await stream.pipe(fs.createWriteStream(pathname));
+        const newUuid = uuid();
+        const file = `public/images/${newUuid}-${filename}`;
+        const savePath = `/images/${newUuid}-${filename}`;
 
-    //save image to document
+        await stream.pipe(createWriteStream(file)).on('data', async () => {
+          await ImageProcess(file, 60);
+        });
 
-    return `${apiUrl}/images/${filename}`;
-  } catch (error) {
-    graphqlError(error);
+        const newImage = new Image({
+          alt: filename,
+          path: savePath
+        });
+        newImage.save();
+
+        return { _id: newImage._id, path: savePath, alt: filename };
+      })
+    );
+    return result;
+  } catch (err) {
+    graphqlError(err);
   }
 };
 

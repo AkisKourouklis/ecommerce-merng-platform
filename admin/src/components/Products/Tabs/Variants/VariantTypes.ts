@@ -12,15 +12,13 @@ export interface VariantData {
         costPrice: number;
       };
       barcode: string;
-      images: {
-        _id: string;
-      };
+      images: ISingleImage[];
     }
   ];
 }
 
 export interface VariantMapedData {
-  _id: string;
+  _id?: string;
   sku: string;
   size: string;
   color: string;
@@ -31,7 +29,35 @@ export interface VariantMapedData {
     costPrice: number;
   };
   barcode: string;
-  images: {
-    _id: string;
-  };
+  images: ISingleImage[];
+}
+
+export interface IImages {
+  images: ISingleImage[] | [];
+  setImages: () => void;
+}
+
+export interface ISingleImage {
+  _id: string;
+  path: string;
+  alt: string;
+}
+
+export interface IUploadResponseProp {
+  alt: string;
+  path: string;
+}
+
+export interface VariantFormData {
+  color: string;
+  size: string;
+  material: string;
+  sku: string;
+  barcode: string;
+  quantity: string;
+  price: string;
+  comparePrice: string;
+  costPrice: string;
+  images?: ISingleImage[];
+  productId: string;
 }

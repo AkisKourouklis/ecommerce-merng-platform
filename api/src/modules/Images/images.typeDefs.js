@@ -6,23 +6,31 @@ export default gql`
     currentPage: Int
     totalPages: Int
   }
+
+  type ImageUploadResult {
+    _id: ID
+    path: String
+    alt: String
+  }
+
   type Image {
     _id: ID
     alt: String
-    url: String
+    path: String
     size: Int
   }
 
   input ImageInput {
-    alt: String!
-    url: String!
-    size: Int!
+    _id: ID
+    alt: String
+    path: String
+    size: Int
   }
   extend type Query {
     findAllImages(search: String, page: Int, limit: Int): ImageResult
   }
   extend type Mutation {
-    uploadImage(file: Upload!): String!
+    uploadImage(files: [Upload]): [ImageUploadResult]
     createImage(imageInput: ImageInput): Image!
     removeImage(_id: ID): Image!
   }

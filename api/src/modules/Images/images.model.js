@@ -5,7 +5,7 @@ const imagesSchema = new mongoose.Schema(
     alt: {
       type: String
     },
-    url: {
+    path: {
       type: String
     },
     size: {
