@@ -1,7 +1,11 @@
+import { v4 as uuid } from 'uuid';
+import ImageModel from '../Images/images.model';
 import VariantModel from './variants.model';
 import ProductModel from '../Products/products.model';
 import jwtAuthentication from '../../middleware/auth.middleware';
 import { graphqlError } from '../Errors/error';
+import { camelize } from '../../utils/camelize';
+import { createWriteStream } from 'fs';
 
 export const findAllVariants = async (_, { search = null, page = 1, limit = 20 }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
@@ -85,10 +89,10 @@ export const createVariant = async (_, { variantInput }, context) => {
   }
 };
 
-export const updateVariant = async (_, { variantInput, _id }, context) => {
+export const updateVariant = async (_, { variantInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
-    const { color, size, price, quantity, sku, barcode, images, material } = variantInput;
+    const { color, size, price, quantity, sku, barcode, images, material, variantId } = variantInput;
 
     const updateQuery = {};
 
@@ -117,7 +121,7 @@ export const updateVariant = async (_, { variantInput, _id }, context) => {
       updateQuery.images = images;
     }
 
-    const updatedVariant = await VariantModel.findByIdAndUpdate({ _id }, updateQuery, { new: true });
+    const updatedVariant = await VariantModel.findByIdAndUpdate({ _id: variantId }, updateQuery, { new: true });
     return updatedVariant;
   } catch (error) {
     return graphqlError(error);
@@ -137,5 +141,41 @@ export const removeImageFromVariant = async (_, { imageId, variantId }, context)
     return updatedVariant;
   } catch (error) {
     graphqlError(error);
+  }
+};
+
+export const addImageToVariant = async (_, { files, variantId }, context) => {
+  await jwtAuthentication.verifyTokenMiddleware(context);
+  try {
+    const loadedFiles = await Promise.all(files);
+    const result = Promise.all(
+      loadedFiles.map(async (data) => {
+        const stream = data.createReadStream();
+        const filename = camelize(data.filename);
+
+        const newUuid = uuid();
+        const file = `public/images/${newUuid}-${filename}`;
+        const savePath = `/images/${newUuid}-${filename}`;
+
+        await stream.pipe(createWriteStream(file)).on('data', async () => {
+          await ImageProcess(file, 60);
+        });
+
+        const newImage = new ImageModel({
+          alt: filename,
+          path: savePath
+        });
+        newImage.save();
+
+        await VariantModel.findByIdAndUpdate({ _id: variantId }, { $push: { images: newImage._id } }, { new: true });
+        console.log(savePath);
+
+        return { _id: newImage._id, path: savePath, alt: filename };
+      })
+    );
+
+    return result;
+  } catch (err) {
+    graphqlError(err);
   }
 };

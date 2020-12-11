@@ -8,6 +8,7 @@ export interface VariantMapedData {
   size: string;
   color: string;
   material: string;
+  quantity: string;
   price: {
     comparePrice: number;
     price: number;
@@ -44,5 +45,18 @@ export interface VariantFormData {
   comparePrice: string;
   costPrice: string;
   images?: ISingleImage[];
-  productId: string;
+  productId?: string;
+}
+
+export interface IEditVariant {
+  color: string;
+  size: string;
+  material: string;
+  sku: string;
+  barcode: string;
+  quantity: string;
+  price: string;
+  comparePrice: string;
+  costPrice: string;
+  variantId: string | undefined;
 }

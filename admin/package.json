@@ -30,8 +30,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "PORT=5001 export NODE_ENV=production && react-scripts start",
-    "dev": "PORT=5001 export NODE_ENV=development && react-scripts start",
+    "start": "export NODE_ENV=production && react-scripts start",
+    "dev": "export NODE_ENV=development &&  react-scripts start",
     "build": "react-scripts build"
   },
   "eslintConfig": {

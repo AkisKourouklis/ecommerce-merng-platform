@@ -28,7 +28,7 @@ export default gql`
     sku: String
     barcode: String
     images: [ImageInput]
-    productId: ID
+    variantId: ID
   }
 
   extend type Query {
@@ -40,5 +40,6 @@ export default gql`
     createVariant(variantInput: VariantInput): Variant!
     updateVariant(variantInput: VariantInput): Variant!
     removeImageFromVariant(imageId: String, variantId: String): Variant!
+    addImageToVariant(files: [Upload], variantId: ID): ImageUploadResult!
   }
 `;

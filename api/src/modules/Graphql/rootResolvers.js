@@ -13,7 +13,8 @@ import {
   createVariant,
   updateVariant,
   removeImageFromVariant,
-  findVariantById
+  findVariantById,
+  addImageToVariant
 } from '../Variants/variants.resolvers';
 import {
   findAllTags,
@@ -75,6 +76,7 @@ export default {
     createVariant,
     updateVariant,
     removeImageFromVariant,
+    addImageToVariant,
 
     //Tags
     createTag,

@@ -1,16 +1,33 @@
-import React, { lazy, memo, Suspense } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Paper, Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { useStyles } from "../VariantStyles";
 import { VariantMapedData } from "../VariantTypes";
 import { apiUrl } from "../../../../../config/vars";
 import DeleteIcon from "@material-ui/icons/Delete";
+import GraphqlRequest from "../../../../../graphql/graphql-request";
+import { AuthContext } from "../../../../Authentication/AuthContext";
+import { FIND_VARIANT_BY_ID } from "../VariantsQuery";
 
-const EditVariant = lazy(() => import("../EditVariant/EditVariant"));
-// import EditVariant from "../EditVariant/EditVariant";
+import EditVariant from "../EditVariant/EditVariant";
 
 const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean }> = ({ data, showImages }) => {
   const classes = useStyles();
+  const { auth } = useContext(AuthContext);
+  const [variant, setVariant] = useState<VariantMapedData | null>(null);
+
+  const fetchVariant = async (): Promise<void> => {
+    try {
+      const response = await GraphqlRequest(auth.token).request(FIND_VARIANT_BY_ID, { variantId: data._id });
+      setVariant(response.findVariantById);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVariant();
+  }, []);
 
   return (
     <>
@@ -21,9 +38,7 @@ const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean }> =
               <Typography>SKU: {data?.sku}</Typography>
             </Grid>
             <Grid item>
-              <Suspense fallback={<p>loading...</p>}>
-                <EditVariant variantId={data?._id} />
-              </Suspense>
+              <EditVariant variant={variant} fetchVariant={fetchVariant} />
               <Button
                 className={classes.variantDeleteButton}
                 variant="outlined"
@@ -85,6 +100,11 @@ const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean }> =
             <Grid item xs={6}>
               <Paper className={classes.innerPaper} variant="outlined">
                 <Typography>Barcode: {data?.barcode}€</Typography>
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper className={classes.innerPaper} variant="outlined">
+                <Typography>Quantity: {data?.quantity}</Typography>
               </Paper>
             </Grid>
           </Grid>

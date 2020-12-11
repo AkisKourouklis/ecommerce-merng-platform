@@ -1,31 +1,28 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useState } from "react";
 import { Modal, Backdrop, Fade, Button, Paper, Grid, Typography } from "@material-ui/core";
 import { useStyles } from "../VariantStyles";
 import FileUpload from "../../../../FileUpload/FileUpload";
-import { VariantFormData, ISingleImage, VariantMapedData } from "../VariantTypes";
+import { VariantFormData, ISingleImage, VariantMapedData, IEditVariant } from "../VariantTypes";
 import GraphqlRequest from "../../../../../graphql/graphql-request";
-import { UPLOAD_IMAGE } from "../../../../FileUpload/FileUploadQueries";
 import { AuthContext } from "../../../../Authentication/AuthContext";
-import { CREATE_VARIANT, FIND_VARIANT_BY_ID } from "../VariantsQuery";
+import { ADD_IMAGE_TO_VARIANT, UPDATE_VARIANT } from "../VariantsQuery";
 import { useDispatch } from "react-redux";
 import { CreateError } from "../../../../Error/ErrorActions";
-import { FIND_ALL_PRODUCTS } from "../../../ProductQueries";
 import { REMOVE_IMAGE_FROM_VARIANT } from "../VariantsQuery";
-import { IProduct } from "../../../ProductTypes";
 import EditVariantInputFields from "./EditVariantInputFields";
 import { CreateNotification } from "../../../../Notification/NotificationActions";
 import { apiUrl } from "../../../../../config/vars";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const EditVariant: React.FC<{ variantId: string | undefined }> = ({ variantId }) => {
+const EditVariant: React.FC<{ variant: VariantMapedData | null; fetchVariant: () => Promise<void> }> = ({
+  variant,
+  fetchVariant
+}) => {
   const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   const [images, setImages] = useState<File[] | []>([]);
   const [loadingFileUpload, setLoadingFileUpload] = useState<boolean>(false);
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const { auth } = useContext(AuthContext);
-  const [variant, setVariant] = useState<VariantMapedData | null>(null);
   const dispatch = useDispatch();
 
   const handleOpen = () => {
@@ -45,25 +42,25 @@ const EditVariant: React.FC<{ variantId: string | undefined }> = ({ variantId })
     comparePrice,
     costPrice,
     quantity,
-    material,
-    productId
+    material
   }: VariantFormData): Promise<void> => {
     try {
-      const uploadedImages = await uploadFiles();
+      if (images.length > 0) {
+        await addImageToVariant();
+      }
       await updateVariant({
         color,
         size,
+        material,
         sku,
         barcode,
         price,
         comparePrice,
         costPrice,
-        quantity,
-        material,
-        images: uploadedImages,
-        productId
+        quantity
       });
       setLoadingFileUpload(false);
+      fetchVariant();
       setOpen(false);
       dispatch(CreateNotification({ notification: "New variant created successfully!", notificationType: "success" }));
     } catch (error) {
@@ -71,33 +68,35 @@ const EditVariant: React.FC<{ variantId: string | undefined }> = ({ variantId })
     }
   };
 
-  const updateVariant = async (variant: VariantFormData): Promise<VariantFormData | undefined> => {
+  const updateVariant = async (inputVariant: VariantFormData): Promise<IEditVariant | undefined> => {
     try {
       const price = {
-        price: parseInt(variant.price),
-        comparePrice: parseInt(variant.comparePrice),
-        costPrice: parseInt(variant.costPrice)
+        price: parseInt(inputVariant.price),
+        comparePrice: parseInt(inputVariant.comparePrice),
+        costPrice: parseInt(inputVariant.costPrice)
       };
-      return await GraphqlRequest(auth.token).request(CREATE_VARIANT, {
-        size: variant.size,
-        color: variant.color,
-        material: variant.material,
+      return await GraphqlRequest(auth.token).request(UPDATE_VARIANT, {
+        size: inputVariant.size,
+        color: inputVariant.color,
+        material: inputVariant.material,
         price,
-        quantity: parseInt(variant.quantity),
-        sku: variant.sku,
-        barcode: variant.barcode,
-        images: variant.images,
-        productId: variant.productId
+        quantity: parseInt(inputVariant.quantity),
+        sku: inputVariant.sku,
+        barcode: inputVariant.barcode,
+        variantId: variant?._id
       });
     } catch (error) {
       dispatch(CreateError({ error, token: auth.token || "Bearer " }));
     }
   };
 
-  const uploadFiles = async (): Promise<ISingleImage[] | undefined> => {
+  const addImageToVariant = async (): Promise<ISingleImage[] | undefined> => {
     try {
       setLoadingFileUpload(true);
-      const response = await GraphqlRequest(auth.token).request(UPLOAD_IMAGE, { files: images });
+      const response = await GraphqlRequest(auth.token).request(ADD_IMAGE_TO_VARIANT, {
+        files: images,
+        variantId: variant?._id
+      });
       return response.uploadImage;
     } catch (error) {
       dispatch(CreateError({ error, token: auth.token || "Bearer " }));
@@ -108,34 +107,11 @@ const EditVariant: React.FC<{ variantId: string | undefined }> = ({ variantId })
     setImages(files);
   };
 
-  const fetchProducts = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const response = await GraphqlRequest(auth.token).request(FIND_ALL_PRODUCTS);
-      setProducts(response.findAllProducts.products);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      dispatch(CreateError({ error, token: auth.token || "Bearer " }));
-    }
-  };
-
-  const fetchVariant = async (): Promise<void> => {
-    console.log("here", variantId);
-    try {
-      const response = await GraphqlRequest(auth.token).request(FIND_VARIANT_BY_ID, { variantId });
-      setVariant(response.findVariantById);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const deleteImage = async (id: string) => {
     try {
       await GraphqlRequest(auth.token).request(REMOVE_IMAGE_FROM_VARIANT, {
         imageId: id,
-        variantId
+        variantId: variant?._id
       });
       fetchVariant();
       dispatch(CreateNotification({ notification: "Image deleted successfully", notificationType: "success" }));
@@ -143,11 +119,6 @@ const EditVariant: React.FC<{ variantId: string | undefined }> = ({ variantId })
       dispatch(CreateError({ error, token: auth.token || "Bearer " }));
     }
   };
-
-  useEffect(() => {
-    fetchProducts();
-    fetchVariant();
-  }, []);
 
   return (
     <>
@@ -199,13 +170,8 @@ const EditVariant: React.FC<{ variantId: string | undefined }> = ({ variantId })
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="overline">Images</Typography>
-                <EditVariantInputFields
-                  loading={loading}
-                  onSubmit={onSubmit}
-                  products={products}
-                  loadingFileUpload={loadingFileUpload}
-                />
+                <Typography variant="overline">Information</Typography>
+                <EditVariantInputFields variant={variant} onSubmit={onSubmit} loadingFileUpload={loadingFileUpload} />
               </Grid>
             </Grid>
           </Paper>
@@ -216,7 +182,7 @@ const EditVariant: React.FC<{ variantId: string | undefined }> = ({ variantId })
 };
 
 export default memo(EditVariant, (prevProps, nextProps) => {
-  if (prevProps.variantId !== nextProps.variantId) {
+  if (prevProps.variant !== nextProps.variant) {
     return false;
   }
   return true;

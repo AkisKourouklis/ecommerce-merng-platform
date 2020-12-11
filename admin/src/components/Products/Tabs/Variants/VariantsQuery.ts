@@ -9,6 +9,7 @@ export const FETCH_VARIANTS = gql`
         size
         color
         material
+        quantity
         price {
           comparePrice
           price
@@ -102,6 +103,44 @@ export const FIND_VARIANT_BY_ID = gql`
         alt
         path
       }
+    }
+  }
+`;
+
+export const ADD_IMAGE_TO_VARIANT = gql`
+  mutation($files: [Upload], $variantId: ID) {
+    addImageToVariant(files: $files, variantId: $variantId) {
+      path
+      alt
+      _id
+    }
+  }
+`;
+
+export const UPDATE_VARIANT = gql`
+  mutation(
+    $size: String
+    $color: String
+    $material: String
+    $price: GeneralPriceInput
+    $quantity: Int
+    $sku: String
+    $barcode: String
+    $variantId: ID
+  ) {
+    updateVariant(
+      variantInput: {
+        size: $size
+        color: $color
+        material: $material
+        price: $price
+        quantity: $quantity
+        sku: $sku
+        barcode: $barcode
+        variantId: $variantId
+      }
+    ) {
+      _id
     }
   }
 `;

@@ -1,8 +1,6 @@
 import React from "react";
-import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button, Typography } from "@material-ui/core";
-import { Autocomplete, Skeleton } from "@material-ui/lab";
-import { VariantFormData } from "../VariantTypes";
-import { IProduct } from "../../../ProductTypes";
+import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button } from "@material-ui/core";
+import { IEditVariant, VariantFormData, VariantMapedData } from "../VariantTypes";
 import { useForm } from "react-hook-form";
 import { useStyles } from "../VariantStyles";
 
@@ -16,14 +14,12 @@ const EditVariantInputFields: React.FC<{
     comparePrice,
     costPrice,
     quantity,
-    material,
-    productId
+    material
   }: VariantFormData) => Promise<void>;
-  loading: boolean;
-  products: IProduct[];
   loadingFileUpload: boolean;
-}> = ({ loading, onSubmit, products, loadingFileUpload }) => {
-  const { register, handleSubmit } = useForm<VariantFormData>();
+  variant: VariantMapedData | null;
+}> = ({ onSubmit, loadingFileUpload, variant }) => {
+  const { register, handleSubmit } = useForm<IEditVariant>();
   const classes = useStyles();
 
   return (
@@ -35,6 +31,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.color}
                 id="outlined-color"
                 type="text"
                 name="color"
@@ -47,6 +44,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.size}
                 id="outlined-size"
                 type="text"
                 name="size"
@@ -59,6 +57,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.material}
                 id="outlined-material"
                 type="text"
                 name="material"
@@ -71,6 +70,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.sku}
                 id="outlined-sku"
                 type="text"
                 name="sku"
@@ -84,6 +84,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.barcode}
                 id="outlined-bardcode"
                 type="text"
                 name="barcode"
@@ -96,6 +97,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.quantity}
                 id="outlined-quantity"
                 type="number"
                 name="quantity"
@@ -110,6 +112,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.price?.price}
                 id="outlined-price"
                 type="number"
                 name="price"
@@ -125,6 +128,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.price?.comparePrice}
                 id="outlined-comparePrice"
                 type="number"
                 name="comparePrice"
@@ -140,6 +144,7 @@ const EditVariantInputFields: React.FC<{
               <TextField
                 className={classes.input}
                 inputRef={register}
+                defaultValue={variant?.price?.costPrice}
                 id="outlined-costPrice"
                 type="number"
                 name="costPrice"
@@ -150,34 +155,6 @@ const EditVariantInputFields: React.FC<{
                   startAdornment: <InputAdornment position="start">€</InputAdornment>
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
-              {loading ? (
-                <Skeleton className={classes.input} height={56} variant="rect" />
-              ) : (
-                <Autocomplete
-                  options={products}
-                  renderInput={(params) => (
-                    <TextField
-                      className={classes.input}
-                      inputRef={register}
-                      required
-                      label="Select Product"
-                      variant="outlined"
-                      name="productId"
-                      {...params}
-                    />
-                  )}
-                  getOptionLabel={(option) => option._id}
-                  renderOption={(product) => {
-                    return (
-                      <Typography noWrap>
-                        sku: {product.sku} | {product.name}
-                      </Typography>
-                    );
-                  }}
-                />
-              )}
             </Grid>
           </Grid>
         </FormGroup>
