@@ -1,20 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { Modal, Backdrop, Fade, Button, Paper, Grid, Typography } from "@material-ui/core";
 import { useStyles } from "../VariantStyles";
 import FileUpload from "../../../../FileUpload/FileUpload";
-import { VariantFormData, ISingleImage } from "../VariantTypes";
+import { VariantFormData, ISingleImage, VariantMapedData } from "../VariantTypes";
 import GraphqlRequest from "../../../../../graphql/graphql-request";
 import { UPLOAD_IMAGE } from "../../../../FileUpload/FileUploadQueries";
 import { AuthContext } from "../../../../Authentication/AuthContext";
-import { CREATE_VARIANT } from "../VariantsQuery";
+import { CREATE_VARIANT, FIND_VARIANT_BY_ID } from "../VariantsQuery";
 import { useDispatch } from "react-redux";
 import { CreateError } from "../../../../Error/ErrorActions";
 import { FIND_ALL_PRODUCTS } from "../../../ProductQueries";
+import { REMOVE_IMAGE_FROM_VARIANT } from "../VariantsQuery";
 import { IProduct } from "../../../ProductTypes";
-import CreateVariantInputFields from "./CreateVariantInputFields";
+import EditVariantInputFields from "./EditVariantInputFields";
 import { CreateNotification } from "../../../../Notification/NotificationActions";
+import { apiUrl } from "../../../../../config/vars";
+import DeleteIcon from "@material-ui/icons/Delete";
 
-const CreateVariant: React.FC = () => {
+const EditVariant: React.FC<{ variantId: string | undefined }> = ({ variantId }) => {
   const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   const [images, setImages] = useState<File[] | []>([]);
@@ -22,6 +25,7 @@ const CreateVariant: React.FC = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { auth } = useContext(AuthContext);
+  const [variant, setVariant] = useState<VariantMapedData | null>(null);
   const dispatch = useDispatch();
 
   const handleOpen = () => {
@@ -46,7 +50,7 @@ const CreateVariant: React.FC = () => {
   }: VariantFormData): Promise<void> => {
     try {
       const uploadedImages = await uploadFiles();
-      await createNewVariant({
+      await updateVariant({
         color,
         size,
         sku,
@@ -67,7 +71,7 @@ const CreateVariant: React.FC = () => {
     }
   };
 
-  const createNewVariant = async (variant: VariantFormData): Promise<VariantFormData | undefined> => {
+  const updateVariant = async (variant: VariantFormData): Promise<VariantFormData | undefined> => {
     try {
       const price = {
         price: parseInt(variant.price),
@@ -104,7 +108,7 @@ const CreateVariant: React.FC = () => {
     setImages(files);
   };
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (): Promise<void> => {
     try {
       setLoading(true);
       const response = await GraphqlRequest(auth.token).request(FIND_ALL_PRODUCTS);
@@ -116,14 +120,39 @@ const CreateVariant: React.FC = () => {
     }
   };
 
+  const fetchVariant = async (): Promise<void> => {
+    console.log("here", variantId);
+    try {
+      const response = await GraphqlRequest(auth.token).request(FIND_VARIANT_BY_ID, { variantId });
+      setVariant(response.findVariantById);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteImage = async (id: string) => {
+    try {
+      await GraphqlRequest(auth.token).request(REMOVE_IMAGE_FROM_VARIANT, {
+        imageId: id,
+        variantId
+      });
+      fetchVariant();
+      dispatch(CreateNotification({ notification: "Image deleted successfully", notificationType: "success" }));
+    } catch (error) {
+      dispatch(CreateError({ error, token: auth.token || "Bearer " }));
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
+    fetchVariant();
   }, []);
 
   return (
-    <div>
-      <Button variant="contained" color="primary" type="button" onClick={handleOpen}>
-        Create Variant
+    <>
+      <Button size="small" variant="contained" color="primary" type="button" onClick={handleOpen}>
+        Edit Variant
       </Button>
       <Modal
         aria-labelledby="transition-modal-createVariant"
@@ -140,15 +169,38 @@ const CreateVariant: React.FC = () => {
           <Paper className={classes.paper}>
             <Grid container direction="row">
               <Grid item xs={12} className={classes.title}>
-                <Typography variant="h5">Create new variant</Typography>
+                <Typography variant="h5">Edit variant</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="overline">Images</Typography>
                 <FileUpload handleFileChange={handleImageChange} />
               </Grid>
               <Grid item xs={12}>
+                <Paper className={classes.innerPaper} variant="outlined">
+                  <Grid container direction="row" spacing={1}>
+                    {variant?.images.map((image) => {
+                      return (
+                        <Grid key={image._id} item xs={6} md={3}>
+                          <img alt={image.alt} src={`${apiUrl.staticUri}${image.path}`} width="100%" />
+                          <Button
+                            className={classes.imageDeleteButton}
+                            onClick={() => deleteImage(image._id)}
+                            variant="outlined"
+                            size="small"
+                            startIcon={<DeleteIcon />}
+                            fullWidth
+                          >
+                            Delete
+                          </Button>
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
                 <Typography variant="overline">Images</Typography>
-                <CreateVariantInputFields
+                <EditVariantInputFields
                   loading={loading}
                   onSubmit={onSubmit}
                   products={products}
@@ -159,8 +211,13 @@ const CreateVariant: React.FC = () => {
           </Paper>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
 };
 
-export default CreateVariant;
+export default memo(EditVariant, (prevProps, nextProps) => {
+  if (prevProps.variantId !== nextProps.variantId) {
+    return false;
+  }
+  return true;
+});

@@ -1,9 +1,13 @@
-import React from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Grid, Paper, Typography } from "@material-ui/core";
+import React, { lazy, memo, Suspense } from "react";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Paper, Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
-import { useStyles } from "./VariantStyles";
-import { VariantMapedData } from "./VariantTypes";
-import { apiUrl } from "../../../../config/vars";
+import { useStyles } from "../VariantStyles";
+import { VariantMapedData } from "../VariantTypes";
+import { apiUrl } from "../../../../../config/vars";
+import DeleteIcon from "@material-ui/icons/Delete";
+
+const EditVariant = lazy(() => import("../EditVariant/EditVariant"));
+// import EditVariant from "../EditVariant/EditVariant";
 
 const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean }> = ({ data, showImages }) => {
   const classes = useStyles();
@@ -12,7 +16,24 @@ const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean }> =
     <>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel1a-content" id="panel1a-header">
-          <Typography>SKU: {data?.sku}</Typography>
+          <Grid container direction="row" justify="space-between" alignItems="center">
+            <Grid item>
+              <Typography>SKU: {data?.sku}</Typography>
+            </Grid>
+            <Grid item>
+              <Suspense fallback={<p>loading...</p>}>
+                <EditVariant variantId={data?._id} />
+              </Suspense>
+              <Button
+                className={classes.variantDeleteButton}
+                variant="outlined"
+                size="small"
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
         </AccordionSummary>
         <AccordionDetails>
           <Grid container direction="row" spacing={1}>
@@ -73,4 +94,10 @@ const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean }> =
   );
 };
 
-export default SingleVariant;
+export default memo(SingleVariant, (prevProps, nextProps) => {
+  if (prevProps.data !== nextProps.data) {
+    return false;
+  }
+
+  return true;
+});

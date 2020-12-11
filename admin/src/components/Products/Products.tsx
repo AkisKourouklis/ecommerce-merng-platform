@@ -41,9 +41,9 @@ const a11yProps = (index: number) => {
 
 const Products: React.FC = () => {
   const classes = useStyles();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<number>(0);
 
-  const handleChange = (event: any, newValue: any) => {
+  const handleChange = (event: unknown, newValue: number) => {
     setValue(newValue);
   };
 

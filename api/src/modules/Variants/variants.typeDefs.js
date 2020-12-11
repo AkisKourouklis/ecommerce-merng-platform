@@ -33,10 +33,12 @@ export default gql`
 
   extend type Query {
     findAllVariants(search: String, page: Int, limit: Int): VariantsResult
+    findVariantById(variantId: String): Variant!
   }
 
   extend type Mutation {
     createVariant(variantInput: VariantInput): Variant!
     updateVariant(variantInput: VariantInput): Variant!
+    removeImageFromVariant(imageId: String, variantId: String): Variant!
   }
 `;

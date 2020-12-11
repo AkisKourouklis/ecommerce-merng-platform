@@ -39,6 +39,17 @@ export const findAllVariants = async (_, { search = null, page = 1, limit = 20 }
   }
 };
 
+export const findVariantById = async (_, { variantId }, context) => {
+  await jwtAuthentication.verifyTokenMiddleware(context);
+
+  try {
+    const singleVariant = await VariantModel.findById({ _id: variantId }).populate('images');
+    return singleVariant;
+  } catch (error) {
+    return graphqlError(error);
+  }
+};
+
 export const createVariant = async (_, { variantInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
@@ -77,7 +88,7 @@ export const createVariant = async (_, { variantInput }, context) => {
 export const updateVariant = async (_, { variantInput, _id }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
-    const { color, size, price, quantity, sku, barcode, images } = JSON.parse(JSON.stringify(variantInfo));
+    const { color, size, price, quantity, sku, barcode, images, material } = variantInput;
 
     const updateQuery = {};
 
@@ -86,6 +97,9 @@ export const updateVariant = async (_, { variantInput, _id }, context) => {
     }
     if (size) {
       updateQuery.size = size;
+    }
+    if (size) {
+      updateQuery.material = material;
     }
     if (price) {
       updateQuery.price = price;
@@ -107,5 +121,21 @@ export const updateVariant = async (_, { variantInput, _id }, context) => {
     return updatedVariant;
   } catch (error) {
     return graphqlError(error);
+  }
+};
+
+export const removeImageFromVariant = async (_, { imageId, variantId }, context) => {
+  try {
+    await jwtAuthentication.verifyTokenMiddleware(context);
+
+    const updatedVariant = await VariantModel.findByIdAndUpdate(
+      { _id: variantId },
+      { $pull: { images: imageId } },
+      { new: true }
+    );
+
+    return updatedVariant;
+  } catch (error) {
+    graphqlError(error);
   }
 };

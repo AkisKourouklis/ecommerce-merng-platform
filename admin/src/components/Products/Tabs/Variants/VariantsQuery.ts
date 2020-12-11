@@ -73,3 +73,35 @@ export const CREATE_VARIANT = gql`
     }
   }
 `;
+
+export const REMOVE_IMAGE_FROM_VARIANT = gql`
+  mutation($imageId: String, $variantId: String) {
+    removeImageFromVariant(imageId: $imageId, variantId: $variantId) {
+      _id
+    }
+  }
+`;
+
+export const FIND_VARIANT_BY_ID = gql`
+  query($variantId: String) {
+    findVariantById(variantId: $variantId) {
+      _id
+      size
+      color
+      material
+      price {
+        price
+        comparePrice
+        costPrice
+      }
+      quantity
+      sku
+      barcode
+      images {
+        _id
+        alt
+        path
+      }
+    }
+  }
+`;

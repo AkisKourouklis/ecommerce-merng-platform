@@ -8,7 +8,13 @@ import {
   checkToken
 } from '../Users/users.resolvers';
 import { findAllImages, removeImage, uploadImage } from '../Images/images.resolvers';
-import { findAllVariants, createVariant, updateVariant } from '../Variants/variants.resolvers';
+import {
+  findAllVariants,
+  createVariant,
+  updateVariant,
+  removeImageFromVariant,
+  findVariantById
+} from '../Variants/variants.resolvers';
 import {
   findAllTags,
   createTag,
@@ -41,6 +47,7 @@ export default {
 
     //Variants
     findAllVariants,
+    findVariantById,
 
     //Tags
     findAllTags,
@@ -67,6 +74,7 @@ export default {
     // Variants
     createVariant,
     updateVariant,
+    removeImageFromVariant,
 
     //Tags
     createTag,
