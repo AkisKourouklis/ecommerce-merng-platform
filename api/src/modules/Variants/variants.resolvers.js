@@ -15,13 +15,7 @@ export const findAllVariants = async (_, { search = null, page = 1, limit = 20 }
 
     if (search) {
       searchQuery = {
-        $or: [
-          { color: { $regex: search, $options: 'i' } },
-          { size: { $regex: search, $options: 'i' } },
-          { material: { $regex: search, $options: 'i' } },
-          { sku: { $regex: search, $options: 'i' } },
-          { barcode: { $regex: search, $options: 'i' } }
-        ]
+        $or: [{ sku: { $regex: search, $options: 'i' } }]
       };
     }
 
@@ -74,13 +68,7 @@ export const createVariant = async (_, { variantInput }, context) => {
         material
       });
       await newVariant.save().then((data) => {
-        ProductModel.findByIdAndUpdate({ _id: productId }, { $push: { variants: data._id } }, { new: true })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        ProductModel.findByIdAndUpdate({ _id: productId }, { $push: { variants: data._id } }, { new: true });
       });
       return newVariant;
     }
@@ -185,7 +173,6 @@ export const addImageToVariant = async (_, { files, variantId }, context) => {
         newImage.save();
 
         await VariantModel.findByIdAndUpdate({ _id: variantId }, { $push: { images: newImage._id } }, { new: true });
-        console.log(savePath);
 
         return { _id: newImage._id, path: savePath, alt: filename };
       })

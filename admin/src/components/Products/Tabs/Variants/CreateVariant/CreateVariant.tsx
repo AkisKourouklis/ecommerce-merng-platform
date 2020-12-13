@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, Backdrop, Fade, Button, Paper, Grid, Typography } from "@material-ui/core";
-import { useStyles } from "../VariantStyles";
+import { useStyles } from "../VariantStyles/VariantStyles";
 import FileUpload from "../../../../FileUpload/FileUpload";
 import { VariantFormData, ISingleImage } from "../VariantTypes";
 import GraphqlRequest from "../../../../../graphql/graphql-request";
 import { UPLOAD_IMAGE } from "../../../../FileUpload/FileUploadQueries";
 import { AuthContext } from "../../../../Authentication/AuthContext";
-import { CREATE_VARIANT } from "../VariantsQuery";
+import { CREATE_VARIANT } from "../VariantQueries/VariantsQuery";
 import { useDispatch } from "react-redux";
 import { CreateError } from "../../../../Error/ErrorActions";
 import { FIND_ALL_PRODUCTS } from "../../../ProductQueries";
@@ -64,8 +64,7 @@ const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetch
       setOpen(false);
       dispatch(CreateNotification({ notification: "New variant created successfully!", notificationType: "success" }));
     } catch (error) {
-      console.log(error);
-      // dispatch(CreateError({ error, token: auth.token || "Bearer " }));
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
   };
 
@@ -88,7 +87,7 @@ const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetch
         productId: variant.productId
       });
     } catch (error) {
-      dispatch(CreateError({ error, token: auth.token || "Bearer " }));
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
   };
 
@@ -98,7 +97,7 @@ const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetch
       const response = await GraphqlRequest(auth.token).request(UPLOAD_IMAGE, { files: images });
       return response.uploadImage;
     } catch (error) {
-      dispatch(CreateError({ error, token: auth.token || "Bearer " }));
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
   };
 
@@ -114,7 +113,7 @@ const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetch
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      dispatch(CreateError({ error, token: auth.token || "Bearer " }));
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
   };
 

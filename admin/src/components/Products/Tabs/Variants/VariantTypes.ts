@@ -18,11 +18,6 @@ export interface VariantMapedData {
   images: ISingleImage[];
 }
 
-export interface IImages {
-  images: ISingleImage[] | [];
-  setImages: () => void;
-}
-
 export interface ISingleImage {
   _id: string;
   path: string;

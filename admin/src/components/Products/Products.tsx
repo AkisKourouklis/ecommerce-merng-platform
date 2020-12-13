@@ -60,20 +60,23 @@ const Products: React.FC = () => {
             variant="scrollable"
             scrollButtons="on"
           >
-            <Tab label="Variants" {...a11yProps(0)} />
-            <Tab label="Products" {...a11yProps(1)} />
+            <Tab label="Products" {...a11yProps(0)} />
+            <Tab label="Variants" {...a11yProps(1)} />
             <Tab label="Tags" {...a11yProps(2)} />
             <Tab label="TaxClasses" {...a11yProps(3)} />
             <Tab label="Images" {...a11yProps(4)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} classes={classes} index={0}>
-          <Variants />
+          Products
         </TabPanel>
         <TabPanel value={value} classes={classes} index={1}>
-          Item Two
+          <Variants />
         </TabPanel>
         <TabPanel value={value} classes={classes} index={2}>
+          Products
+        </TabPanel>
+        <TabPanel value={value} classes={classes} index={3}>
           Item Three
         </TabPanel>
       </DashboardHOC>

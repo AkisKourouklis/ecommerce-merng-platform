@@ -4,7 +4,7 @@ import { Autocomplete, Skeleton } from "@material-ui/lab";
 import { VariantFormData } from "../VariantTypes";
 import { IProduct } from "../../../ProductTypes";
 import { useForm } from "react-hook-form";
-import { useStyles } from "../VariantStyles";
+import { useStyles } from "../VariantStyles/VariantStyles";
 
 const CreateVariantInputFields: React.FC<{
   onSubmit: ({
