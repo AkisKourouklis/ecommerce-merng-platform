@@ -1,11 +1,12 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import usePersistedState from "./customHooks/usePersistedState";
-import Login from "./components/Authentication/Login";
-import GraphqlRequest from "./graphql/graphql-request";
 import { AUTH_CHECK } from "./components/Authentication/AuthQuery";
 import { AuthContext } from "./components/Authentication/AuthContext";
-import { CircularProgress } from "@material-ui/core";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import GraphqlRequest from "./graphql/graphql-request";
+import LoadingPage from "./components/Loading/LoadingPage";
+import Login from "./components/Authentication/Login";
+import usePersistedState from "./customHooks/usePersistedState";
+
 const Home = lazy(() => import("./components/Home/Home"));
 const Products = lazy(() => import("./components/Products/Products"));
 
@@ -38,7 +39,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       {loading ? (
-        <p>Loading ...</p>
+        <LoadingPage />
       ) : (
         <AuthContext.Provider value={{ auth, setAuth }}>
           <Router>
@@ -50,11 +51,9 @@ const App: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Suspense fallback={<CircularProgress />}>
+                  <Suspense fallback={<LoadingPage />}>
                     <Redirect to="/home" />
                     <Route exact path="/home" component={Home} />
-                  </Suspense>
-                  <Suspense fallback={<CircularProgress />}>
                     <Route exact path="/products" component={Products} />
                   </Suspense>
                 </>

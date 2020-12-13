@@ -48,7 +48,7 @@ const Variants: React.FC = () => {
       </Grid>
       <Grid item xs={6}>
         <Box textAlign="end">
-          <CreateVariant />
+          <CreateVariant fetchVariants={fetchVariants} />
         </Box>
       </Grid>
       <Grid item xs={12}>

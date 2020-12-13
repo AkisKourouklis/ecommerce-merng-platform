@@ -14,7 +14,7 @@ import { IProduct } from "../../../ProductTypes";
 import CreateVariantInputFields from "./CreateVariantInputFields";
 import { CreateNotification } from "../../../../Notification/NotificationActions";
 
-const CreateVariant: React.FC = () => {
+const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetchVariants }) => {
   const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   const [images, setImages] = useState<File[] | []>([]);
@@ -60,10 +60,12 @@ const CreateVariant: React.FC = () => {
         productId
       });
       setLoadingFileUpload(false);
+      fetchVariants();
       setOpen(false);
       dispatch(CreateNotification({ notification: "New variant created successfully!", notificationType: "success" }));
     } catch (error) {
-      dispatch(CreateError({ error, token: auth.token || "Bearer " }));
+      console.log(error);
+      // dispatch(CreateError({ error, token: auth.token || "Bearer " }));
     }
   };
 

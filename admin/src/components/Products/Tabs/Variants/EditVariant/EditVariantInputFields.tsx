@@ -1,6 +1,6 @@
 import React from "react";
-import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button } from "@material-ui/core";
 import { IEditVariant, VariantFormData, VariantMapedData } from "../VariantTypes";
+import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import { useStyles } from "../VariantStyles";
 
