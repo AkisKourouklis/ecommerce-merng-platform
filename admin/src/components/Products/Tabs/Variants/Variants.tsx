@@ -15,7 +15,7 @@ const Variants: React.FC = () => {
   const { register, watch } = useForm();
   const { auth } = useContext(AuthContext);
   const [variants, setVariants] = useState<VariantData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [showImages, setShowImages] = useState<boolean>(false);
   const search = watch("search");
   const dispatch = useDispatch();

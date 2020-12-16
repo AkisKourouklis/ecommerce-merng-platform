@@ -1,4 +1,4 @@
-import React, { memo, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ADD_IMAGE_TO_VARIANT, UPDATE_VARIANT } from "../VariantQueries/VariantsQuery";
 import { apiUrl } from "../../../../../config/vars";
 import { AuthContext } from "../../../../Authentication/AuthContext";
@@ -181,9 +181,4 @@ const EditVariant: React.FC<{ variant: VariantMapedData | null; fetchVariant: ()
   );
 };
 
-export default memo(EditVariant, (prevProps, nextProps) => {
-  if (prevProps.variant !== nextProps.variant) {
-    return false;
-  }
-  return true;
-});
+export default EditVariant;

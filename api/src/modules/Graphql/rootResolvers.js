@@ -21,8 +21,9 @@ import {
   findAllTags,
   createTag,
   removeTagFromProduct,
-  editTagFromProduct,
-  addTagToProduct
+  editTag,
+  addTagToProduct,
+  addTagToMultipleProducts
 } from '../Tags/tags.resolvers';
 import {
   findAllTaxClasses,
@@ -83,8 +84,9 @@ export default {
     //Tags
     createTag,
     removeTagFromProduct,
-    editTagFromProduct,
+    editTag,
     addTagToProduct,
+    addTagToMultipleProducts,
 
     //TaxClasses
     createTaxClass,

@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Paper, Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { useStyles } from "../VariantStyles/VariantStyles";
@@ -167,10 +167,4 @@ const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean; fet
   );
 };
 
-export default memo(SingleVariant, (prevProps, nextProps) => {
-  if (prevProps.data !== nextProps.data) {
-    return false;
-  }
-
-  return true;
-});
+export default SingleVariant;

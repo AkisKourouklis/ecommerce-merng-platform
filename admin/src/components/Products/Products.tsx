@@ -4,6 +4,7 @@ import { Paper, Tab, Tabs, Box, AppBar } from "@material-ui/core";
 import DashboardHOC from "../DashboardHOC/DashboardHOC";
 import useStyles from "./Products.styles";
 import Variants from "./Tabs/Variants/Variants";
+import Tags from "./Tabs/Tags/Tags";
 
 const TabPanel: React.FC<{ classes: Record<"tabs" | "paper", string>; value: number; index: number }> = ({
   classes,
@@ -68,13 +69,13 @@ const Products: React.FC = () => {
           </Tabs>
         </AppBar>
         <TabPanel value={value} classes={classes} index={0}>
-          Products
+          products
         </TabPanel>
         <TabPanel value={value} classes={classes} index={1}>
           <Variants />
         </TabPanel>
         <TabPanel value={value} classes={classes} index={2}>
-          Products
+          <Tags />
         </TabPanel>
         <TabPanel value={value} classes={classes} index={3}>
           Item Three
