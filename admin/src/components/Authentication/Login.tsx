@@ -52,8 +52,11 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <Container maxWidth="sm">
-        <Card className={classes.card} variant="outlined">
+      <Container className={classes.container} maxWidth="sm">
+        <Box className={classes.logo} textAlign="center">
+          <img alt="sovrakofanela.gr" src="logo.svg" width="200px" />
+        </Box>
+        <Card variant="outlined">
           <CardContent>
             <Typography className={classes.formTitle} variant="h5">
               Παρακαλώ συνδεθείτε

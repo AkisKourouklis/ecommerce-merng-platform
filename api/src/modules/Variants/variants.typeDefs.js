@@ -19,7 +19,24 @@ export default gql`
     images: [Image]
   }
 
-  input VariantInput {
+  type DeleteVariantResults {
+    updatedProduct: Product
+    removedVariant: Variant
+  }
+
+  input UpdateVariant {
+    size: String
+    color: String
+    material: String
+    price: GeneralPriceInput
+    quantity: Int
+    sku: String
+    barcode: String
+    images: [ImageInput]
+    variantId: ID
+  }
+
+  input CreateVariant {
     size: String
     color: String
     material: String
@@ -33,10 +50,14 @@ export default gql`
 
   extend type Query {
     findAllVariants(search: String, page: Int, limit: Int): VariantsResult
+    findVariantById(variantId: String): Variant!
   }
 
   extend type Mutation {
-    createVariant(variantInput: VariantInput): Variant!
-    updateVariant(variantInput: VariantInput): Variant!
+    createVariant(variantInput: CreateVariant): Variant!
+    updateVariant(variantInput: UpdateVariant): Variant!
+    deleteVariant(variantId: ID): DeleteVariantResults!
+    removeImageFromVariant(imageId: String, variantId: String): Variant!
+    addImageToVariant(files: [Upload], variantId: ID): ImageUploadResult!
   }
 `;

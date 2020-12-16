@@ -8,13 +8,22 @@ import {
   checkToken
 } from '../Users/users.resolvers';
 import { findAllImages, removeImage, uploadImage } from '../Images/images.resolvers';
-import { findAllVariants, createVariant, updateVariant } from '../Variants/variants.resolvers';
+import {
+  findAllVariants,
+  createVariant,
+  updateVariant,
+  removeImageFromVariant,
+  findVariantById,
+  addImageToVariant,
+  deleteVariant
+} from '../Variants/variants.resolvers';
 import {
   findAllTags,
   createTag,
-  removeTagFromProduct,
-  editTagFromProduct,
-  addTagToProduct
+  deleteTag,
+  editTag,
+  addTagToProduct,
+  addTagToMultipleProducts
 } from '../Tags/tags.resolvers';
 import {
   findAllTaxClasses,
@@ -41,6 +50,7 @@ export default {
 
     //Variants
     findAllVariants,
+    findVariantById,
 
     //Tags
     findAllTags,
@@ -67,12 +77,16 @@ export default {
     // Variants
     createVariant,
     updateVariant,
+    removeImageFromVariant,
+    addImageToVariant,
+    deleteVariant,
 
     //Tags
     createTag,
-    removeTagFromProduct,
-    editTagFromProduct,
+    deleteTag,
+    editTag,
     addTagToProduct,
+    addTagToMultipleProducts,
 
     //TaxClasses
     createTaxClass,

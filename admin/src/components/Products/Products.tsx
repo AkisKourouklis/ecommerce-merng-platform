@@ -4,6 +4,7 @@ import { Paper, Tab, Tabs, Box, AppBar } from "@material-ui/core";
 import DashboardHOC from "../DashboardHOC/DashboardHOC";
 import useStyles from "./Products.styles";
 import Variants from "./Tabs/Variants/Variants";
+import Tags from "./Tabs/Tags/Tags";
 
 const TabPanel: React.FC<{ classes: Record<"tabs" | "paper", string>; value: number; index: number }> = ({
   classes,
@@ -41,9 +42,9 @@ const a11yProps = (index: number) => {
 
 const Products: React.FC = () => {
   const classes = useStyles();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<number>(0);
 
-  const handleChange = (event: any, newValue: any) => {
+  const handleChange = (event: unknown, newValue: number) => {
     setValue(newValue);
   };
 
@@ -60,20 +61,23 @@ const Products: React.FC = () => {
             variant="scrollable"
             scrollButtons="on"
           >
-            <Tab label="Variants" {...a11yProps(0)} />
-            <Tab label="Products" {...a11yProps(1)} />
+            <Tab label="Products" {...a11yProps(0)} />
+            <Tab label="Variants" {...a11yProps(1)} />
             <Tab label="Tags" {...a11yProps(2)} />
             <Tab label="TaxClasses" {...a11yProps(3)} />
             <Tab label="Images" {...a11yProps(4)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} classes={classes} index={0}>
-          <Variants />
+          products
         </TabPanel>
         <TabPanel value={value} classes={classes} index={1}>
-          Item Two
+          <Variants />
         </TabPanel>
         <TabPanel value={value} classes={classes} index={2}>
+          <Tags />
+        </TabPanel>
+        <TabPanel value={value} classes={classes} index={3}>
           Item Three
         </TabPanel>
       </DashboardHOC>

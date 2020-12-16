@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import usePersistedState from "./customHooks/usePersistedState";
-import Login from "./components/Authentication/Login";
-import { AuthContext } from "./components/Authentication/AuthContext";
-import GraphqlRequest from "./graphql/graphql-request";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { AUTH_CHECK } from "./components/Authentication/AuthQuery";
-import Home from "./components/Home/Home";
-import Products from "./components/Products/Products";
+import { AuthContext } from "./components/Authentication/AuthContext";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import GraphqlRequest from "./graphql/graphql-request";
+import LoadingPage from "./components/Loading/LoadingPage";
+import Login from "./components/Authentication/Login";
+import usePersistedState from "./customHooks/usePersistedState";
+
+const Home = lazy(() => import("./components/Home/Home"));
+const Products = lazy(() => import("./components/Products/Products"));
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -37,7 +39,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       {loading ? (
-        <p>Loading ...</p>
+        <LoadingPage />
       ) : (
         <AuthContext.Provider value={{ auth, setAuth }}>
           <Router>
@@ -49,9 +51,11 @@ const App: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Redirect to="/home" />
-                  <Route exact path="/home" component={Home} />
-                  <Route exact path="/products" component={Products} />
+                  <Suspense fallback={<LoadingPage />}>
+                    <Redirect to="/home" />
+                    <Route exact path="/home" component={Home} />
+                    <Route exact path="/products" component={Products} />
+                  </Suspense>
                 </>
               )}
             </Switch>

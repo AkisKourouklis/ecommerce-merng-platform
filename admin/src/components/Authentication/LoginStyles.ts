@@ -1,7 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const LoginStyles = makeStyles((theme) => ({
-  card: {
+  logo: {
+    marginBottom: theme.spacing(2)
+  },
+  container: {
     marginTop: theme.spacing(7)
   },
   formTitle: {

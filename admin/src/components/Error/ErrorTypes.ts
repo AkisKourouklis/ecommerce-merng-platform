@@ -17,8 +17,7 @@ export interface clearErrorAction {
 }
 
 export interface createErrorProp {
-  error: string;
+  errors: [{ message: string }];
   token: string;
 }
-
 export type ErrorActionTypes = toggleErrorAction | clearErrorAction;
