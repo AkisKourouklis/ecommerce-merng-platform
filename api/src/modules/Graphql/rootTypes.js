@@ -3,7 +3,6 @@ import userTypeDefs from '../Users/users.typeDefs';
 import imagesTypeDefs from '../Images/images.typeDefs';
 import variantsTypeDefs from '../Variants/variants.typeDefs';
 import tagsTypeDefs from '../Tags/tags.typeDefs';
-import taxClassesTypeDefs from '../TaxClasses/taxClasses.typeDefs';
 import productTypeDefs from '../Products/products.typeDefs';
 import errorTypeDefs from '../Errors/error.TypeDefs';
 
@@ -33,7 +32,6 @@ export default [
   imagesTypeDefs,
   variantsTypeDefs,
   tagsTypeDefs,
-  taxClassesTypeDefs,
   productTypeDefs,
   errorTypeDefs
 ];

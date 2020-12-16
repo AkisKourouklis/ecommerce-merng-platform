@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
     isActive: Boolean,
     quantity: Number,
     availability: String,
-    taxClass: [{ type: Schema.Types.ObjectId, ref: 'TaxClass' }],
+    tax: Number,
     images: [{ type: Schema.Types.ObjectId, ref: 'Image' }],
     variants: [{ type: Schema.Types.ObjectId, ref: 'Variant' }],
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],

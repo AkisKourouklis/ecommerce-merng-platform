@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Backdrop, Button, CircularProgress, Grid, Modal, Paper, TextField, Typography } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { AuthContext } from "../../../../Authentication/AuthContext";
+import { AuthContext } from "../../../Authentication/AuthContext";
 import { useStyles } from "../TagStyles/TagStyles";
 import { useForm } from "react-hook-form";
 import { ISingleTag } from "../TagTypes";
 import { EDIT_TAG } from "../TagQueries/TagQueries";
-import GraphqlRequest from "../../../../../graphql/graphql-request";
-import { CreateNotification } from "../../../../Notification/NotificationActions";
+import GraphqlRequest from "../../../../graphql/graphql-request";
+import { CreateNotification } from "../../../Notification/NotificationActions";
 
 const EditTag: React.FC<{ data: ISingleTag; fetchTags: () => Promise<void> }> = ({ data, fetchTags }) => {
   const classes = useStyles();

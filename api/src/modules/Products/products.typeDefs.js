@@ -10,7 +10,7 @@ export default gql`
     availability: String
     isActive: Boolean
     quantity: Int
-    taxClass: [TaxClass]
+    tax: Int
     images: [ProductImages]
     variants: [ProductVariants]
     tags: [ProductTags]
@@ -66,7 +66,7 @@ export default gql`
     isActive: Boolean
     availability: String
     quantity: Int
-    taxClass: [TaxClassInput]
+    tax: Int
     images: [ProductImagesInput]
     variants: [ProductVariantsInput]
     tags: [ProductTagsInput]

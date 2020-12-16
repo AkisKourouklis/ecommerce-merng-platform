@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ADD_TAG_TO_MULTIPLE_PRODUCTS, CREATE_TAG } from "../TagQueries/TagQueries";
-import { AuthContext } from "../../../../Authentication/AuthContext";
+import { AuthContext } from "../../../Authentication/AuthContext";
 import { Backdrop, Button, CircularProgress, Fade, Grid, Modal, Paper, TextField, Typography } from "@material-ui/core";
-import { CreateError } from "../../../../Error/ErrorActions";
-import { CreateNotification } from "../../../../Notification/NotificationActions";
-import { FIND_ALL_PRODUCTS } from "../../../ProductQueries";
-import { IProduct } from "../../../ProductTypes";
+import { CreateError } from "../../../Error/ErrorActions";
+import { CreateNotification } from "../../../Notification/NotificationActions";
+import { FIND_ALL_PRODUCTS } from "../../ProductQueries";
+import { IProduct } from "../../ProductTypes";
 import { ISingleTag } from "../TagTypes";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useStyles } from "../TagStyles/TagStyles";
-import GraphqlRequest from "../../../../../graphql/graphql-request";
+import GraphqlRequest from "../../../../graphql/graphql-request";
 import TransferList from "./TranferList";
 
 const CreateTag: React.FC<{ fetchTags: () => Promise<void> }> = ({ fetchTags }) => {

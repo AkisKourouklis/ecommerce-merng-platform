@@ -3,15 +3,15 @@ import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Paper, Typ
 import { ExpandMore } from "@material-ui/icons";
 import { useStyles } from "../VariantStyles/VariantStyles";
 import { VariantMapedData } from "../VariantTypes";
-import { apiUrl } from "../../../../../config/vars";
+import { apiUrl } from "../../../../config/vars";
 import DeleteIcon from "@material-ui/icons/Delete";
-import GraphqlRequest from "../../../../../graphql/graphql-request";
-import { AuthContext } from "../../../../Authentication/AuthContext";
+import GraphqlRequest from "../../../../graphql/graphql-request";
+import { AuthContext } from "../../../Authentication/AuthContext";
 import { DELETE_VARIANT, FIND_VARIANT_BY_ID } from "../VariantQueries/VariantsQuery";
 import EditVariant from "../EditVariant/EditVariant";
 import { useDispatch } from "react-redux";
-import { CreateError } from "../../../../Error/ErrorActions";
-import { CreateNotification } from "../../../../Notification/NotificationActions";
+import { CreateError } from "../../../Error/ErrorActions";
+import { CreateNotification } from "../../../Notification/NotificationActions";
 
 const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean; fetchVariants: () => Promise<void> }> = ({
   data,

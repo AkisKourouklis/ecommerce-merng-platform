@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IProduct } from "../../../ProductTypes";
+import { IProduct } from "../../ProductTypes";
 import { Paper } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";

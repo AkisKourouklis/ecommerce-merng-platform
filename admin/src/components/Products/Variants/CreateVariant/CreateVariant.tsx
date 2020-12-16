@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, Backdrop, Fade, Button, Paper, Grid, Typography } from "@material-ui/core";
 import { useStyles } from "../VariantStyles/VariantStyles";
-import FileUpload from "../../../../FileUpload/FileUpload";
+import FileUpload from "../../../FileUpload/FileUpload";
 import { VariantFormData, ISingleImage } from "../VariantTypes";
-import GraphqlRequest from "../../../../../graphql/graphql-request";
-import { UPLOAD_IMAGE } from "../../../../FileUpload/FileUploadQueries";
-import { AuthContext } from "../../../../Authentication/AuthContext";
+import GraphqlRequest from "../../../../graphql/graphql-request";
+import { UPLOAD_IMAGE } from "../../../FileUpload/FileUploadQueries";
+import { AuthContext } from "../../../Authentication/AuthContext";
 import { CREATE_VARIANT } from "../VariantQueries/VariantsQuery";
 import { useDispatch } from "react-redux";
-import { CreateError } from "../../../../Error/ErrorActions";
-import { FIND_ALL_PRODUCTS } from "../../../ProductQueries";
-import { IProduct } from "../../../ProductTypes";
+import { CreateError } from "../../../Error/ErrorActions";
+import { FIND_ALL_PRODUCTS } from "../../ProductQueries";
+import { IProduct } from "../../ProductTypes";
 import CreateVariantInputFields from "./CreateVariantInputFields";
-import { CreateNotification } from "../../../../Notification/NotificationActions";
+import { CreateNotification } from "../../../Notification/NotificationActions";
 
 const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetchVariants }) => {
   const classes = useStyles();

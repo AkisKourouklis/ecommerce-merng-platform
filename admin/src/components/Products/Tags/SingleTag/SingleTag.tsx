@@ -1,14 +1,14 @@
 import { Button, Grid, Paper } from "@material-ui/core";
-import { AuthContext } from "../../../../Authentication/AuthContext";
-import { CreateError } from "../../../../Error/ErrorActions";
+import { AuthContext } from "../../../Authentication/AuthContext";
+import { CreateError } from "../../../Error/ErrorActions";
 import { ISingleTag } from "../TagTypes";
 import { useDispatch } from "react-redux";
 import { useStyles } from "../TagStyles/TagStyles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditTag from "../EditTag/EditTag";
 import React, { useContext, useState } from "react";
-import GraphqlRequest from "../../../../../graphql/graphql-request";
-import { CreateNotification } from "../../../../Notification/NotificationActions";
+import GraphqlRequest from "../../../../graphql/graphql-request";
+import { CreateNotification } from "../../../Notification/NotificationActions";
 import { DELETE_TAG } from "../TagQueries/TagQueries";
 
 const CreateTag: React.FC<{ fetchTags: () => Promise<void>; data: ISingleTag }> = ({ fetchTags, data }) => {

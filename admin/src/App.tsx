@@ -9,6 +9,8 @@ import usePersistedState from "./customHooks/usePersistedState";
 
 const Home = lazy(() => import("./components/Home/Home"));
 const Products = lazy(() => import("./components/Products/Products"));
+const ProductsTags = lazy(() => import("./components/Products/Tags/Tags"));
+const ProductsVariants = lazy(() => import("./components/Products/Variants/Variants"));
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -55,6 +57,8 @@ const App: React.FC = () => {
                     <Redirect to="/home" />
                     <Route exact path="/home" component={Home} />
                     <Route exact path="/products" component={Products} />
+                    <Route exact path="/products/tags" component={ProductsTags} />
+                    <Route exact path="/products/variants" component={ProductsVariants} />
                   </Suspense>
                 </>
               )}
