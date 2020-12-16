@@ -7,6 +7,11 @@ export default gql`
     totalPages: Int
   }
 
+  type DeleteTagResults {
+    updatedProduct: Product
+    removedTag: Tags
+  }
+
   type Tags {
     _id: ID
     name: String
@@ -31,7 +36,7 @@ export default gql`
 
   extend type Mutation {
     createTag(name: String): Tags!
-    removeTagFromProduct(tagInfo: TagInfo, ProductInput: ProductInput): Product!
+    deleteTag(tagId: ID): DeleteTagResults!
     addTagToProduct(tagsIds: [ID]!, productId: ID!): Product!
     addTagToMultipleProducts(tagId: ID, products: [TaggedProduct]): [Product]
     editTag(_id: ID, name: String): Tags!

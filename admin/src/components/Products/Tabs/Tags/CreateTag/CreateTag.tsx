@@ -1,16 +1,16 @@
-import { Backdrop, Button, CircularProgress, Fade, Grid, Modal, Paper, TextField, Typography } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import GraphqlRequest from "../../../../../graphql/graphql-request";
+import { ADD_TAG_TO_MULTIPLE_PRODUCTS, CREATE_TAG } from "../TagQueries/TagQueries";
 import { AuthContext } from "../../../../Authentication/AuthContext";
+import { Backdrop, Button, CircularProgress, Fade, Grid, Modal, Paper, TextField, Typography } from "@material-ui/core";
 import { CreateError } from "../../../../Error/ErrorActions";
 import { CreateNotification } from "../../../../Notification/NotificationActions";
-import { IProduct } from "../../../ProductTypes";
-import { ADD_TAG_TO_MULTIPLE_PRODUCTS, CREATE_TAG } from "../TagQueries/TagQueries";
-import { useStyles } from "../TagStyles/TagStyles";
-import { ISingleTag } from "../TagTypes";
 import { FIND_ALL_PRODUCTS } from "../../../ProductQueries";
+import { IProduct } from "../../../ProductTypes";
+import { ISingleTag } from "../TagTypes";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useStyles } from "../TagStyles/TagStyles";
+import GraphqlRequest from "../../../../../graphql/graphql-request";
 import TransferList from "./TranferList";
 
 const CreateTag: React.FC<{ fetchTags: () => Promise<void> }> = ({ fetchTags }) => {
@@ -43,20 +43,18 @@ const CreateTag: React.FC<{ fetchTags: () => Promise<void> }> = ({ fetchTags }) 
       setLoading(false);
       handleClose();
     } catch (error) {
-      console.log(error);
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
   };
 
   const addTagToProduct = async (createdTag: ISingleTag): Promise<void> => {
     try {
-      const response = await GraphqlRequest(auth.token).request(ADD_TAG_TO_MULTIPLE_PRODUCTS, {
+      await GraphqlRequest(auth.token).request(ADD_TAG_TO_MULTIPLE_PRODUCTS, {
         tagId: createdTag._id,
         products: transferListProducts
       });
-
-      console.log(response);
     } catch (error) {
-      console.log(error);
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
   };
 

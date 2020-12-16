@@ -31,6 +31,19 @@ export const EDIT_TAG = gql`
   }
 `;
 
+export const DELETE_TAG = gql`
+  mutation($tagId: ID) {
+    deleteTag(tagId: $tagId) {
+      updatedProduct {
+        _id
+      }
+      removedTag {
+        _id
+      }
+    }
+  }
+`;
+
 export const ADD_TAG_TO_MULTIPLE_PRODUCTS = gql`
   mutation($products: [TaggedProduct], $tagId: ID) {
     addTagToMultipleProducts(tagId: $tagId, products: $products) {

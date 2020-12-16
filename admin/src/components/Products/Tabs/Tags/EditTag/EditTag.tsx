@@ -34,7 +34,6 @@ const EditTag: React.FC<{ data: ISingleTag; fetchTags: () => Promise<void> }> = 
       setLoading(false);
       fetchTags();
       handleClose();
-      // i need to be able to add a tag to a product
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +42,7 @@ const EditTag: React.FC<{ data: ISingleTag; fetchTags: () => Promise<void> }> = 
   return (
     <>
       <Button size="small" variant="contained" color="primary" type="button" onClick={handleOpen}>
-        Edit Variant
+        Edit Tag
       </Button>
       <Modal
         aria-labelledby="transition-modal-createVariant"

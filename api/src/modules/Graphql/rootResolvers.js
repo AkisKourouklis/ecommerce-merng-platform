@@ -20,7 +20,7 @@ import {
 import {
   findAllTags,
   createTag,
-  removeTagFromProduct,
+  deleteTag,
   editTag,
   addTagToProduct,
   addTagToMultipleProducts
@@ -83,7 +83,7 @@ export default {
 
     //Tags
     createTag,
-    removeTagFromProduct,
+    deleteTag,
     editTag,
     addTagToProduct,
     addTagToMultipleProducts,

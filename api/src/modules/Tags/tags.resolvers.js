@@ -46,19 +46,20 @@ export const createTag = async (_, { name }, context) => {
   }
 };
 
-export const removeTagFromProduct = async (_, { tagInfo, ProductInput }, context) => {
+export const deleteTag = async (_, { tagId }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
-    const tagId = JSON.parse(JSON.stringify(tagInfo.id));
-    const productId = JSON.parse(JSON.stringify(ProductInput.id));
-    const updateProduct = await ProductModel.findByIdAndUpdate(
-      { _id: productId },
+    const foundProduct = await ProductModel.find().populate('tags', null, { _id: tagId });
+    const updatedProduct = await ProductModel.findByIdAndUpdate(
+      { _id: foundProduct[0]._id },
       { $pull: { tags: tagId } },
       { new: true }
-    );
-    return updateProduct;
+    ).populate(['variants', 'tags', 'images', 'taxClass']);
+    const removedTag = await TagModel.findByIdAndRemove({ _id: tagId }).populate('images');
+
+    return { updatedProduct, removedTag };
   } catch (error) {
-    return graphqlError(error);
+    graphqlError(error);
   }
 };
 
