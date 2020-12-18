@@ -11,28 +11,30 @@ import {
   Button,
   Card,
   CardContent,
-  CircularProgress,
   Container,
+  LinearProgress,
   Snackbar,
   TextField,
   Typography
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import { useHistory } from "react-router-dom";
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { auth, setAuth } = useContext(AuthContext);
   const { register, handleSubmit } = useForm();
   const classes = LoginStyles();
+  const history = useHistory();
 
   const clearError = (): void => {
     setAuth({ isAuthenticated: false, error: null, id: null, fullname: null, token: null });
   };
 
   const onSubmit = async (values: AuthLoginProps): Promise<void> => {
-    setLoading(false);
-    clearError();
     try {
+      clearError();
+      setLoading(true);
       const { email, password } = values;
 
       const response = await GraphqlRequest().request(AUTH_LOGIN, { email, password });
@@ -45,6 +47,8 @@ const Login: React.FC = () => {
         fullname: decoded.fullname,
         token: response.login.token
       });
+      setLoading(false);
+      history.push("/home");
     } catch (err) {
       setAuth({ isAuthenticated: false, error: err.response.errors[0].message, id: null, fullname: null, token: null });
     }
@@ -53,14 +57,17 @@ const Login: React.FC = () => {
   return (
     <>
       <Container className={classes.container} maxWidth="sm">
-        <Box className={classes.logo} textAlign="center">
-          <img alt="sovrakofanela.gr" src="logo.svg" width="200px" />
-        </Box>
-        <Card variant="outlined">
+        <Card className={classes.card} variant="elevation" elevation={5}>
+          {loading ? (
+            <div style={{ width: "100%" }}>
+              <LinearProgress color="primary" />
+            </div>
+          ) : null}
+
           <CardContent>
-            <Typography className={classes.formTitle} variant="h5">
-              Παρακαλώ συνδεθείτε
-            </Typography>
+            <Box className={classes.logo} textAlign="center">
+              <img alt="sovrakofanela.gr" src="logo.svg" width="200px" />
+            </Box>
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextField
                 name="email"
@@ -103,16 +110,15 @@ const Login: React.FC = () => {
                   <Typography variant="subtitle1">Ξέχασα τον κωδικό μου.</Typography>
                 </a>
               </Box>
-              <Button
-                startIcon={loading ? <CircularProgress color="inherit" size="20px" /> : null}
-                size="large"
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Σύνδεση
-              </Button>
+              {auth.isAuthenticated ? (
+                <Button size="large" type="submit" variant="outlined" color="secondary" fullWidth href="/home">
+                  Go to Admin
+                </Button>
+              ) : (
+                <Button size="large" type="submit" variant="contained" color="primary" fullWidth>
+                  Σύνδεση
+                </Button>
+              )}
             </form>
           </CardContent>
         </Card>

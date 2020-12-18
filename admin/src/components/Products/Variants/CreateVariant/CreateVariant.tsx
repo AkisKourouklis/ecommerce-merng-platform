@@ -9,8 +9,8 @@ import { AuthContext } from "../../../Authentication/AuthContext";
 import { CREATE_VARIANT } from "../VariantQueries/VariantsQuery";
 import { useDispatch } from "react-redux";
 import { CreateError } from "../../../Error/ErrorActions";
-import { FIND_ALL_PRODUCTS } from "../../ProductQueries";
-import { IProduct } from "../../ProductTypes";
+import { FIND_ALL_PRODUCTS } from "../../Products/ProductsQueries/ProductQueries";
+import { IProduct } from "../../Products/ProductTypes";
 import CreateVariantInputFields from "./CreateVariantInputFields";
 import { CreateNotification } from "../../../Notification/NotificationActions";
 

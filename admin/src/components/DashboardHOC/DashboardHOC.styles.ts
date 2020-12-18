@@ -79,5 +79,11 @@ export default makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(4)
+  },
+  avatar: {
+    marginLeft: "auto"
+  },
+  breadcrump: {
+    marginBottom: theme.spacing(1)
   }
 }));

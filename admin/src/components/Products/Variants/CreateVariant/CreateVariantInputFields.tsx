@@ -2,7 +2,7 @@ import React from "react";
 import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button, Typography } from "@material-ui/core";
 import { Autocomplete, Skeleton } from "@material-ui/lab";
 import { VariantFormData } from "../VariantTypes";
-import { IProduct } from "../../ProductTypes";
+import { IProduct } from "../../Products/ProductTypes";
 import { useForm } from "react-hook-form";
 import { useStyles } from "../VariantStyles/VariantStyles";
 
