@@ -1,34 +1,41 @@
 import React from "react";
 import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button, Typography } from "@material-ui/core";
 import { Autocomplete, Skeleton } from "@material-ui/lab";
-import { VariantFormData } from "../VariantTypes";
-import { IProduct } from "../../Products/ProductTypes";
+import { IProduct } from "../../../../types/products";
 import { useForm } from "react-hook-form";
 import { useStyles } from "../VariantStyles/VariantStyles";
+import { IFormVariant } from "../../../../types/variants";
 
 const CreateVariantInputFields: React.FC<{
-  onSubmit: ({
-    color,
-    size,
-    sku,
-    barcode,
-    price,
-    comparePrice,
-    costPrice,
-    quantity,
-    material,
-    productId
-  }: VariantFormData) => Promise<void>;
+  onSubmit: (value: IFormVariant) => Promise<void>;
   loading: boolean;
   products: IProduct[];
   loadingFileUpload: boolean;
-}> = ({ loading, onSubmit, products, loadingFileUpload }) => {
-  const { register, handleSubmit } = useForm<VariantFormData>();
+  canAddProduct: boolean;
+}> = ({ loading, onSubmit, products, loadingFileUpload, canAddProduct }) => {
+  const { register, handleSubmit } = useForm<IFormVariant>();
   const classes = useStyles();
+
+  const submitValues = (values: IFormVariant) => {
+    const { barcode, color, comparePrice, costPrice, material, price, quantity, size, sku, images, productId } = values;
+    onSubmit({
+      barcode,
+      color,
+      comparePrice: Number(comparePrice),
+      costPrice: Number(costPrice),
+      price: Number(price),
+      material,
+      productId,
+      images,
+      sku,
+      size,
+      quantity: Number(quantity)
+    });
+  };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(submitValues)}>
         <FormGroup>
           <Grid container direction="row" spacing={1}>
             <Grid item xs={6}>
@@ -97,7 +104,7 @@ const CreateVariantInputFields: React.FC<{
                 className={classes.input}
                 inputRef={register}
                 id="outlined-quantity"
-                type="number"
+                type="Number"
                 name="quantity"
                 label="quantity"
                 variant="outlined"
@@ -152,32 +159,34 @@ const CreateVariantInputFields: React.FC<{
               />
             </Grid>
             <Grid item xs={12}>
-              {loading ? (
-                <Skeleton className={classes.input} height={56} variant="rect" />
-              ) : (
-                <Autocomplete
-                  options={products}
-                  renderInput={(params) => (
-                    <TextField
-                      className={classes.input}
-                      inputRef={register}
-                      required
-                      label="Select Product"
-                      variant="outlined"
-                      name="productId"
-                      {...params}
-                    />
-                  )}
-                  getOptionLabel={(option) => option._id}
-                  renderOption={(product) => {
-                    return (
-                      <Typography noWrap>
-                        sku: {product.sku} | {product.name}
-                      </Typography>
-                    );
-                  }}
-                />
-              )}
+              {canAddProduct ? (
+                loading ? (
+                  <Skeleton className={classes.input} height={56} variant="rect" />
+                ) : (
+                  <Autocomplete
+                    options={products}
+                    renderInput={(params) => (
+                      <TextField
+                        className={classes.input}
+                        inputRef={register}
+                        required
+                        label="Select Product"
+                        variant="outlined"
+                        name="productId"
+                        {...params}
+                      />
+                    )}
+                    getOptionLabel={(option) => option._id}
+                    renderOption={(product) => {
+                      return (
+                        <Typography noWrap>
+                          sku: {product.sku} | {product.name}
+                        </Typography>
+                      );
+                    }}
+                  />
+                )
+              ) : null}
             </Grid>
           </Grid>
         </FormGroup>

@@ -8,7 +8,6 @@ const productSchema = new mongoose.Schema(
     barcode: String,
     isActive: Boolean,
     quantity: Number,
-    availability: String,
     tax: Number,
     images: [{ type: Schema.Types.ObjectId, ref: 'Image' }],
     variants: [{ type: Schema.Types.ObjectId, ref: 'Variant' }],
@@ -19,13 +18,7 @@ const productSchema = new mongoose.Schema(
     },
     seo: {
       name: String,
-      keywords: [
-        {
-          name: String
-        }
-      ],
-      description: String,
-      image: String
+      description: String
     }
   },
   { timestamps: true }

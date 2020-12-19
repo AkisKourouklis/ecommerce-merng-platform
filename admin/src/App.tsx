@@ -1,7 +1,7 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { AUTH_CHECK } from "./components/Authentication/AuthQuery";
 import { AuthContext } from "./components/Authentication/AuthContext";
-import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import GraphqlRequest from "./graphql/graphql-request";
 import LoadingPage from "./components/Loading/LoadingPage";
 import Login from "./components/Authentication/Login";
@@ -15,7 +15,6 @@ const ProductsVariants = lazy(() => import("./components/Products/Variants/Varia
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const history = useHistory();
   const [auth, setAuth] = usePersistedState("auth", {
     isAuthenticated: false,
     error: null,

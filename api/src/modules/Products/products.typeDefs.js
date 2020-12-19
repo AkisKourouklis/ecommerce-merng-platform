@@ -7,7 +7,7 @@ export default gql`
     description: String
     sku: String
     barcode: String
-    availability: String
+    availability: Boolean
     isActive: Boolean
     quantity: Int
     tax: Int
@@ -43,8 +43,6 @@ export default gql`
   type ProductSeo {
     name: String
     description: String
-    keywords: [ProductSeoKeywords]
-    image: String
   }
 
   type ProductSeoKeywords {
@@ -100,8 +98,6 @@ export default gql`
   input ProductSeoInput {
     name: String
     description: String
-    keywords: [ProductSeoKeywordsInput]
-    image: String
   }
 
   input ProductSeoKeywordsInput {

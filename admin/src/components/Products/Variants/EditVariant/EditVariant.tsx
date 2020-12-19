@@ -8,13 +8,14 @@ import { Modal, Backdrop, Fade, Button, Paper, Grid, Typography } from "@materia
 import { REMOVE_IMAGE_FROM_VARIANT } from "../VariantQueries/VariantsQuery";
 import { useDispatch } from "react-redux";
 import { useStyles } from "../VariantStyles/VariantStyles";
-import { VariantFormData, ISingleImage, VariantMapedData, IEditVariant } from "../VariantTypes";
+import { IVariant, IFormVariant, IEditVariant } from "../../../../types/variants";
+import { IImage } from "../../../../types/images";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditVariantInputFields from "./EditVariantInputFields";
 import FileUpload from "../../../FileUpload/FileUpload";
 import GraphqlRequest from "../../../../graphql/graphql-request";
 
-const EditVariant: React.FC<{ variant: VariantMapedData | null; fetchVariant: () => Promise<void> }> = ({
+const EditVariant: React.FC<{ variant: IVariant | null; fetchVariant: () => Promise<void> }> = ({
   variant,
   fetchVariant
 }) => {
@@ -43,7 +44,7 @@ const EditVariant: React.FC<{ variant: VariantMapedData | null; fetchVariant: ()
     costPrice,
     quantity,
     material
-  }: VariantFormData): Promise<void> => {
+  }: IFormVariant): Promise<void> => {
     try {
       if (images.length > 0) {
         await addImageToVariant();
@@ -68,19 +69,19 @@ const EditVariant: React.FC<{ variant: VariantMapedData | null; fetchVariant: ()
     }
   };
 
-  const updateVariant = async (inputVariant: VariantFormData): Promise<IEditVariant | undefined> => {
+  const updateVariant = async (inputVariant: IFormVariant): Promise<IEditVariant | undefined> => {
     try {
       const price = {
-        price: parseInt(inputVariant.price),
-        comparePrice: parseInt(inputVariant.comparePrice),
-        costPrice: parseInt(inputVariant.costPrice)
+        price: inputVariant.price,
+        comparePrice: inputVariant.comparePrice,
+        costPrice: inputVariant.costPrice
       };
       return await GraphqlRequest(auth.token).request(UPDATE_VARIANT, {
         size: inputVariant.size,
         color: inputVariant.color,
         material: inputVariant.material,
         price,
-        quantity: parseInt(inputVariant.quantity),
+        quantity: Number(inputVariant.quantity),
         sku: inputVariant.sku,
         barcode: inputVariant.barcode,
         variantId: variant?._id
@@ -90,7 +91,7 @@ const EditVariant: React.FC<{ variant: VariantMapedData | null; fetchVariant: ()
     }
   };
 
-  const addImageToVariant = async (): Promise<ISingleImage[] | undefined> => {
+  const addImageToVariant = async (): Promise<IImage[] | undefined> => {
     try {
       setLoadingFileUpload(true);
       const response = await GraphqlRequest(auth.token).request(ADD_IMAGE_TO_VARIANT, {
@@ -149,7 +150,7 @@ const EditVariant: React.FC<{ variant: VariantMapedData | null; fetchVariant: ()
               <Grid item xs={12}>
                 <Paper className={classes.innerPaper} variant="outlined">
                   <Grid container direction="row" spacing={1}>
-                    {variant?.images.map((image) => {
+                    {variant?.images?.map((image) => {
                       return (
                         <Grid key={image._id} item xs={6} md={3}>
                           <img alt={image.alt} src={`${apiUrl.staticUri}${image.path}`} width="100%" />

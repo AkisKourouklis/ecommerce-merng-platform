@@ -5,7 +5,7 @@ import { Backdrop, Button, CircularProgress, Fade, Grid, Modal, Paper, TextField
 import { CreateError } from "../../../Error/ErrorActions";
 import { CreateNotification } from "../../../Notification/NotificationActions";
 import { FIND_ALL_PRODUCTS } from "../../Products/ProductsQueries/ProductQueries";
-import { IProduct } from "../../Products/ProductTypes";
+import { IProduct } from "../../../../types/products";
 import { ISingleTag } from "../TagTypes";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";

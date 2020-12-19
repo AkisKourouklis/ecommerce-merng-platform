@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Paper, Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { useStyles } from "../VariantStyles/VariantStyles";
-import { VariantMapedData } from "../VariantTypes";
+import { IVariant } from "../../../../types/variants";
 import { apiUrl } from "../../../../config/vars";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GraphqlRequest from "../../../../graphql/graphql-request";
@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { CreateError } from "../../../Error/ErrorActions";
 import { CreateNotification } from "../../../Notification/NotificationActions";
 
-const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean; fetchVariants: () => Promise<void> }> = ({
+const SingleVariant: React.FC<{ data: IVariant; showImages: boolean; fetchVariants: () => Promise<void> }> = ({
   data,
   showImages,
   fetchVariants
@@ -21,7 +21,7 @@ const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean; fet
   const classes = useStyles();
   const dispatch = useDispatch();
   const { auth } = useContext(AuthContext);
-  const [variant, setVariant] = useState<VariantMapedData | null>(null);
+  const [variant, setVariant] = useState<IVariant | null>(null);
   const [canDelete, setCanDelete] = useState<boolean>(false);
 
   const fetchVariant = async (): Promise<void> => {
@@ -109,7 +109,7 @@ const SingleVariant: React.FC<{ data: VariantMapedData; showImages: boolean; fet
               <Grid item xs={12}>
                 <Paper className={classes.innerPaper} variant="outlined">
                   <Grid container direction="row" spacing={1}>
-                    {data?.images.map((image) => {
+                    {data?.images?.map((image) => {
                       return (
                         <Grid key={image._id} item xs={6} md={4}>
                           <img alt={image.alt} src={`${apiUrl.staticUri}${image.path}`} width="100%" />

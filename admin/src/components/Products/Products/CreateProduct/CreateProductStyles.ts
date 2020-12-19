@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
     }
   },
   title: {
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(5)
   },
   quill: {
     borderRadius: theme.shape.borderRadius,

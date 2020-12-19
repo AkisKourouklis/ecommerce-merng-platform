@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextField,
   Paper,
@@ -10,37 +10,121 @@ import {
   FormControlLabel,
   Switch,
   Select,
-  Input,
   MenuItem,
   Chip,
   FormControl,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
   IconButton
 } from "@material-ui/core";
-import InfoRounded from "@material-ui/icons/InfoRounded";
-import Delete from "@material-ui/icons/Delete";
-import DashboardHOC from "../../../DashboardHOC/DashboardHOC";
-import useStyles from "./CreateProductStyles";
-import ReactQuill from "react-quill";
-import FileUpload from "../../../FileUpload/FileUpload";
 import "react-quill/dist/quill.snow.css";
+import { AuthContext } from "../../../Authentication/AuthContext";
+import { ICreateProduct } from "../../../../types/products";
+import { IImage } from "../../../../types/images";
+import { IVariant } from "../../../../types/variants";
+import { UPLOAD_IMAGE } from "../../../FileUpload/FileUploadQueries";
+import { useForm } from "react-hook-form";
+import { CREATE_VARIANT } from "../../Variants/VariantQueries/VariantsQuery";
+import DashboardHOC from "../../../DashboardHOC/DashboardHOC";
+import FileUpload from "../../../FileUpload/FileUpload";
+import GraphqlRequest from "../../../../graphql/graphql-request";
+import InfoRounded from "@material-ui/icons/InfoRounded";
+import CreateVariant from "../../Variants/CreateVariant/CreateVariant";
+import ReactQuill from "react-quill";
+import useStyles from "./CreateProductStyles";
+import { Delete } from "@material-ui/icons";
 
 const CreateProduct: React.FC = () => {
   const classes = useStyles();
-  const [description, setDescription] = useState<string>("");
   const [images, setImages] = useState<File[] | []>([]);
+  const [variantArray, setVariantArray] = useState<IVariant[]>([]);
+  const [, setState] = useState<unknown>();
+  const { register, handleSubmit } = useForm();
+  const { auth } = useContext(AuthContext);
 
   const handleImages = (files: File[]) => {
     setImages(files);
   };
 
-  console.log(images);
+  const onSubmit = async (values: ICreateProduct) => {
+    try {
+      console.log(values);
+    } catch (error) {
+      //images, tags, variants should be an array of objects [{_id: ""}]
+      //1) i need to save the new images.
+      await saveImages();
+      //2) i need to save the new variants.
+      await saveVariants();
+      //3) i need to save the new tags.
+      //4) i need to save the new product with the image, tags & variants array of objects.
+
+      console.log(error);
+    }
+  };
+
+  const saveImages = async (): Promise<IImage[] | undefined> => {
+    try {
+      const response = await GraphqlRequest(auth.token).request(UPLOAD_IMAGE, { files: images });
+      return response.uploadImage;
+    } catch (error) {
+      // dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
+      console.log(error);
+    }
+  };
+
+  const pushToVariantArray = ({ barcode, color, material, price, quantity, size, sku }: IVariant): void => {
+    setVariantArray((prevArray: IVariant[]) => [
+      ...prevArray,
+      { barcode, color, material, price, quantity, size, sku }
+    ]);
+  };
+
+  const removeItemFromVariantArr = (index: number) => {
+    const newArr = variantArray;
+    newArr.splice(index, 1);
+    setVariantArray(newArr);
+    setState({});
+  };
+
+  const saveVariants = async () => {
+    try {
+      variantArray.map(async (data) => {
+        await GraphqlRequest(auth.token).request(CREATE_VARIANT, {
+          size: data.size,
+          color: data.color,
+          material: data.material,
+          price: data.price,
+          quantity: data.quantity,
+          sku: data.sku,
+          barcode: data.barcode,
+          images: data.images
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <DashboardHOC>
-      <Typography variant="h5" className={classes.title}>
-        Δημιουργία προιόντος
-      </Typography>
-      <form>
+      <Grid container direction="row" justify="space-between">
+        <Grid item>
+          <Typography variant="h5" className={classes.title}>
+            Δημιουργία προιόντος
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button form="create-product-form" type="submit" variant="contained" color="primary">
+            Αποθήκευση προιόντος
+          </Button>
+        </Grid>
+      </Grid>
+
+      <form onSubmit={handleSubmit(onSubmit)} id="create-product-form">
         <Grid container direction="row" spacing={1}>
           <Grid item xs={12} md={8}>
             {/* information */}
@@ -49,17 +133,18 @@ const CreateProduct: React.FC = () => {
               <Grid container direction="row" spacing={1}>
                 <Grid item xs={12}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="text"
-                    name="title"
-                    label="Τίτλος"
+                    name="name"
+                    label="Όνομα"
                     variant="outlined"
                     fullWidth
                     required
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <Tooltip title="Διάλεξε έναν τίτλο με βάση τα keywords από το προιόν" placement="top">
+                          <Tooltip title="Διάλεξε ένα όνομα με βάση τα keywords από το προιόν" placement="top">
                             <InfoRounded color="action" />
                           </Tooltip>
                         </InputAdornment>
@@ -68,13 +153,7 @@ const CreateProduct: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <ReactQuill
-                    className={classes.quill}
-                    placeholder="Description"
-                    theme="snow"
-                    value={description}
-                    onChange={setDescription}
-                  />
+                  <ReactQuill ref={register} className={classes.quill} placeholder="Περιγραφή" theme="snow" />
                 </Grid>
               </Grid>
             </Paper>
@@ -89,6 +168,7 @@ const CreateProduct: React.FC = () => {
               <Grid container direction="row" spacing={1}>
                 <Grid item xs={6}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="number"
                     name="price"
@@ -102,6 +182,7 @@ const CreateProduct: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="number"
                     name="comparePrice"
@@ -115,6 +196,7 @@ const CreateProduct: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="number"
                     name="costPrice"
@@ -128,6 +210,7 @@ const CreateProduct: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="number"
                     name="tax"
@@ -148,6 +231,7 @@ const CreateProduct: React.FC = () => {
               <Grid container direction="row" spacing={1}>
                 <Grid item xs={6}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="number"
                     name="quantity"
@@ -158,6 +242,7 @@ const CreateProduct: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="text"
                     name="vendor"
@@ -168,6 +253,7 @@ const CreateProduct: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="text"
                     name="barcode"
@@ -191,6 +277,7 @@ const CreateProduct: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    inputRef={register}
                     className={classes.input}
                     type="text"
                     name="sku"
@@ -221,11 +308,51 @@ const CreateProduct: React.FC = () => {
                   <Typography className={classes.title}>Παραλαγές</Typography>
                 </Grid>
                 <Grid item style={{ marginLeft: "auto" }}>
-                  <Typography className={classes.title}>
-                    <Button variant="contained" color="primary" size="small">
-                      Δημιουργία Παραλαγής
-                    </Button>
-                  </Typography>
+                  <CreateVariant canAddProduct={false} pushToVariantArray={pushToVariantArray} />
+                </Grid>
+                <Grid item xs={12}>
+                  <TableContainer component={Paper}>
+                    <Table aria-label="variants-label">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="left">Barcode</TableCell>
+                          <TableCell align="left">Κωιδικός</TableCell>
+                          <TableCell align="left">Χρώμα</TableCell>
+                          <TableCell align="left">Υλικό</TableCell>
+                          <TableCell align="left">Μέγεθος</TableCell>
+                          <TableCell align="left">Ποσότητα</TableCell>
+                          <TableCell align="left">Τιμή Έκπτωση</TableCell>
+                          <TableCell align="left">Τιμή</TableCell>
+                          <TableCell align="left">Τιμή Αγοράς </TableCell>
+                          <TableCell align="left">Διαγραφή</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {variantArray.map((data, i) => {
+                          return (
+                            <TableRow key={i}>
+                              <TableCell component="th" scope="row">
+                                {data.barcode}
+                              </TableCell>
+                              <TableCell align="left">{data.sku}</TableCell>
+                              <TableCell align="left">{data.color}</TableCell>
+                              <TableCell align="left">{data.material}</TableCell>
+                              <TableCell align="left">{data.size}</TableCell>
+                              <TableCell align="left">{data.quantity}</TableCell>
+                              <TableCell align="left">{data.price.price}€</TableCell>
+                              <TableCell align="left">{data.price.comparePrice}€</TableCell>
+                              <TableCell align="left">{data.price.costPrice}€</TableCell>
+                              <TableCell align="center">
+                                <IconButton onClick={() => removeItemFromVariantArr(i)}>
+                                  <Delete color="error" />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </Grid>
               </Grid>
             </Paper>
@@ -233,14 +360,16 @@ const CreateProduct: React.FC = () => {
           <Grid item xs={12} md={4}>
             <Paper variant="outlined" className={classes.paper}>
               <FormControlLabel
-                control={<Switch checked={false} name="fetch-images-toggle" color="primary" />}
+                control={<Switch checked={false} name="isActive" color="primary" />}
                 label="Διαθέσιμο στην ιστοσελίδα"
+                inputRef={register}
               />
             </Paper>
             <Paper variant="outlined" className={classes.paper}>
               <Typography className={classes.title}>Ετικέτες</Typography>
               <FormControl variant="outlined" className={classes.input}>
                 <Select
+                  inputRef={register}
                   multiple
                   value={["test", "test2"]}
                   renderValue={() => {
@@ -255,6 +384,55 @@ const CreateProduct: React.FC = () => {
                   <MenuItem value="test2">test2</MenuItem>
                 </Select>
               </FormControl>
+            </Paper>
+            <Paper variant="outlined" className={classes.paper}>
+              <Typography className={classes.title}>Μηχανές αναζήτησης</Typography>
+              <TextField
+                inputRef={register}
+                className={classes.input}
+                type="text"
+                name="seoName"
+                label="Τίτλος"
+                variant="outlined"
+                fullWidth
+                required
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Tooltip
+                        title="Για καλύτερα αποτελέσματα, ο τίτλος μηχανής, θα πρέπει να περιέχει τον τίτλο προιόντος."
+                        placement="top"
+                      >
+                        <InfoRounded color="action" />
+                      </Tooltip>
+                    </InputAdornment>
+                  )
+                }}
+              />
+              <TextField
+                inputRef={register}
+                className={classes.input}
+                type="text"
+                multiline
+                name="seoDescription"
+                label="Περιγραφή"
+                variant="outlined"
+                fullWidth
+                required
+                rowsMax={5}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Tooltip
+                        title="Για καλύτερα αποτελέσματα, η περιγραφή μηχανής, θα πρέπει να περιέχει την περιγραφή προιόντος."
+                        placement="top"
+                      >
+                        <InfoRounded color="action" />
+                      </Tooltip>
+                    </InputAdornment>
+                  )
+                }}
+              />
             </Paper>
           </Grid>
         </Grid>

@@ -2,7 +2,7 @@ import { Box, Button, FormControlLabel, Grid, LinearProgress, Switch, TextField,
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import DashboardHOC from "../../DashboardHOC/DashboardHOC";
-import { IProduct } from "./ProductTypes";
+import { IProduct } from "../../../types/products";
 
 const Products: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);

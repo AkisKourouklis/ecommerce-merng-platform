@@ -1,8 +1,8 @@
 import React from "react";
-import { IEditVariant, VariantFormData, VariantMapedData } from "../VariantTypes";
 import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import { useStyles } from "../VariantStyles/VariantStyles";
+import { IFormVariant, IVariant, IEditVariant } from "../../../../types/variants";
 
 const EditVariantInputFields: React.FC<{
   onSubmit: ({
@@ -15,16 +15,33 @@ const EditVariantInputFields: React.FC<{
     costPrice,
     quantity,
     material
-  }: VariantFormData) => Promise<void>;
+  }: IFormVariant) => Promise<void>;
   loadingFileUpload: boolean;
-  variant: VariantMapedData | null;
+  variant: IVariant | null;
 }> = ({ onSubmit, loadingFileUpload, variant }) => {
   const { register, handleSubmit } = useForm<IEditVariant>();
   const classes = useStyles();
 
+  const submitValues = (values: IFormVariant) => {
+    const { barcode, color, comparePrice, costPrice, material, price, quantity, size, sku, images, productId } = values;
+    onSubmit({
+      barcode,
+      color,
+      comparePrice: Number(comparePrice),
+      costPrice: Number(costPrice),
+      price: Number(price),
+      material,
+      productId,
+      images,
+      sku,
+      size,
+      quantity: Number(quantity)
+    });
+  };
+
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(submitValues)}>
         <FormGroup>
           <Grid container direction="row" spacing={1}>
             <Grid item xs={6}>

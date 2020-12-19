@@ -68,7 +68,9 @@ export const createVariant = async (_, { variantInput }, context) => {
         material
       });
       await newVariant.save().then((data) => {
-        ProductModel.findByIdAndUpdate({ _id: productId }, { $push: { variants: data._id } }, { new: true });
+        if (productId) {
+          ProductModel.findByIdAndUpdate({ _id: productId }, { $push: { variants: data._id } }, { new: true });
+        }
       });
       return newVariant;
     }

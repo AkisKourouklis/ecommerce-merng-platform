@@ -1,20 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Backdrop, Fade, Button, Paper, Grid, Typography } from "@material-ui/core";
-import { useStyles } from "../VariantStyles/VariantStyles";
-import FileUpload from "../../../FileUpload/FileUpload";
-import { VariantFormData, ISingleImage } from "../VariantTypes";
-import GraphqlRequest from "../../../../graphql/graphql-request";
-import { UPLOAD_IMAGE } from "../../../FileUpload/FileUploadQueries";
 import { AuthContext } from "../../../Authentication/AuthContext";
 import { CREATE_VARIANT } from "../VariantQueries/VariantsQuery";
-import { useDispatch } from "react-redux";
 import { CreateError } from "../../../Error/ErrorActions";
-import { FIND_ALL_PRODUCTS } from "../../Products/ProductsQueries/ProductQueries";
-import { IProduct } from "../../Products/ProductTypes";
-import CreateVariantInputFields from "./CreateVariantInputFields";
 import { CreateNotification } from "../../../Notification/NotificationActions";
+import { FIND_ALL_PRODUCTS } from "../../Products/ProductsQueries/ProductQueries";
+import { IProduct } from "../../../../types/products";
+import { Modal, Backdrop, Fade, Button, Paper, Grid, Typography } from "@material-ui/core";
+import { UPLOAD_IMAGE } from "../../../FileUpload/FileUploadQueries";
+import { useDispatch } from "react-redux";
+import { useStyles } from "../VariantStyles/VariantStyles";
+import CreateVariantInputFields from "./CreateVariantInputFields";
+import FileUpload from "../../../FileUpload/FileUpload";
+import GraphqlRequest from "../../../../graphql/graphql-request";
+import { IVariant, IFormVariant } from "../../../../types/variants";
+import { IImage } from "../../../../types/images";
 
-const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetchVariants }) => {
+const CreateVariant: React.FC<{
+  fetchVariants?: () => Promise<void>;
+  canAddProduct: boolean;
+  pushToVariantArray?: (values: IVariant) => void;
+}> = ({ fetchVariants, canAddProduct, pushToVariantArray }) => {
   const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   const [images, setImages] = useState<File[] | []>([]);
@@ -43,44 +48,73 @@ const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetch
     quantity,
     material,
     productId
-  }: VariantFormData): Promise<void> => {
+  }: IFormVariant): Promise<void> => {
     try {
-      const uploadedImages = await uploadFiles();
-      await createNewVariant({
-        color,
-        size,
-        sku,
-        barcode,
-        price,
-        comparePrice,
-        costPrice,
-        quantity,
-        material,
-        images: uploadedImages,
-        productId
-      });
-      setLoadingFileUpload(false);
-      fetchVariants();
-      setOpen(false);
-      dispatch(CreateNotification({ notification: "New variant created successfully!", notificationType: "success" }));
+      if (canAddProduct) {
+        const uploadedImages = await uploadFiles();
+        await createNewVariant({
+          color,
+          size,
+          sku,
+          barcode,
+          price,
+          comparePrice,
+          costPrice,
+          quantity,
+          material,
+          images: uploadedImages,
+          productId
+        });
+        setLoadingFileUpload(false);
+        if (fetchVariants) {
+          fetchVariants();
+        }
+        setOpen(false);
+        dispatch(CreateNotification({ notification: "Η νέα παραλαγή δημιουργήθηκε! ", notificationType: "success" }));
+      } else {
+        if (pushToVariantArray) {
+          const uploadedImages = await uploadFiles();
+          const priceObj = {
+            price: price,
+            costPrice: costPrice,
+            comparePrice: comparePrice
+          };
+          pushToVariantArray({
+            color,
+            size,
+            sku,
+            barcode,
+            price: priceObj,
+            quantity: quantity,
+            material,
+            images: uploadedImages
+          });
+        }
+
+        setLoadingFileUpload(false);
+        setOpen(false);
+        dispatch(
+          CreateNotification({ notification: "New variant created successfully!", notificationType: "success" })
+        );
+      }
     } catch (error) {
       dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
   };
 
-  const createNewVariant = async (variant: VariantFormData): Promise<VariantFormData | undefined> => {
+  const createNewVariant = async (variant: IFormVariant): Promise<IFormVariant | undefined> => {
     try {
       const price = {
-        price: parseInt(variant.price),
-        comparePrice: parseInt(variant.comparePrice),
-        costPrice: parseInt(variant.costPrice)
+        price: variant.price,
+        comparePrice: variant.comparePrice,
+        costPrice: variant.costPrice
       };
       return await GraphqlRequest(auth.token).request(CREATE_VARIANT, {
         size: variant.size,
         color: variant.color,
         material: variant.material,
         price,
-        quantity: parseInt(variant.quantity),
+        quantity: variant.quantity,
         sku: variant.sku,
         barcode: variant.barcode,
         images: variant.images,
@@ -91,7 +125,7 @@ const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetch
     }
   };
 
-  const uploadFiles = async (): Promise<ISingleImage[] | undefined> => {
+  const uploadFiles = async (): Promise<IImage[] | undefined> => {
     try {
       setLoadingFileUpload(true);
       const response = await GraphqlRequest(auth.token).request(UPLOAD_IMAGE, { files: images });
@@ -118,13 +152,15 @@ const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetch
   };
 
   useEffect(() => {
-    fetchProducts();
+    if (canAddProduct) {
+      fetchProducts();
+    }
   }, []);
 
   return (
     <div>
       <Button variant="contained" color="primary" type="button" onClick={handleOpen}>
-        Create Variant
+        Δημιουργία παραλαγής
       </Button>
       <Modal
         aria-labelledby="transition-modal-createVariant"
@@ -150,6 +186,7 @@ const CreateVariant: React.FC<{ fetchVariants: () => Promise<void> }> = ({ fetch
               <Grid item xs={12}>
                 <Typography variant="overline">Images</Typography>
                 <CreateVariantInputFields
+                  canAddProduct={canAddProduct}
                   loading={loading}
                   onSubmit={onSubmit}
                   products={products}

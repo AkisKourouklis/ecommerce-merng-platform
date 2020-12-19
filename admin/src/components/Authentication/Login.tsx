@@ -19,6 +19,8 @@ import {
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { CreateError } from "../Error/ErrorActions";
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,6 +28,7 @@ const Login: React.FC = () => {
   const { register, handleSubmit } = useForm();
   const classes = LoginStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const clearError = (): void => {
     setAuth({ isAuthenticated: false, error: null, id: null, fullname: null, token: null });
@@ -51,6 +54,8 @@ const Login: React.FC = () => {
       history.push("/home");
     } catch (err) {
       setAuth({ isAuthenticated: false, error: err.response.errors[0].message, id: null, fullname: null, token: null });
+      dispatch(CreateError({ errors: err.response.errors[0].message, token: auth.token || "Bearer " }));
+      setLoading(false);
     }
   };
 
