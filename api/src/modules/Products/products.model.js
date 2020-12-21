@@ -14,6 +14,7 @@ const productSchema = new mongoose.Schema(
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
     price: {
       comparePrice: Number,
+      costPrice: Number,
       price: Number
     },
     seo: {

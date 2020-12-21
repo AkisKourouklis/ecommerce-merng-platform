@@ -55,6 +55,7 @@ export default gql`
 
   extend type Mutation {
     createVariant(variantInput: CreateVariant): Variant!
+    createMultipleVariants(variantInput: [CreateVariant]): [Variant]!
     updateVariant(variantInput: UpdateVariant): Variant!
     deleteVariant(variantId: ID): DeleteVariantResults!
     removeImageFromVariant(imageId: String, variantId: String): Variant!

@@ -43,7 +43,7 @@ const Tags: React.FC = () => {
       ) : null}
       <Grid container direction="row" spacing={2}>
         <Grid item xs={6}>
-          <Typography variant="h5">Tags</Typography>
+          <Typography variant="h5">Ετικέτες</Typography>
         </Grid>
         <Grid item xs={6}>
           <Box textAlign="end">

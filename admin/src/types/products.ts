@@ -8,7 +8,7 @@ export interface IProduct {
 }
 
 export interface ICreateProduct {
-  title: string;
+  name: string;
   description: string;
   sku: string;
   barcode: string;
@@ -18,12 +18,9 @@ export interface ICreateProduct {
   images: IImage[];
   variants: { _id: string }[];
   tags: { _id: string }[];
-  price: {
-    comparePrice: number;
-    price: number;
-  };
-  seo: {
-    name: string;
-    description: string;
-  };
+  comparePrice: number;
+  costPrice: number;
+  price: number;
+  seoName: string;
+  seoDescription: string;
 }

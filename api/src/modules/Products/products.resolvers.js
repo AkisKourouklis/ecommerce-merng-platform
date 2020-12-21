@@ -71,7 +71,7 @@ export const createProduct = async (_, { productInput }, context) => {
     const insertTags = tags?.map((i) => i._id);
     const insertVariants = variants?.map((i) => i._id);
 
-    const newProduct = new Product({
+    const newProduct = new ProductModel({
       name,
       description,
       sku,
@@ -86,7 +86,7 @@ export const createProduct = async (_, { productInput }, context) => {
       seo
     });
 
-    await newProductModel.save();
+    await newProduct.save();
 
     return newProduct;
   } catch (error) {

@@ -23,6 +23,7 @@
     "react/prop-types": ["off"],
     "sonarjs/cognitive-complexity": ["warn", 10],
     "sonarjs/no-small-switch": ["warn", 2],
-    "max-lines-per-function": ["off"]
+    "max-lines-per-function": ["off"],
+    "react/display-name": ["off"]
   }
 }

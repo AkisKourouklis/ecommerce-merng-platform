@@ -48,6 +48,42 @@ export const findVariantById = async (_, { variantId }, context) => {
   }
 };
 
+export const createMultipleVariants = async (_, { variantInput }, context) => {
+  await jwtAuthentication.verifyTokenMiddleware(context);
+  try {
+    const newVariants = await variantInput.map(async (data) => {
+      const { color, size, price, material, quantity, sku, barcode, images, productId } = data;
+      const duplicateVariant = await VariantModel.findOne({ sku: sku });
+
+      if (duplicateVariant) {
+        return graphqlError('Variant with that sku already exists');
+      } else {
+        const newVariant = new VariantModel({
+          color,
+          size,
+          price,
+          quantity,
+          sku,
+          barcode,
+          images,
+          material
+        });
+
+        await newVariant.save().then((data) => {
+          if (productId) {
+            ProductModel.findByIdAndUpdate({ _id: productId }, { $push: { variants: data._id } }, { new: true });
+          }
+        });
+        return newVariant;
+      }
+    });
+
+    return newVariants;
+  } catch (error) {
+    return graphqlError(error);
+  }
+};
+
 export const createVariant = async (_, { variantInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {

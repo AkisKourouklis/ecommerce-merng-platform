@@ -75,6 +75,31 @@ export const CREATE_VARIANT = gql`
   }
 `;
 
+export const CREATE_MULTIPLE_VARIANTS = gql`
+  mutation($variants: [CreateVariant]) {
+    createMultipleVariants(variantInput: $variants) {
+      _id
+      size
+      color
+      material
+      price {
+        comparePrice
+        price
+        costPrice
+      }
+      quantity
+      sku
+      barcode
+      images {
+        _id
+        alt
+        path
+        size
+      }
+    }
+  }
+`;
+
 export const REMOVE_IMAGE_FROM_VARIANT = gql`
   mutation($imageId: String, $variantId: String) {
     removeImageFromVariant(imageId: $imageId, variantId: $variantId) {

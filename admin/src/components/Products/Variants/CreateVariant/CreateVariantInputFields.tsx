@@ -35,7 +35,7 @@ const CreateVariantInputFields: React.FC<{
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitValues)}>
+      <form onSubmit={handleSubmit(submitValues)} id="create-variant-form">
         <FormGroup>
           <Grid container direction="row" spacing={1}>
             <Grid item xs={6}>
@@ -197,6 +197,7 @@ const CreateVariantInputFields: React.FC<{
           color="primary"
           variant="contained"
           fullWidth
+          form="create-variant-form"
         >
           Save Variant
         </Button>

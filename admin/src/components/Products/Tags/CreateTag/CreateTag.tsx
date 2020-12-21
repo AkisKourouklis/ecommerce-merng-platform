@@ -74,7 +74,7 @@ const CreateTag: React.FC<{ fetchTags: () => Promise<void> }> = ({ fetchTags }) 
   return (
     <>
       <Button variant="contained" color="primary" type="button" onClick={handleOpen}>
-        Create Tag
+        Δημιουργία ετικέτας
       </Button>
       <Modal
         aria-labelledby="transition-modal-createTag"
@@ -95,7 +95,7 @@ const CreateTag: React.FC<{ fetchTags: () => Promise<void> }> = ({ fetchTags }) 
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="overline">Information</Typography>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} id="create-tag-from">
                   <TextField
                     className={classes.input}
                     inputRef={register}
@@ -112,6 +112,7 @@ const CreateTag: React.FC<{ fetchTags: () => Promise<void> }> = ({ fetchTags }) 
                     onClick={() => onSubmit}
                     color="primary"
                     variant="contained"
+                    form="create-tag-from"
                     fullWidth
                   >
                     Save Tag

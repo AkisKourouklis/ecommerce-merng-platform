@@ -15,7 +15,8 @@ import {
   removeImageFromVariant,
   findVariantById,
   addImageToVariant,
-  deleteVariant
+  deleteVariant,
+  createMultipleVariants
 } from '../Variants/variants.resolvers';
 import {
   findAllTags,
@@ -26,7 +27,7 @@ import {
   addTagToMultipleProducts
 } from '../Tags/tags.resolvers';
 import { graphqlError, findAllErrors } from '../Errors/error';
-import { findAllProducts } from '../Products/products.resolvers';
+import { findAllProducts, createProduct } from '../Products/products.resolvers';
 
 export default {
   Query: {
@@ -70,6 +71,7 @@ export default {
     removeImageFromVariant,
     addImageToVariant,
     deleteVariant,
+    createMultipleVariants,
 
     //Tags
     createTag,
@@ -79,6 +81,9 @@ export default {
     addTagToMultipleProducts,
 
     //Errors
-    graphqlError
+    graphqlError,
+
+    //Products
+    createProduct
   }
 };
