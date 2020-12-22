@@ -15,7 +15,8 @@ import {
   removeImageFromVariant,
   findVariantById,
   addImageToVariant,
-  deleteVariant
+  deleteVariant,
+  createMultipleVariants
 } from '../Variants/variants.resolvers';
 import {
   findAllTags,
@@ -25,15 +26,8 @@ import {
   addTagToProduct,
   addTagToMultipleProducts
 } from '../Tags/tags.resolvers';
-import {
-  findAllTaxClasses,
-  createTaxClass,
-  removeTaxClassFromProduct,
-  editTaxClass,
-  addTaxClassToProduct
-} from '../TaxClasses/taxClasses.resolvers';
 import { graphqlError, findAllErrors } from '../Errors/error';
-import { findAllProducts } from '../Products/products.resolvers';
+import { findAllProducts, createProduct } from '../Products/products.resolvers';
 
 export default {
   Query: {
@@ -54,9 +48,6 @@ export default {
 
     //Tags
     findAllTags,
-
-    //TaxClasses
-    findAllTaxClasses,
 
     //Products
     findAllProducts
@@ -80,6 +71,7 @@ export default {
     removeImageFromVariant,
     addImageToVariant,
     deleteVariant,
+    createMultipleVariants,
 
     //Tags
     createTag,
@@ -88,13 +80,10 @@ export default {
     addTagToProduct,
     addTagToMultipleProducts,
 
-    //TaxClasses
-    createTaxClass,
-    removeTaxClassFromProduct,
-    editTaxClass,
-    addTaxClassToProduct,
-
     //Errors
-    graphqlError
+    graphqlError,
+
+    //Products
+    createProduct
   }
 };

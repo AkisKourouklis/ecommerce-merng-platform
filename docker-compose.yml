@@ -1,0 +1,42 @@
+version: "3"
+services:
+  admin:
+    container_name: admin
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: always
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:3000
+      - CHOKIDAR_USEPOLLING=true # Hot reloading create react app : https://mherman.org/blog/dockerizing-a-react-app/ ; https://create-react-app.dev/docs/troubleshooting/#npm-start-doesn-t-detect-changes
+    restart: always
+    stdin_open: true # Hot reloading create react app: https://github.com/facebook/create-react-app/issues/8688#issuecomment-602110747
+    volumes: 
+      - ./admin:/app #Synchronise docker container with local change
+      - /app/node_modules #Avoid re-copying local node_modules. Cache in container.
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3001
+      - NODE_ENV=development
+      - JWT_EXPIRATION_HOURS=72h
+      - JWT_USER_SECRET=ef3feesdfmfps
+      - JWT_SUB_SECRET=wefdsf430f
+      - NODEMAILER_EMAIL=
+      - NODEMAILER_EMAIL_PASSWORD=
+      - MONGO_URI=mongodb+srv://sovrakofanela:kLOA88IQNiC6tEQL@cluster0.x8lkq.mongodb.net/sovrakofanela?retryWrites=true&w=majority
+      - MONGO_URI_PRODUCTION=mongodb+srv://sovrakofanela:kLOA88IQNiC6tEQL@cluster0.x8lkq.mongodb.net/sovrakofanela?retryWrites=true&w=majority
+      - TWILLIO_ID=AC5825b4eca320382e450bb74ffa62cfe2
+      - TWILLIO_TOKEN=51449689e928066286dcba9c9fb468ab
+      - TWILLIO_NUMBER=19207728979
+    ports:
+      - "3001:3001"
+    restart: always
+    volumes: 
+      - ./api:/app #Synchronise docker container with local change
+      - /app/node_modules #Avoid re-copying local node_modules. Cache in container.

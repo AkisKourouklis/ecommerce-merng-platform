@@ -5,7 +5,10 @@ const LoginStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   container: {
-    marginTop: theme.spacing(7)
+    paddingTop: theme.spacing(10),
+    height: "80vh",
+    display: "flex",
+    alignItems: "center"
   },
   formTitle: {
     marginBottom: theme.spacing(5)
@@ -15,6 +18,10 @@ const LoginStyles = makeStyles((theme) => ({
   },
   submitButton: {
     marginTop: theme.spacing(5)
+  },
+  card: {
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(3)
   }
 }));
 

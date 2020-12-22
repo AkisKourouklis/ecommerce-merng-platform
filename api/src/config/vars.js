@@ -13,11 +13,11 @@ export const twillioNumber = process.env.TWILLIO_NUMBER;
 export const apiUrl = {
   uri:
     process.env.NODE_ENV === 'development'
-      ? 'http://localhost:5001/graphql/v1'
+      ? 'http://localhost:3001/graphql/v1'
       : 'https://www.api.sovrakofanela.site/graphql/v1'
 };
 export const clientUrl = {
-  uri: process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://www.sovrakofanela.site'
+  uri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://www.sovrakofanela.site'
 };
 export const mongo = {
   uri: process.env.NODE_ENV === 'development' ? process.env.MONGO_URI : process.env.MONGO_URI_PRODUCTION

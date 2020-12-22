@@ -1,5 +1,5 @@
 import React from "react";
-import { Snackbar, Typography } from "@material-ui/core";
+import { Box, Snackbar, Typography } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store/store";
@@ -26,10 +26,14 @@ const Error: React.FC = ({ children }) => {
         onClose={clearError}
       >
         <Alert onClose={clearError} severity="error">
-          <Typography noWrap>
-            <b>Παρακαλώ καταγράψτε τον κωδικό του λάθους:</b> {error?.uuid}
-          </Typography>
-          <Typography variant="subtitle2">{error?.error}</Typography>
+          <Box style={{ width: "100%", maxWidth: "500px" }}>
+            <Typography>
+              <b>Παρακαλώ καταγράψτε τον κωδικό του λάθους:</b> {error?.uuid}
+            </Typography>
+            <Typography noWrap variant="subtitle2">
+              {error?.error}
+            </Typography>
+          </Box>
         </Alert>
       </Snackbar>
       {children}

@@ -13,6 +13,9 @@ export default createMuiTheme({
       dark: "#115EA6"
     }
   },
+  shape: {
+    borderRadius: 8
+  },
   typography: {
     fontFamily: ["-apple-system", "Roboto", "sans-serif"].join(","),
     button: {

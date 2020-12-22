@@ -7,7 +7,7 @@ export const findProductById = async (_, { id }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
 
   try {
-    const product = await ProductModel.findById({ _id: id }).populate(['variants', 'tags', 'images', 'taxClass']);
+    const product = await ProductModel.findById({ _id: id }).populate(['variants', 'tags', 'images']);
 
     return product;
   } catch (error) {
@@ -45,8 +45,7 @@ export const findAllProducts = async (_, { search = null, page = 1, limit = 20 }
       currentPage: page
     };
   } catch (error) {
-    console.log(error);
-    // graphqlError(error);
+    graphqlError(error);
   }
 };
 
@@ -60,7 +59,7 @@ export const createProduct = async (_, { productInput }, context) => {
       barcode,
       isActive,
       quantity,
-      taxClass,
+      tax,
       images,
       variants,
       tags,
@@ -71,16 +70,15 @@ export const createProduct = async (_, { productInput }, context) => {
     const insertImages = images?.map((i) => i._id);
     const insertTags = tags?.map((i) => i._id);
     const insertVariants = variants?.map((i) => i._id);
-    const insertTaxClasses = taxClass?.map((i) => i._id);
 
-    const newProduct = new Product({
+    const newProduct = new ProductModel({
       name,
       description,
       sku,
       barcode,
       isActive,
       quantity,
-      taxClass: insertTaxClasses,
+      tax,
       images: insertImages,
       variants: insertVariants,
       tags: insertTags,
@@ -88,7 +86,7 @@ export const createProduct = async (_, { productInput }, context) => {
       seo
     });
 
-    await newProductModel.save();
+    await newProduct.save();
 
     return newProduct;
   } catch (error) {
@@ -100,12 +98,7 @@ export const removeProduct = async (_, { productInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
     const { _id } = productInput;
-    const deletedProduct = await ProductModel.findByIdAndRemove({ _id }).populate([
-      'variants',
-      'taxClass',
-      'images',
-      'tags'
-    ]);
+    const deletedProduct = await ProductModel.findByIdAndRemove({ _id }).populate(['variants', 'images', 'tags']);
     return deletedProduct;
   } catch (error) {
     graphqlError(error);
@@ -122,7 +115,7 @@ export const editProduct = async (_, { productInput }, context) => {
       barcode,
       isActive,
       quantity,
-      taxClass,
+      tax,
       images,
       variants,
       tags,
@@ -133,7 +126,6 @@ export const editProduct = async (_, { productInput }, context) => {
     const insertImages = images?.map((i) => i._id);
     const insertTags = tags?.map((i) => i._id);
     const insertVariants = variants?.map((i) => i._id);
-    const insertTaxClasses = taxClass?.map((i) => i._id);
 
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       { _id: id },
@@ -144,7 +136,7 @@ export const editProduct = async (_, { productInput }, context) => {
         barcode,
         isActive,
         quantity,
-        taxClass: insertTaxClasses,
+        tax,
         images: insertImages,
         variants: insertVariants,
         tags: insertTags,
@@ -152,7 +144,7 @@ export const editProduct = async (_, { productInput }, context) => {
         seo
       },
       { new: true }
-    ).populate(['variants', 'taxClass', 'images', 'tags']);
+    ).populate(['variants', 'images', 'tags']);
     return updatedProduct;
   } catch (error) {
     graphqlError(error);

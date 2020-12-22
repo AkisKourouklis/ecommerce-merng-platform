@@ -7,10 +7,9 @@ export default gql`
     description: String
     sku: String
     barcode: String
-    availability: String
     isActive: Boolean
     quantity: Int
-    taxClass: [TaxClass]
+    tax: Int
     images: [ProductImages]
     variants: [ProductVariants]
     tags: [ProductTags]
@@ -43,8 +42,6 @@ export default gql`
   type ProductSeo {
     name: String
     description: String
-    keywords: [ProductSeoKeywords]
-    image: String
   }
 
   type ProductSeoKeywords {
@@ -64,9 +61,8 @@ export default gql`
     sku: String
     barcode: String
     isActive: Boolean
-    availability: String
     quantity: Int
-    taxClass: [TaxClassInput]
+    tax: Int
     images: [ProductImagesInput]
     variants: [ProductVariantsInput]
     tags: [ProductTagsInput]
@@ -82,9 +78,10 @@ export default gql`
   }
 
   input ProductVariantsInput {
-    _id: String!
+    _id: String
     color: String
     size: String
+    material: String
     quantity: Int
     sku: String
     barcode: String
@@ -100,18 +97,10 @@ export default gql`
   input ProductSeoInput {
     name: String
     description: String
-    keywords: [ProductSeoKeywordsInput]
-    image: String
   }
 
   input ProductSeoKeywordsInput {
     name: String
-  }
-
-  input ProductFilters {
-    color: [String]
-    size: [String]
-    availability: [String]
   }
 
   extend type Query {

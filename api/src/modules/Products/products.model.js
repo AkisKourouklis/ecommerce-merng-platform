@@ -8,24 +8,18 @@ const productSchema = new mongoose.Schema(
     barcode: String,
     isActive: Boolean,
     quantity: Number,
-    availability: String,
-    taxClass: [{ type: Schema.Types.ObjectId, ref: 'TaxClass' }],
+    tax: Number,
     images: [{ type: Schema.Types.ObjectId, ref: 'Image' }],
     variants: [{ type: Schema.Types.ObjectId, ref: 'Variant' }],
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
     price: {
       comparePrice: Number,
+      costPrice: Number,
       price: Number
     },
     seo: {
       name: String,
-      keywords: [
-        {
-          name: String
-        }
-      ],
-      description: String,
-      image: String
+      description: String
     }
   },
   { timestamps: true }

@@ -17,8 +17,8 @@ export const CreateError = (data: createErrorProp) => {
   return async (dispatch: Dispatch<ErrorActionTypes>): Promise<void> => {
     try {
       const newUuid = uuid();
-      await GraphqlRequest(data.token).request(GRAPHQL_ERROR, { error: data.errors[0].message, uuid: newUuid });
-      dispatch(toggleError({ error: data.errors[0].message, uuid: newUuid }));
+      await GraphqlRequest(data.token).request(GRAPHQL_ERROR, { error: JSON.stringify(data), uuid: newUuid });
+      dispatch(toggleError({ error: JSON.stringify(data), uuid: newUuid }));
     } catch (err) {
       console.log(err);
     }

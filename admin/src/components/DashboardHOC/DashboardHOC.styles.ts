@@ -1,8 +1,8 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 240;
-const drawerBackground = "#f1f1f1";
-const navbarBackground = "#f1f1f1";
+const drawerBackground = "#fff";
+const navbarBackground = "#fff";
 
 export default makeStyles((theme) => ({
   root: {
@@ -71,6 +71,19 @@ export default makeStyles((theme) => ({
     paddingTop: theme.spacing(11),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    paddingBottom: theme.spacing(2),
     overflow: "hidden"
+  },
+  nested: {
+    paddingLeft: theme.spacing(4)
+  },
+  paper: {
+    padding: theme.spacing(4)
+  },
+  avatar: {
+    marginLeft: "auto"
+  },
+  breadcrump: {
+    marginBottom: theme.spacing(1)
   }
 }));
