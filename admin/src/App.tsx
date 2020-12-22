@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { AUTH_CHECK } from "./components/Authentication/AuthQuery";
 import { AuthContext } from "./components/Authentication/AuthContext";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
@@ -15,7 +15,6 @@ const ProductsTags = lazy(() => import("./components/Products/Tags/Tags"));
 const ProductsVariants = lazy(() => import("./components/Products/Variants/Variants"));
 
 const App: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
   const [auth, setAuth] = usePersistedState("auth", {
     isAuthenticated: false,
     error: null,
@@ -29,10 +28,8 @@ const App: React.FC = () => {
       const { token } = auth;
 
       await GraphqlRequest().request(AUTH_CHECK, { token: `Bearer ${token}` });
-      setLoading(false);
     } catch (err) {
       setAuth({ isAuthenticated: false, error: null, id: null, fullname: null, token: null });
-      setLoading(false);
     }
   };
 
@@ -53,10 +50,10 @@ const App: React.FC = () => {
                 </>
               ) : null}
               <Route exact path="/home" component={Home} />
-              <Route path="/products/products" component={Products} />
-              <Route path="/products/products/create" component={ProductsCreate} />
-              <Route path="/products/tags" component={ProductsTags} />
-              <Route path="/products/variants" component={ProductsVariants} />
+              <Route exact path="/products/products" component={Products} />
+              <Route exact path="/products/products/create" component={ProductsCreate} />
+              <Route exact path="/products/tags" component={ProductsTags} />
+              <Route exact path="/products/variants" component={ProductsVariants} />
               <Route path="*" component={NotFound} />
             </Switch>
           </Suspense>

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const LoginStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   logo: {
     marginBottom: theme.spacing(2)
   },
@@ -24,5 +24,3 @@ const LoginStyles = makeStyles((theme) => ({
     padding: theme.spacing(3)
   }
 }));
-
-export default LoginStyles;
