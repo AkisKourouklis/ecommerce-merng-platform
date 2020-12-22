@@ -1,10 +1,23 @@
 import { IImage } from "./images";
+import { ITag } from "./tags";
+import { IVariant } from "./variants";
 
 export interface IProduct {
   _id: string;
-  name: string;
-  sku: string;
+  name?: string;
+  description?: string;
+  sku?: string;
+  barcode?: string;
   selected?: boolean;
+  isActive?: boolean;
+  images?: IImage[];
+  tags?: ITag[];
+  variants?: IVariant[];
+  price?: { price: number; comparePrice: number; costPrice: number };
+  seo?: {
+    name: string;
+    description: string;
+  };
 }
 
 export interface ICreateProduct {

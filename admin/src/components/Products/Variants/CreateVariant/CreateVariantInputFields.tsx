@@ -124,7 +124,8 @@ const CreateVariantInputFields: React.FC<{
                 variant="outlined"
                 fullWidth
                 InputProps={{
-                  startAdornment: <InputAdornment position="start">€</InputAdornment>
+                  startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                  inputProps: { min: 0, max: 10000, step: "0.1" }
                 }}
               />
             </Grid>
@@ -139,7 +140,8 @@ const CreateVariantInputFields: React.FC<{
                 variant="outlined"
                 fullWidth
                 InputProps={{
-                  startAdornment: <InputAdornment position="start">€</InputAdornment>
+                  startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                  inputProps: { min: 0, max: 10000, step: "0.1" }
                 }}
               />
             </Grid>
@@ -154,7 +156,8 @@ const CreateVariantInputFields: React.FC<{
                 variant="outlined"
                 fullWidth
                 InputProps={{
-                  startAdornment: <InputAdornment position="start">€</InputAdornment>
+                  startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                  inputProps: { min: 0, max: 10000, step: "0.1" }
                 }}
               />
             </Grid>

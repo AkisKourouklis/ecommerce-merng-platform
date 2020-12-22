@@ -1,17 +1,39 @@
 import { Box, Button, FormControlLabel, Grid, LinearProgress, Switch, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import DashboardHOC from "../../DashboardHOC/DashboardHOC";
 import { IProduct } from "../../../types/products";
+import { useDispatch } from "react-redux";
+import { CreateError } from "../../Error/ErrorActions";
+import GraphqlRequest from "../../../graphql/graphql-request";
+import { AuthContext } from "../../Authentication/AuthContext";
+import { FIND_ALL_PRODUCTS } from "./ProductsQueries/ProductQueries";
+import SingleProduct from "./SingleProduct/SingleProduct";
 
 const Products: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<IProduct[] | null>(null);
   const [showImages, setShowImages] = useState<boolean>(false);
   const { register, watch } = useForm();
+  const { auth } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const search = watch("search");
 
-  console.log(search, setLoading, setProducts, setShowImages);
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await GraphqlRequest(auth.token).request(FIND_ALL_PRODUCTS, { search });
+      setProducts(response.findAllProducts.products);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [search]);
 
   return (
     <DashboardHOC>
@@ -56,7 +78,7 @@ const Products: React.FC = () => {
             {products?.map((data) => {
               return (
                 <Grid key={data._id} item xs={12} md={4}>
-                  single product
+                  <SingleProduct data={data} />
                 </Grid>
               );
             })}

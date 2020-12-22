@@ -43,11 +43,14 @@ import ReactQuill from "react-quill";
 import useStyles from "./CreateProductStyles";
 import { CreateError } from "../../../Error/ErrorActions";
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const CreateProduct: React.FC = () => {
   const classes = useStyles();
   const [images, setImages] = useState<File[] | []>([]);
   const [variantArray, setVariantArray] = useState<IVariant[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [tags, setTags] = useState<any>([]);
+  const [description, setDescription] = useState<string | null>(null);
   const [tagList, setTagList] = useState<ITag[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [, setState] = useState<unknown>();
@@ -77,7 +80,6 @@ const CreateProduct: React.FC = () => {
   const onSubmit = async ({
     barcode,
     sku,
-    description,
     price,
     comparePrice,
     costPrice,
@@ -160,6 +162,11 @@ const CreateProduct: React.FC = () => {
     }
   };
 
+  const handleDescription = (value: string) => {
+    console.log(value);
+    setDescription(value);
+  };
+
   useEffect(() => {
     fetchTags();
   }, []);
@@ -215,7 +222,12 @@ const CreateProduct: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <ReactQuill ref={register} className={classes.quill} placeholder="Περιγραφή" theme="snow" />
+                  <ReactQuill
+                    onChange={handleDescription}
+                    className={classes.quill}
+                    placeholder="Περιγραφή"
+                    theme="snow"
+                  />
                 </Grid>
               </Grid>
             </Paper>
@@ -238,7 +250,8 @@ const CreateProduct: React.FC = () => {
                     variant="outlined"
                     fullWidth
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">€</InputAdornment>
+                      startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                      inputProps: { min: 0, max: 10000, step: "0.1" }
                     }}
                   />
                 </Grid>
@@ -252,7 +265,8 @@ const CreateProduct: React.FC = () => {
                     variant="outlined"
                     fullWidth
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">€</InputAdornment>
+                      startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                      inputProps: { min: 0, max: 10000, step: "0.1" }
                     }}
                   />
                 </Grid>
@@ -266,7 +280,8 @@ const CreateProduct: React.FC = () => {
                     variant="outlined"
                     fullWidth
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">€</InputAdornment>
+                      startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                      inputProps: { min: 0, max: 10000, step: "0.1" }
                     }}
                   />
                 </Grid>
@@ -281,7 +296,8 @@ const CreateProduct: React.FC = () => {
                     defaultValue="24"
                     fullWidth
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">%</InputAdornment>
+                      startAdornment: <InputAdornment position="start">%</InputAdornment>,
+                      inputProps: { min: 0, max: 10000, step: "0.1" }
                     }}
                   />
                 </Grid>

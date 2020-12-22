@@ -11,7 +11,7 @@ import GraphqlRequest from "../../../../graphql/graphql-request";
 import { CreateNotification } from "../../../Notification/NotificationActions";
 import { DELETE_TAG } from "../TagQueries/TagQueries";
 
-const CreateTag: React.FC<{ fetchTags: () => Promise<void>; data: ISingleTag }> = ({ fetchTags, data }) => {
+const SingleTag: React.FC<{ fetchTags: () => Promise<void>; data: ISingleTag }> = ({ fetchTags, data }) => {
   const classes = useStyles();
   const { auth } = useContext(AuthContext);
   const dispatch = useDispatch();
@@ -84,4 +84,4 @@ const CreateTag: React.FC<{ fetchTags: () => Promise<void>; data: ISingleTag }> 
   );
 };
 
-export default CreateTag;
+export default SingleTag;

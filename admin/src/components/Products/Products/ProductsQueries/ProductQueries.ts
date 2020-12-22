@@ -1,12 +1,22 @@
 import { gql } from "graphql-request";
 
 export const FIND_ALL_PRODUCTS = gql`
-  {
-    findAllProducts {
+  query($search: String) {
+    findAllProducts(search: $search) {
       products {
         _id
         name
         sku
+        barcode
+        description
+        seo {
+          name
+          description
+        }
+        isActive
+        price {
+          price
+        }
       }
     }
   }
