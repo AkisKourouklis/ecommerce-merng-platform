@@ -6,6 +6,7 @@ import GraphqlRequest from "./graphql/graphql-request";
 import LoadingPage from "./components/Loading/LoadingPage";
 import Login from "./components/Authentication/Login";
 import usePersistedState from "./customHooks/usePersistedState";
+import NotFound from "./components/404/404";
 
 const Home = lazy(() => import("./components/Home/Home"));
 const Products = lazy(() => import("./components/Products/Products/Products"));
@@ -41,32 +42,26 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      {loading ? (
-        <LoadingPage />
-      ) : (
-        <AuthContext.Provider value={{ auth, setAuth }}>
-          <Router>
+      <AuthContext.Provider value={{ auth, setAuth }}>
+        <Router>
+          <Suspense fallback={<LoadingPage />}>
             <Switch>
               {!auth.isAuthenticated ? (
                 <>
                   <Redirect to="/login" />
-                  <Route exact path="/login" component={Login} />
+                  <Route path="/login" component={Login} />
                 </>
-              ) : (
-                <>
-                  <Suspense fallback={<LoadingPage />}>
-                    <Route exact path="/home" component={Home} />
-                    <Route exact path="/products/products" component={Products} />
-                    <Route exact path="/products/products/create" component={ProductsCreate} />
-                    <Route exact path="/products/tags" component={ProductsTags} />
-                    <Route exact path="/products/variants" component={ProductsVariants} />
-                  </Suspense>
-                </>
-              )}
+              ) : null}
+              <Route exact path="/home" component={Home} />
+              <Route path="/products/products" component={Products} />
+              <Route path="/products/products/create" component={ProductsCreate} />
+              <Route path="/products/tags" component={ProductsTags} />
+              <Route path="/products/variants" component={ProductsVariants} />
+              <Route path="*" component={NotFound} />
             </Switch>
-          </Router>
-        </AuthContext.Provider>
-      )}
+          </Suspense>
+        </Router>
+      </AuthContext.Provider>
     </div>
   );
 };

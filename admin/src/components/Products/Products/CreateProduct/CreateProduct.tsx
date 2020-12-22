@@ -45,6 +45,7 @@ import { CreateError } from "../../../Error/ErrorActions";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const CreateProduct: React.FC = () => {
+  //test
   const classes = useStyles();
   const [images, setImages] = useState<File[] | []>([]);
   const [variantArray, setVariantArray] = useState<IVariant[]>([]);
