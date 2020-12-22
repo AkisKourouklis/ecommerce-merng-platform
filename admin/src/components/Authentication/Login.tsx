@@ -5,7 +5,7 @@ import { AuthContext } from "./AuthContext";
 import { AUTH_LOGIN } from "./AuthQuery";
 import { AuthLoginProps, AuthProps } from "./AuthTypes";
 import decode from "jwt-decode";
-import LoginStyles from "./LoginStyles";
+import { useStyles } from "./LoginStyles";
 import {
   Box,
   Button,
@@ -26,7 +26,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { auth, setAuth } = useContext(AuthContext);
   const { register, handleSubmit } = useForm();
-  const classes = LoginStyles();
+  const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
 

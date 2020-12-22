@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "export NODE_ENV=production && react-scripts start",
-    "docker": "export NODE_ENV=development && react-scripts start",
+    "dev": "export NODE_ENV=development && react-scripts start",
     "build": "react-scripts build"
   },
   "eslintConfig": {

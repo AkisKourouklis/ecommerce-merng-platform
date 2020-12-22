@@ -17,8 +17,6 @@ const SingleProduct: React.FC<{ data: IProduct }> = ({ data }) => {
     console.log("delete");
   };
 
-  console.log(data.description);
-
   return (
     <>
       <Accordion>
