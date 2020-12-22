@@ -5,4 +5,4 @@ COPY package*.json ./
 COPY . .
 RUN npm install --silent
 RUN npm install -g serve --silent
-CMD ["serve", "-s", "build"]
+CMD ["serve", "-s", "build", "-p", "3000"]
