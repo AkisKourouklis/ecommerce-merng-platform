@@ -10,6 +10,11 @@ import resolvers from './modules/Graphql/rootResolvers';
 
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req }) });
 const app = express();
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 app.use(express.static('public'));
 const pathUrl = '/graphql/v1';
 server.applyMiddleware({ app, path: pathUrl });

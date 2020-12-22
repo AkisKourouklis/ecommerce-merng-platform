@@ -6,18 +6,24 @@ services:
       context: ./admin
       dockerfile: Dockerfile.prod
     ports:
-      - "3000:3000"
+      - "3000:5000"
     restart: always
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:3000
+      - CHOKIDAR_USEPOLLING=true # Hot reloading create react app : https://mherman.org/blog/dockerizing-a-react-app/ ; https://create-react-app.dev/docs/troubleshooting/#npm-start-doesn-t-detect-changes
     restart: always
+    stdin_open: true # Hot reloading create react app: https://github.com/facebook/create-react-app/issues/8688#issuecomment-602110747
+    volumes: 
+      - ./admin:/app #Synchronise docker container with local change
+      - /app/node_modules #Avoid re-copying local node_modules. Cache in container.
   api:
     build:
       context: ./api
       dockerfile: Dockerfile.prod
     environment:
       - PORT=3001
-      - NODE_ENV=production
+      - NODE_ENV=development
       - JWT_EXPIRATION_HOURS=72h
       - JWT_USER_SECRET=ef3feesdfmfps
       - JWT_SUB_SECRET=wefdsf430f
@@ -31,3 +37,6 @@ services:
     ports:
       - "3001:3001"
     restart: always
+    volumes: 
+      - ./api:/app #Synchronise docker container with local change
+      - /app/node_modules #Avoid re-copying local node_modules. Cache in container.
