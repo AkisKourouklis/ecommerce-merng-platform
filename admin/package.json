@@ -31,6 +31,7 @@
   "scripts": {
     "start": "export NODE_ENV=production && react-scripts start",
     "dev": "export NODE_ENV=development && react-scripts start",
+    "lint": "eslint ./src/ --ignore-path .gitignore --ignore-pattern internals/scripts --fix",
     "build": "react-scripts build"
   },
   "eslintConfig": {

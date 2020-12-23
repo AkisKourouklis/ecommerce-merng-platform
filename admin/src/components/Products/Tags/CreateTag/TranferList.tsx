@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { IProduct } from "../../../../types/products";
-import { Paper } from "@material-ui/core";
-import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
+import { IProduct } from "../../../../types/products";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import { Paper } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 const generatedItems = (products: IProduct[]) => {
   const items = [];

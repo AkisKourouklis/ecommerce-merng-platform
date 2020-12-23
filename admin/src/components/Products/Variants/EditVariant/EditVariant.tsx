@@ -1,19 +1,19 @@
-import React, { useContext, useState } from "react";
 import { ADD_IMAGE_TO_VARIANT, UPDATE_VARIANT } from "../VariantQueries/VariantsQuery";
-import { apiUrl } from "../../../../config/vars";
+import { Backdrop, Button, Fade, Grid, Modal, Paper, Typography } from "@material-ui/core";
+import { IEditVariant, IFormVariant, IVariant } from "../../../../types/variants";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../../../Authentication/AuthContext";
 import { CreateError } from "../../../Error/ErrorActions";
 import { CreateNotification } from "../../../Notification/NotificationActions";
-import { Modal, Backdrop, Fade, Button, Paper, Grid, Typography } from "@material-ui/core";
-import { REMOVE_IMAGE_FROM_VARIANT } from "../VariantQueries/VariantsQuery";
-import { useDispatch } from "react-redux";
-import { useStyles } from "../VariantStyles/VariantStyles";
-import { IVariant, IFormVariant, IEditVariant } from "../../../../types/variants";
-import { IImage } from "../../../../types/images";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditVariantInputFields from "./EditVariantInputFields";
 import FileUpload from "../../../FileUpload/FileUpload";
 import GraphqlRequest from "../../../../graphql/graphql-request";
+import { IImage } from "../../../../types/images";
+import { REMOVE_IMAGE_FROM_VARIANT } from "../VariantQueries/VariantsQuery";
+import { apiUrl } from "../../../../config/vars";
+import { useDispatch } from "react-redux";
+import useStyles from "../VariantStyles/VariantStyles";
 
 const EditVariant: React.FC<{ variant: IVariant | null; fetchVariant: () => Promise<void> }> = ({
   variant,

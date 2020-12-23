@@ -1,9 +1,9 @@
-import React from "react";
 import { Snackbar, Typography } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
 import Alert from "@material-ui/lab/Alert";
 import { AppState } from "../../store/store";
-import { useDispatch, useSelector } from "react-redux";
 import { ClearNotification } from "./NotificationActions";
+import React from "react";
 
 const NotificationAlert: React.FC = ({ children }) => {
   const { notification, notificationType } = useSelector((state: AppState) => state.notification);

@@ -1,8 +1,8 @@
+import { Constants, ErrorActionTypes, ErrorDefaultState, createErrorProp } from "./ErrorTypes";
 import { Dispatch } from "react";
+import { GRAPHQL_ERROR } from "./ErrorQuery";
 import GraphqlRequest from "../../graphql/graphql-request";
 import { v4 as uuid } from "uuid";
-import { GRAPHQL_ERROR } from "./ErrorQuery";
-import { ErrorDefaultState, Constants, ErrorActionTypes, createErrorProp } from "./ErrorTypes";
 
 const toggleError = (error: ErrorDefaultState): ErrorActionTypes => ({
   type: Constants.TOGGLE_ERROR,

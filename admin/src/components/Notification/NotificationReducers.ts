@@ -1,5 +1,5 @@
+import { Constants, NotificationActionTypes, NotificationDefaultState } from "./NotificationTypes";
 import update from "react-addons-update";
-import { NotificationDefaultState, Constants, NotificationActionTypes } from "./NotificationTypes";
 
 const initialState = {
   notification: null,

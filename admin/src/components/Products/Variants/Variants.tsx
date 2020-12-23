@@ -1,15 +1,15 @@
+import { Box, FormControlLabel, Grid, LinearProgress, Switch, TextField, Typography } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Authentication/AuthContext";
-import { Box, FormControlLabel, Grid, Switch, Typography, LinearProgress, TextField } from "@material-ui/core";
 import { CreateError } from "../../Error/ErrorActions";
-import { FETCH_VARIANTS } from "./VariantQueries/VariantsQuery";
-import { useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
 import CreateVariant from "./CreateVariant/CreateVariant";
 import DashboardHOC from "../../DashboardHOC/DashboardHOC";
+import { FETCH_VARIANTS } from "./VariantQueries/VariantsQuery";
 import GraphQlRequest from "../../../graphql/graphql-request";
-import SingleVariant from "./SingleVariant/SingleVariant";
 import { IVariant } from "../../../types/variants";
+import SingleVariant from "./SingleVariant/SingleVariant";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 
 const Variants: React.FC = () => {
   const { register, watch } = useForm();

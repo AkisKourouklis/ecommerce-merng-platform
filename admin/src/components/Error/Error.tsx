@@ -1,9 +1,9 @@
-import React from "react";
 import { Box, Snackbar, Typography } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
+import Alert from "@material-ui/lab/Alert";
 import { AppState } from "../../store/store";
 import { ClearError } from "./ErrorActions";
+import React from "react";
 
 const Error: React.FC = ({ children }) => {
   const { error } = useSelector((state: AppState) => state.error);

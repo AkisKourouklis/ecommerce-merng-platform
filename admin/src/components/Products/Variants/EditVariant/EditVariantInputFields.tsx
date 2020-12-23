@@ -1,8 +1,8 @@
+import { Button, CircularProgress, FormGroup, Grid, InputAdornment, TextField } from "@material-ui/core";
+import { IEditVariant, IFormVariant, IVariant } from "../../../../types/variants";
 import React from "react";
-import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button } from "@material-ui/core";
 import { useForm } from "react-hook-form";
-import { useStyles } from "../VariantStyles/VariantStyles";
-import { IFormVariant, IVariant, IEditVariant } from "../../../../types/variants";
+import useStyles from "../VariantStyles/VariantStyles";
 
 const EditVariantInputFields: React.FC<{
   onSubmit: ({

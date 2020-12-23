@@ -1,11 +1,4 @@
-import React, { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
-import GraphqlRequest from "../../graphql/graphql-request";
-import { AuthContext } from "./AuthContext";
-import { AUTH_LOGIN } from "./AuthQuery";
 import { AuthLoginProps, AuthProps } from "./AuthTypes";
-import decode from "jwt-decode";
-import { useStyles } from "./LoginStyles";
 import {
   Box,
   Button,
@@ -17,10 +10,17 @@ import {
   TextField,
   Typography
 } from "@material-ui/core";
+import React, { useContext, useState } from "react";
+import { AUTH_LOGIN } from "./AuthQuery";
 import { Alert } from "@material-ui/lab";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { AuthContext } from "./AuthContext";
 import { CreateError } from "../Error/ErrorActions";
+import GraphqlRequest from "../../graphql/graphql-request";
+import decode from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import useStyles from "./LoginStyles";
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);

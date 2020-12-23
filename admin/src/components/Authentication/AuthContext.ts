@@ -1,5 +1,5 @@
-import { createContext } from "react";
 import { AuthContextProps } from "./AuthTypes";
+import { createContext } from "react";
 
 export const AuthContext = createContext<AuthContextProps>({
   auth: {

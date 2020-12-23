@@ -1,11 +1,11 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
 import thunk, { ThunkMiddleware } from "redux-thunk";
-import { createLogger } from "redux-logger";
-import ErrorReducer from "../components/Error/ErrorReducers";
 import { ErrorActionTypes } from "../components/Error/ErrorTypes";
-import NotificationReducer from "../components/Notification/NotificationReducers";
+import ErrorReducer from "../components/Error/ErrorReducers";
 import { NotificationActionTypes } from "../components/Notification/NotificationTypes";
+import NotificationReducer from "../components/Notification/NotificationReducers";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { createLogger } from "redux-logger";
 
 const rootReducer = combineReducers({
   error: ErrorReducer,
