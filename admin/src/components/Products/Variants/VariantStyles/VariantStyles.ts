@@ -1,6 +1,6 @@
-import { makeStyles, Theme } from "@material-ui/core";
+import { Theme, makeStyles } from "@material-ui/core";
 
-export const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
@@ -35,3 +35,5 @@ export const useStyles = makeStyles((theme: Theme) => ({
     border: `1px solid ${theme.palette.error.main}`
   }
 }));
+
+export default useStyles;

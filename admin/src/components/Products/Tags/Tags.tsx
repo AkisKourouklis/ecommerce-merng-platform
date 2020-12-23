@@ -1,15 +1,15 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../../Authentication/AuthContext";
 import { Box, Grid, LinearProgress, TextField, Typography } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../Authentication/AuthContext";
 import { CreateError } from "../../Error/ErrorActions";
-import { FETCH_TAGS } from "./TagQueries/TagQueries";
-import { ITags } from "./TagTypes";
-import { useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
 import CreateTag from "./CreateTag/CreateTag";
 import DashboardHOC from "../../DashboardHOC/DashboardHOC";
+import { FETCH_TAGS } from "./TagQueries/TagQueries";
 import GraphqlRequest from "../../../graphql/graphql-request";
+import { ITags } from "./TagTypes";
 import SingleTag from "./SingleTag/SingleTag";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 
 const Tags: React.FC = () => {
   const [tags, setTags] = useState<ITags | null>(null);

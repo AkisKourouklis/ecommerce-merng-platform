@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Paper, Typography } from "@material-ui/core";
-import { ExpandMore } from "@material-ui/icons";
-import { useStyles } from "../VariantStyles/VariantStyles";
-import { IVariant } from "../../../../types/variants";
-import { apiUrl } from "../../../../config/vars";
-import DeleteIcon from "@material-ui/icons/Delete";
-import GraphqlRequest from "../../../../graphql/graphql-request";
-import { AuthContext } from "../../../Authentication/AuthContext";
 import { DELETE_VARIANT, FIND_VARIANT_BY_ID } from "../VariantQueries/VariantsQuery";
-import EditVariant from "../EditVariant/EditVariant";
-import { useDispatch } from "react-redux";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../Authentication/AuthContext";
 import { CreateError } from "../../../Error/ErrorActions";
 import { CreateNotification } from "../../../Notification/NotificationActions";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditVariant from "../EditVariant/EditVariant";
+import { ExpandMore } from "@material-ui/icons";
+import GraphqlRequest from "../../../../graphql/graphql-request";
+import { IVariant } from "../../../../types/variants";
+import { apiUrl } from "../../../../config/vars";
+import { useDispatch } from "react-redux";
+import useStyles from "../VariantStyles/VariantStyles";
 
 const SingleVariant: React.FC<{ data: IVariant; showImages: boolean; fetchVariants: () => Promise<void> }> = ({
   data,

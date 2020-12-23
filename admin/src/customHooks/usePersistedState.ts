@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Cookie from "js-cookie";
 
 const usePersistedState = (key: string, defaultValue: any) => {

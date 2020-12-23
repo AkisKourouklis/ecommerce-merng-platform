@@ -1,14 +1,14 @@
 import { Box, Button, FormControlLabel, Grid, LinearProgress, Switch, TextField, Typography } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import DashboardHOC from "../../DashboardHOC/DashboardHOC";
-import { IProduct } from "../../../types/products";
-import { useDispatch } from "react-redux";
-import { CreateError } from "../../Error/ErrorActions";
-import GraphqlRequest from "../../../graphql/graphql-request";
 import { AuthContext } from "../../Authentication/AuthContext";
+import { CreateError } from "../../Error/ErrorActions";
+import DashboardHOC from "../../DashboardHOC/DashboardHOC";
 import { FIND_ALL_PRODUCTS } from "./ProductsQueries/ProductQueries";
+import GraphqlRequest from "../../../graphql/graphql-request";
+import { IProduct } from "../../../types/products";
 import SingleProduct from "./SingleProduct/SingleProduct";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 
 const Products: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,6 +29,10 @@ const Products: React.FC = () => {
       setLoading(false);
       dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
+  };
+
+  const handleShowImage = () => {
+    setShowImages((c) => !c);
   };
 
   useEffect(() => {
@@ -67,7 +71,9 @@ const Products: React.FC = () => {
         <Grid item xs={12}>
           <Box textAlign="end">
             <FormControlLabel
-              control={<Switch checked={showImages} name="fetch-images-toggle" color="primary" />}
+              control={
+                <Switch onChange={handleShowImage} checked={showImages} name="fetch-images-toggle" color="primary" />
+              }
               label="Load Images"
             />
           </Box>

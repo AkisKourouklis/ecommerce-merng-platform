@@ -1,9 +1,9 @@
-import React, { useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Paper, Typography } from "@material-ui/core";
+import React, { useState } from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import useStyles from "../ProductStyles/Products.styles";
 import { IProduct } from "../../../../types/products";
+import useStyles from "../ProductStyles/Products.styles";
 
 const SingleProduct: React.FC<{ data: IProduct }> = ({ data }) => {
   const [canDelete, setCanDelete] = useState<boolean>(false);

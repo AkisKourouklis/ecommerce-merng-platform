@@ -1,12 +1,12 @@
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
+import { Redirect, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { AUTH_CHECK } from "./components/Authentication/AuthQuery";
 import { AuthContext } from "./components/Authentication/AuthContext";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import GraphqlRequest from "./graphql/graphql-request";
 import LoadingPage from "./components/Loading/LoadingPage";
 import Login from "./components/Authentication/Login";
-import usePersistedState from "./customHooks/usePersistedState";
 import NotFound from "./components/404/404";
+import usePersistedState from "./customHooks/usePersistedState";
 
 const Home = lazy(() => import("./components/Home/Home"));
 const Products = lazy(() => import("./components/Products/Products/Products"));

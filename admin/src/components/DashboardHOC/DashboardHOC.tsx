@@ -1,34 +1,34 @@
-import React, { useContext, useState } from "react";
-import clsx from "clsx";
 import {
-  Drawer,
   AppBar,
-  Toolbar,
-  List,
+  Collapse,
+  Container,
   CssBaseline,
-  Typography,
   Divider,
+  Drawer,
   IconButton,
+  List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Container,
-  Collapse,
-  Paper
+  Paper,
+  Toolbar,
+  Typography
 } from "@material-ui/core";
-import { ExpandLess, ExpandMore, ExitToApp } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { ExitToApp, ExpandLess, ExpandMore } from "@material-ui/icons";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../Authentication/AuthContext";
 import CategoryIcon from "@material-ui/icons/Category";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ErrorAlert from "../Error/Error";
 import HomeIcon from "@material-ui/icons/Home";
+import { Link } from "react-router-dom";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import MenuIcon from "@material-ui/icons/Menu";
 import MoveToInboxIcon from "@material-ui/icons/MoveToInbox";
 import NotificationAlert from "../Notification/Notification";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import clsx from "clsx";
 import useStyles from "./DashboardHOC.styles";
-import { AuthContext } from "../Authentication/AuthContext";
 
 const DashboardHOC: React.FC = ({ children }) => {
   const classes = useStyles();

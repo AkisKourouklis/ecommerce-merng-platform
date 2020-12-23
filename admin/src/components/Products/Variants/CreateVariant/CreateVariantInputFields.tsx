@@ -1,10 +1,10 @@
-import React from "react";
-import { TextField, FormGroup, InputAdornment, CircularProgress, Grid, Button, Typography } from "@material-ui/core";
 import { Autocomplete, Skeleton } from "@material-ui/lab";
-import { IProduct } from "../../../../types/products";
-import { useForm } from "react-hook-form";
-import { useStyles } from "../VariantStyles/VariantStyles";
+import { Button, CircularProgress, FormGroup, Grid, InputAdornment, TextField, Typography } from "@material-ui/core";
 import { IFormVariant } from "../../../../types/variants";
+import { IProduct } from "../../../../types/products";
+import React from "react";
+import { useForm } from "react-hook-form";
+import useStyles from "../VariantStyles/VariantStyles";
 
 const CreateVariantInputFields: React.FC<{
   onSubmit: (value: IFormVariant) => Promise<void>;

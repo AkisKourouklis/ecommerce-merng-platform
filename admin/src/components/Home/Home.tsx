@@ -1,5 +1,5 @@
-import React from "react";
 import DashboardHOC from "../DashboardHOC/DashboardHOC";
+import React from "react";
 
 const Home: React.FC = () => {
   return (

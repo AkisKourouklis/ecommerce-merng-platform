@@ -1,5 +1,5 @@
-import { Dispatch } from "react";
 import { Constants, NotificationActionTypes, NotificationDefaultState } from "./NotificationTypes";
+import { Dispatch } from "react";
 
 const toggleNotification = ({ notification, notificationType }: NotificationDefaultState): NotificationActionTypes => ({
   type: Constants.TOGGLE_NOTIFICATION,

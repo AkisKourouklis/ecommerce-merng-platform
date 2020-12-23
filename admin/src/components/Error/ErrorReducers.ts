@@ -1,5 +1,5 @@
+import { Constants, ErrorActionTypes, ErrorDefaultState } from "./ErrorTypes";
 import update from "react-addons-update";
-import { ErrorDefaultState, Constants, ErrorActionTypes } from "./ErrorTypes";
 
 const initialState = {
   error: null,

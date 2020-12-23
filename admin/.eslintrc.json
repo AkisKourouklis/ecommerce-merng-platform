@@ -24,6 +24,15 @@
     "sonarjs/cognitive-complexity": ["warn", 12],
     "sonarjs/no-small-switch": ["warn", 2],
     "max-lines-per-function": ["off"],
-    "react/display-name": ["off"]
+    "react/display-name": ["off"],
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": false,
+        "ignoreMemberSort": false,
+        "allowSeparatedGroups": false
+      }
+    ]
   }
 }

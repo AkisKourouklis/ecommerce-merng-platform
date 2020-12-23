@@ -1,47 +1,47 @@
-import React, { useState, useContext, useEffect } from "react";
+import "react-quill/dist/quill.snow.css";
 import {
-  TextField,
-  Paper,
-  Grid,
-  Typography,
-  InputAdornment,
-  Tooltip,
   Button,
   FormControlLabel,
-  Switch,
+  Grid,
+  IconButton,
+  InputAdornment,
+  LinearProgress,
   MenuItem,
-  TableContainer,
+  Paper,
+  Switch,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  IconButton,
-  LinearProgress
+  TextField,
+  Tooltip,
+  Typography
 } from "@material-ui/core";
-import "react-quill/dist/quill.snow.css";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Authentication/AuthContext";
-import { CREATE_PRODUCT } from "../ProductsQueries/ProductQueries";
 import { CREATE_MULTIPLE_VARIANTS } from "../../Variants/VariantQueries/VariantsQuery";
+import { CREATE_PRODUCT } from "../ProductsQueries/ProductQueries";
+import { CreateError } from "../../../Error/ErrorActions";
 import { CreateNotification } from "../../../Notification/NotificationActions";
+import CreateTag from "../../Tags/CreateTag/CreateTag";
+import CreateVariant from "../../Variants/CreateVariant/CreateVariant";
+import DashboardHOC from "../../../DashboardHOC/DashboardHOC";
 import { Delete } from "@material-ui/icons";
 import { FETCH_TAGS } from "../../Tags/TagQueries/TagQueries";
+import FileUpload from "../../../FileUpload/FileUpload";
+import GraphqlRequest from "../../../../graphql/graphql-request";
 import { ICreateProduct } from "../../../../types/products";
 import { IImage } from "../../../../types/images";
 import { ITag } from "../../../../types/tags";
 import { IVariant } from "../../../../types/variants";
+import InfoRounded from "@material-ui/icons/InfoRounded";
+import ReactQuill from "react-quill";
 import { UPLOAD_IMAGE } from "../../../FileUpload/FileUploadQueries";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import CreateTag from "../../Tags/CreateTag/CreateTag";
-import CreateVariant from "../../Variants/CreateVariant/CreateVariant";
-import DashboardHOC from "../../../DashboardHOC/DashboardHOC";
-import FileUpload from "../../../FileUpload/FileUpload";
-import GraphqlRequest from "../../../../graphql/graphql-request";
-import InfoRounded from "@material-ui/icons/InfoRounded";
-import ReactQuill from "react-quill";
 import useStyles from "./CreateProductStyles";
-import { CreateError } from "../../../Error/ErrorActions";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const CreateProduct: React.FC = () => {
