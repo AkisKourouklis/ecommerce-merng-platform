@@ -11,6 +11,7 @@ import usePersistedState from "./customHooks/usePersistedState";
 const Home = lazy(() => import("./components/Home/Home"));
 const Products = lazy(() => import("./components/Products/Products/Products"));
 const ProductsCreate = lazy(() => import("./components/Products/Products/CreateProduct/CreateProduct"));
+const EditProduct = lazy(() => import("./components/Products/Products/EditProduct/EditProduct"));
 const ProductsTags = lazy(() => import("./components/Products/Tags/Tags"));
 const ProductsVariants = lazy(() => import("./components/Products/Variants/Variants"));
 
@@ -52,6 +53,7 @@ const App: React.FC = () => {
               <Route exact path="/home" component={Home} />
               <Route exact path="/products/products" component={Products} />
               <Route exact path="/products/products/create" component={ProductsCreate} />
+              <Route exact path="/products/products/edit/:_id" component={EditProduct} />
               <Route exact path="/products/tags" component={ProductsTags} />
               <Route exact path="/products/variants" component={ProductsVariants} />
               <Route path="*" component={NotFound} />

@@ -27,7 +27,7 @@ import {
   addTagToMultipleProducts
 } from '../Tags/tags.resolvers';
 import { graphqlError, findAllErrors } from '../Errors/error';
-import { findAllProducts, createProduct } from '../Products/products.resolvers';
+import { findAllProducts, createProduct, findProductById } from '../Products/products.resolvers';
 
 export default {
   Query: {
@@ -50,7 +50,8 @@ export default {
     findAllTags,
 
     //Products
-    findAllProducts
+    findAllProducts,
+    findProductById
   },
   Mutation: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',

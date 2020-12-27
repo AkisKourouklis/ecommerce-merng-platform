@@ -3,11 +3,11 @@ import jwtAuthentication from '../../middleware/auth.middleware';
 import { graphqlError } from '../Errors/error';
 import { ApolloError } from 'apollo-server';
 
-export const findProductById = async (_, { id }, context) => {
+export const findProductById = async (_, { _id }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
 
   try {
-    const product = await ProductModel.findById({ _id: id }).populate(['variants', 'tags', 'images']);
+    const product = await ProductModel.findById({ _id }).populate(['variants', 'images']);
 
     return product;
   } catch (error) {
@@ -64,7 +64,8 @@ export const createProduct = async (_, { productInput }, context) => {
       variants,
       tags,
       price,
-      seo
+      seo,
+      vendor
     } = productInput;
 
     const insertImages = images?.map((i) => i._id);
@@ -83,7 +84,8 @@ export const createProduct = async (_, { productInput }, context) => {
       variants: insertVariants,
       tags: insertTags,
       price,
-      seo
+      seo,
+      vendor
     });
 
     await newProduct.save();
@@ -120,7 +122,8 @@ export const editProduct = async (_, { productInput }, context) => {
       variants,
       tags,
       price,
-      seo
+      seo,
+      vendor
     } = productInput;
 
     const insertImages = images?.map((i) => i._id);
@@ -141,7 +144,8 @@ export const editProduct = async (_, { productInput }, context) => {
         variants: insertVariants,
         tags: insertTags,
         price,
-        seo
+        seo,
+        vendor
       },
       { new: true }
     ).populate(['variants', 'images', 'tags']);

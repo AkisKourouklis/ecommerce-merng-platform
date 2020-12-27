@@ -26,7 +26,11 @@ const SingleProduct: React.FC<{ data: IProduct }> = ({ data }) => {
               <Typography>Όνομα: {data?.name}</Typography>
             </Grid>
             <Grid container item spacing={1}>
-              <Grid item>edit product{/* <EditVariant variant={variant} fetchVariant={fetchVariant} /> */}</Grid>
+              <Grid item>
+                <Button href={`/products/products/edit/${data._id}`} variant="outlined" color="primary">
+                  Επεξεργασία
+                </Button>
+              </Grid>
               {canDelete ? (
                 <>
                   <Grid item>
