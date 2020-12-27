@@ -53,7 +53,7 @@ const Products: React.FC = () => {
         <Grid item xs={6}>
           <Box textAlign="end">
             <Button variant="contained" color="primary" type="button" href="/products/products/create">
-              Create Product
+              Δημιουργία προιόντος
             </Button>
           </Box>
         </Grid>

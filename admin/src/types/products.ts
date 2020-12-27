@@ -12,6 +12,9 @@ export interface IProduct {
   isActive?: boolean;
   images?: IImage[];
   tags?: ITag[];
+  tax?: number;
+  quantity?: number;
+  vendor?: string;
   variants?: IVariant[];
   price?: { price: number; comparePrice: number; costPrice: number };
   seo?: {

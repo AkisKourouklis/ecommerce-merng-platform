@@ -57,3 +57,47 @@ export const CREATE_PRODUCT = gql`
     }
   }
 `;
+
+export const FIND_SINGLE_PRODUCT = gql`
+  query($_id: ID) {
+    findProductById(_id: $_id) {
+      _id
+      name
+      description
+      sku
+      barcode
+      isActive
+      quantity
+      vendor
+      tax
+      images {
+        path
+        alt
+      }
+      variants {
+        _id
+        sku
+        barcode
+        color
+        material
+        size
+        quantity
+        price {
+          price
+          comparePrice
+          costPrice
+        }
+      }
+      tags
+      price {
+        comparePrice
+        price
+        costPrice
+      }
+      seo {
+        name
+        description
+      }
+    }
+  }
+`;

@@ -6,6 +6,7 @@ import jwtAuthentication from '../../middleware/auth.middleware';
 import { graphqlError } from '../Errors/error';
 import { camelize } from '../../utils/camelize';
 import { createWriteStream } from 'fs';
+import mongoose from 'mongoose';
 
 export const findAllVariants = async (_, { search = null, page = 1, limit = 20 }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);

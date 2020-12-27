@@ -97,7 +97,7 @@ const CreateProduct: React.FC = () => {
 
       const imagesResponse = await saveImages();
       const variantsResponse = await saveVariants();
-      const response = await GraphqlRequest(auth.token).request(CREATE_PRODUCT, {
+      await GraphqlRequest(auth.token).request(CREATE_PRODUCT, {
         barcode,
         sku,
         description,
@@ -122,7 +122,6 @@ const CreateProduct: React.FC = () => {
         CreateNotification({ notification: "Το νέο προιόν δημιουργήθεικε με επυτιχία!", notificationType: "success" })
       );
       setLoading(false);
-      console.log(response);
     } catch (error) {
       setLoading(false);
       dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
@@ -154,7 +153,6 @@ const CreateProduct: React.FC = () => {
 
   const saveVariants = async () => {
     try {
-      console.log(variantArray);
       const response = await GraphqlRequest(auth.token).request(CREATE_MULTIPLE_VARIANTS, { variants: variantArray });
       return response.createMultipleVariants;
     } catch (error) {
@@ -163,7 +161,6 @@ const CreateProduct: React.FC = () => {
   };
 
   const handleDescription = (value: string) => {
-    console.log(value);
     setDescription(value);
   };
 

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
-    "dev": "nodemon --exec babel-node src/index.js"
+    "start": " export NODE_ENV=production && nodemon --exec babel-node src/index.js",
+    "dev": " export NODE_ENV=development && nodemon --exec babel-node src/index.js"
   },
   "author": "Sovrakofanela IKE",
   "license": "ISC",

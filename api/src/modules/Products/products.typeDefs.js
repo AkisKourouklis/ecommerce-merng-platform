@@ -15,11 +15,30 @@ export default gql`
     tags: [ProductTags]
     price: GeneralPrice
     seo: ProductSeo
+    vendor: String
+  }
+
+  type SingleProduct {
+    _id: ID
+    name: String
+    description: String
+    sku: String
+    barcode: String
+    isActive: Boolean
+    quantity: Int
+    tax: Int
+    images: [ProductImages]
+    variants: [ProductVariants]
+    tags: [String]
+    price: GeneralPrice
+    seo: ProductSeo
+    vendor: String
   }
 
   type ProductVariants {
     _id: String!
     color: String
+    material: String
     size: String
     quantity: Int
     sku: String
@@ -68,6 +87,7 @@ export default gql`
     tags: [ProductTagsInput]
     price: GeneralPriceInput
     seo: ProductSeoInput
+    vendor: String
   }
 
   input ProductImagesInput {
@@ -105,6 +125,7 @@ export default gql`
 
   extend type Query {
     findAllProducts(search: String, page: Int, limit: Int): ProductResult
+    findProductById(_id: ID): SingleProduct!
   }
   extend type Mutation {
     findProductById(_id: ID!): Product!
