@@ -1,12 +1,12 @@
 import { graphqlError } from '../../Errors/error';
 import jwtAuthentication from '../../../middleware/auth.middleware';
-import CategoryModel from '../category.model';
+import CartModel from '../cart.model';
 
-export const categoryAddProducts = async (_, { products, categoryId }, context) => {
+export const cartRemoveProducts = async (_, { _id, data }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
-    products.map(async (data) => {
-      await CategoryModel.findByIdAndUpdate({ _id: categoryId }, { $pull: { products: data._id } }, { new: true });
+    data.map(async (product) => {
+      await CartModel.findByIdAndUpdate({ _id }, { $pull: { products: { _id: product._id } } }, { new: true });
     });
 
     return 'Products removed from category';

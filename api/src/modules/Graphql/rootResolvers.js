@@ -47,6 +47,14 @@ import { categoryFindById } from '../Categories/resolvers/categoryFindById';
 import { categoryDelete } from '../Categories/resolvers/categoryDelete';
 import { categoryAddProducts } from '../Categories/resolvers/categoryAddProducts';
 
+// cart
+import { cartAddProducts } from '../Cart/resolvers/cartAddProducts';
+import { cartCreate } from '../Cart/resolvers/cartCreate';
+import { cartEdit } from '../Cart/resolvers/cartEdit';
+import { cartFindAll } from '../Cart/resolvers/cartFindAll';
+import { cartFindByUuid } from '../Cart/resolvers/cartFindByUuid';
+import { cartRemoveProducts } from '../Cart/resolvers/cartRemoveProducts';
+
 export default {
   Query: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',
@@ -73,7 +81,11 @@ export default {
 
     // Categories
     categoryFindById,
-    categoryFindAll
+    categoryFindAll,
+
+    // Cart
+    cartFindAll,
+    cartFindByUuid
   },
   Mutation: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',
@@ -115,6 +127,12 @@ export default {
     categoryCreate,
     categoryEdit,
     categoryDelete,
-    categoryAddProducts
+    categoryAddProducts,
+
+    // Cart
+    cartCreate,
+    cartEdit,
+    cartAddProducts,
+    cartRemoveProducts
   }
 };

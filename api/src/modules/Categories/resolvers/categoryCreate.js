@@ -6,7 +6,6 @@ export const categoryCreate = async (_, { categoryInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
     const { name, description, images, products, tags, seo } = categoryInput;
-    console.log(products);
 
     const insertImages = images?.map((i) => i._id);
     const insertTags = tags?.map((i) => i._id);

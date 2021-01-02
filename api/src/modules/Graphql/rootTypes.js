@@ -6,6 +6,7 @@ import tagsTypeDefs from '../Tags/tags.typeDefs';
 import productTypeDefs from '../Products/products.typeDefs';
 import errorTypeDefs from '../Errors/error.TypeDefs';
 import categoryTypeDefs from '../Categories/category.typeDefs';
+import cartTypeDefs from '../Cart/cart.typeDefs';
 
 const rootTypes = gql`
   type GeneralPrice {
@@ -17,6 +18,14 @@ const rootTypes = gql`
     comparePrice: Int
     price: Int
     costPrice: Int
+  }
+  type GeneralImage {
+    path: String
+    alt: String
+  }
+  input GeneralImageInput {
+    path: String
+    alt: String
   }
 
   type Query {
@@ -35,5 +44,6 @@ export default [
   tagsTypeDefs,
   productTypeDefs,
   errorTypeDefs,
-  categoryTypeDefs
+  categoryTypeDefs,
+  cartTypeDefs
 ];
