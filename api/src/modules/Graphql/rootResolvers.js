@@ -1,33 +1,43 @@
-import {
-  findAllUsers,
-  findUserByEmail,
-  register,
-  updateUser,
-  deleteUser,
-  login,
-  checkToken
-} from '../Users/users.resolvers';
-import { findAllImages, removeImage, uploadImage } from '../Images/images.resolvers';
-import {
-  findAllVariants,
-  createVariant,
-  updateVariant,
-  removeImageFromVariant,
-  findVariantById,
-  addImageToVariant,
-  deleteVariant,
-  createMultipleVariants
-} from '../Variants/variants.resolvers';
-import {
-  findAllTags,
-  createTag,
-  deleteTag,
-  editTag,
-  addTagToProduct,
-  addTagToMultipleProducts
-} from '../Tags/tags.resolvers';
+// users
+import { findAllUsers } from '../Users/resolvers/findAllUsers';
+import { findUserByEmail } from '../Users/resolvers/findUserByEmail';
+import { register } from '../Users/resolvers/register';
+import { updateUser } from '../Users/resolvers/updateUser';
+import { deleteUser } from '../Users/resolvers/deleteUser';
+import { login } from '../Users/resolvers/login';
+import { checkToken } from '../Users/resolvers/checkToken';
+
+// images
+import { findAllImages } from '../Images/resolvers/findAllImages';
+import { removeImage } from '../Images/resolvers/removeImage';
+import { uploadImage } from '../Images/resolvers/uploadImage';
+
+// variants
+import { createVariant } from '../Variants/resolvers/createVariant';
+import { findAllVariants } from '../Variants/resolvers/findAllVariant';
+import { updateVariant } from '../Variants/resolvers/updateVariant';
+import { removeImageFromVariant } from '../Variants/resolvers/removeImageFromVariant';
+import { findVariantById } from '../Variants/resolvers/findVariantById';
+import { addImageToVariant } from '../Variants/resolvers/addImageToVariant';
+import { deleteVariant } from '../Variants/resolvers/deleteVariant';
+import { createMultipleVariants } from '../Variants/resolvers/createMultipleVariants';
+
+// tags
+import { findAllTags } from '../Tags/resolvers/findAllTags';
+import { createTag } from '../Tags/resolvers/createTag';
+import { deleteTag } from '../Tags/resolvers/deleteTag';
+import { editTag } from '../Tags/resolvers/editTag';
+import { addTagToProduct } from '../Tags/resolvers/addTagToProduct';
+import { addTagToMultipleProducts } from '../Tags/resolvers/addTagToMultipleProducts';
+
 import { graphqlError, findAllErrors } from '../Errors/error';
-import { findAllProducts, createProduct, findProductById } from '../Products/products.resolvers';
+
+// products
+import { createProduct } from '../Products/resolvers/createProduct';
+import { editProduct } from '../Products/resolvers/editProduct';
+import { findAllProducts } from '../Products/resolvers/findAllProducts';
+import { findProductById } from '../Products/resolvers/findProductById';
+import { removeProduct } from '../Products/resolvers/removeProduct';
 
 export default {
   Query: {
@@ -42,14 +52,14 @@ export default {
     // Images
     findAllImages,
 
-    //Variants
+    // Variants
     findAllVariants,
     findVariantById,
 
-    //Tags
+    // Tags
     findAllTags,
 
-    //Products
+    // Products
     findAllProducts,
     findProductById
   },
@@ -74,17 +84,19 @@ export default {
     deleteVariant,
     createMultipleVariants,
 
-    //Tags
+    // Tags
     createTag,
     deleteTag,
     editTag,
     addTagToProduct,
     addTagToMultipleProducts,
 
-    //Errors
+    // Errors
     graphqlError,
 
-    //Products
-    createProduct
+    // Products
+    createProduct,
+    editProduct,
+    removeProduct
   }
 };
