@@ -1,6 +1,6 @@
+import { ApolloError } from 'apollo-server';
 import ProductModel from '../products.model';
 import jwtAuthentication from '../../../middleware/auth.middleware';
-import { ApolloError } from 'apollo-server';
 
 export const createProduct = async (_, { productInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
