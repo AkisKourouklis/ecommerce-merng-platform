@@ -39,6 +39,22 @@ import { findAllProducts } from '../Products/resolvers/findAllProducts';
 import { findProductById } from '../Products/resolvers/findProductById';
 import { removeProduct } from '../Products/resolvers/removeProduct';
 
+// categories
+import { categoryCreate } from '../Categories/resolvers/categoryCreate';
+import { categoryEdit } from '../Categories/resolvers/categoryEdit';
+import { categoryFindAll } from '../Categories/resolvers/categoryFindAll';
+import { categoryFindById } from '../Categories/resolvers/categoryFindById';
+import { categoryDelete } from '../Categories/resolvers/categoryDelete';
+import { categoryAddProducts } from '../Categories/resolvers/categoryAddProducts';
+
+// cart
+import { cartAddProducts } from '../Cart/resolvers/cartAddProducts';
+import { cartCreate } from '../Cart/resolvers/cartCreate';
+import { cartEdit } from '../Cart/resolvers/cartEdit';
+import { cartFindAll } from '../Cart/resolvers/cartFindAll';
+import { cartFindByUuid } from '../Cart/resolvers/cartFindByUuid';
+import { cartRemoveProducts } from '../Cart/resolvers/cartRemoveProducts';
+
 export default {
   Query: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',
@@ -61,7 +77,15 @@ export default {
 
     // Products
     findAllProducts,
-    findProductById
+    findProductById,
+
+    // Categories
+    categoryFindById,
+    categoryFindAll,
+
+    // Cart
+    cartFindAll,
+    cartFindByUuid
   },
   Mutation: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',
@@ -97,6 +121,18 @@ export default {
     // Products
     createProduct,
     editProduct,
-    removeProduct
+    removeProduct,
+
+    // Categories
+    categoryCreate,
+    categoryEdit,
+    categoryDelete,
+    categoryAddProducts,
+
+    // Cart
+    cartCreate,
+    cartEdit,
+    cartAddProducts,
+    cartRemoveProducts
   }
 };

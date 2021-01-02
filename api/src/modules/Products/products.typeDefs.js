@@ -125,7 +125,7 @@ export default gql`
 
   extend type Query {
     findAllProducts(search: String, page: Int, limit: Int): ProductResult
-    findProductById(_id: ID): SingleProduct!
+    findProductById(_id: ID): SingleProduct
   }
   extend type Mutation {
     findProductById(_id: ID!): Product!

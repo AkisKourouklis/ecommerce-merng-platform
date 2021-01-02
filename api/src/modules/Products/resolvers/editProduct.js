@@ -26,7 +26,7 @@ export const editProduct = async (_, { productInput }, context) => {
     const insertVariants = variants?.map((i) => i._id);
 
     const updatedProduct = await ProductModel.findByIdAndUpdate(
-      { _id: id },
+      { _id: productInput._id },
       {
         name,
         description,
