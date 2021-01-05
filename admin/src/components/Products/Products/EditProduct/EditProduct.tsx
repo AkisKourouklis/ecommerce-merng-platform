@@ -23,22 +23,25 @@ import {
   Typography
 } from "@material-ui/core";
 import { Delete, InfoRounded } from "@material-ui/icons";
+import { FIND_SINGLE_PRODUCT, UPDATE_PRODUCT } from "../ProductsQueries/ProductQueries";
 import { ICreateProduct, IProduct } from "../../../../types/products";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Authentication/AuthContext";
 import { CREATE_MULTIPLE_VARIANTS } from "../../Variants/VariantQueries/VariantsQuery";
 import { CreateError } from "../../../Error/ErrorActions";
+import { CreateNotification } from "../../../Notification/NotificationActions";
 import CreateTag from "../../Tags/CreateTag/CreateTag";
 import CreateVariant from "../../Variants/CreateVariant/CreateVariant";
 import DashboardHOC from "../../../DashboardHOC/DashboardHOC";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { FETCH_TAGS } from "../../Tags/TagQueries/TagQueries";
-import { FIND_SINGLE_PRODUCT } from "../ProductsQueries/ProductQueries";
 import FileUpload from "../../../FileUpload/FileUpload";
 import GraphqlRequest from "../../../../graphql/graphql-request";
+import { IImage } from "../../../../types/images";
 import { ITag } from "../../../../types/tags";
 import { IVariant } from "../../../../types/variants";
 import ReactQuill from "react-quill";
+import { UPLOAD_IMAGE } from "../../../FileUpload/FileUploadQueries";
 import { apiUrl } from "../../../../config/vars";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -56,10 +59,11 @@ const EditProduct: React.FC = () => {
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [description, setDescription] = useState<string | null>(null);
+  const [, setState] = useState<unknown>();
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const isActive = watch("isActive");
+  const isActive = watch("isActive", false);
 
   const fetchTags = async () => {
     try {
@@ -94,9 +98,44 @@ const EditProduct: React.FC = () => {
     seoDescription,
     seoName,
     tax,
-    name
+    name,
+    vendor
   }: ICreateProduct) => {
-    console.log(barcode, sku, price, comparePrice, costPrice, quantity, seoDescription, seoName, tax, name);
+    try {
+      const newTags: ITag[] = [];
+      tags.map((d: string) => newTags.push({ _id: d }));
+
+      await saveImages();
+      await GraphqlRequest(auth.token).request(UPDATE_PRODUCT, {
+        _id: product?._id,
+        name,
+        description: description || product?.description,
+        sku,
+        barcode,
+        isActive,
+        quantity: Number(quantity),
+        tax: Number(tax),
+        images: product?.images,
+        variants: product?.variants,
+        tags: newTags,
+        seo: {
+          name: seoName,
+          description: seoDescription
+        },
+        price: {
+          price: Number(price),
+          costPrice: Number(costPrice),
+          comparePrice: Number(comparePrice)
+        },
+        vendor
+      });
+      dispatch(
+        CreateNotification({ notification: "Το νέο προιόν αποθηκεύτηκε με επυτιχία!", notificationType: "success" })
+      );
+      fetchProduct();
+    } catch (error) {
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
+    }
   };
 
   const handleTags = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -108,10 +147,10 @@ const EditProduct: React.FC = () => {
   };
 
   const removeVariantFromProduct = (index: number) => {
-    // const newArr = variantArray;
-    // newArr.splice(index, 1);
-    // setVariantArray(newArr);
-    // setState({});
+    if (product?.variants) {
+      product.variants.splice(index, 1);
+      setState({});
+    }
   };
 
   const addVariantToProduct = async ({ barcode, sku, color, material, price, quantity, size, images }: IVariant) => {
@@ -129,8 +168,9 @@ const EditProduct: React.FC = () => {
           productId: _id
         }
       ];
-      await GraphqlRequest(auth.token).request(CREATE_MULTIPLE_VARIANTS, { variants });
-      fetchProduct();
+      const response = await GraphqlRequest(auth.token).request(CREATE_MULTIPLE_VARIANTS, { variants });
+      response.createMultipleVariants.map((e: IVariant) => product?.variants?.push(e));
+      setState({});
     } catch (error) {
       dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
     }
@@ -140,23 +180,27 @@ const EditProduct: React.FC = () => {
     setImages(files);
   };
 
-  const deleteImage = async (id: string) => {
-    // try {
-    //   await GraphqlRequest(auth.token).request(REMOVE_IMAGE_FROM_VARIANT, {
-    //     imageId: id,
-    //     variantId: variant?._id
-    //   });
-    //   fetchVariant();
-    //   dispatch(CreateNotification({ notification: "Image deleted successfully", notificationType: "success" }));
-    // } catch (error) {
-    //   dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
-    // }
+  const deleteImage = (id: string) => {
+    const newImageArr = product?.images?.filter((i) => i._id !== id);
+    if (product?.images) {
+      product.images = newImageArr || [];
+      setState({});
+    }
+  };
+
+  const saveImages = async (): Promise<void> => {
+    try {
+      const response = await GraphqlRequest(auth.token).request(UPLOAD_IMAGE, { files: images });
+      response?.uploadImage?.map((e: IImage) => product?.images?.push(e));
+    } catch (error) {
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
+    }
   };
 
   useEffect(() => {
     fetchProduct();
     fetchTags();
-  }, [_id]);
+  }, []);
 
   return (
     <DashboardHOC>
@@ -225,29 +269,35 @@ const EditProduct: React.FC = () => {
                 <Typography className={classes.title}>Εικόνες</Typography>
                 <FileUpload handleFileChange={handleImages} />
                 <GridList className={classes.gridList} cols={2.5}>
+                  [
                   {product?.images?.map((tile, i) => (
-                    <GridListTile key={i}>
-                      <img src={`${apiUrl.staticUri}${tile.path}`} alt={tile.alt} />
-                      <GridListTileBar
-                        title={tile.alt}
-                        classes={{
-                          root: classes.titleBar
-                        }}
-                        actionIcon={
-                          <Button
-                            className={classes.imageDeleteButton}
-                            onClick={() => deleteImage(tile._id)}
-                            variant="outlined"
-                            size="small"
-                            startIcon={<DeleteIcon />}
-                            fullWidth
-                          >
-                            Delete
-                          </Button>
-                        }
-                      />
-                    </GridListTile>
+                    <div key={i}>
+                      {tile ? (
+                        <GridListTile key={i}>
+                          <img style={{ maxHeight: "150px" }} src={`${apiUrl.staticUri}${tile.path}`} alt={tile.alt} />
+                          <GridListTileBar
+                            title={tile.alt}
+                            classes={{
+                              root: classes.titleBar
+                            }}
+                            actionIcon={
+                              <Button
+                                className={classes.imageDeleteButton}
+                                onClick={() => deleteImage(tile._id)}
+                                variant="outlined"
+                                size="small"
+                                startIcon={<DeleteIcon />}
+                                fullWidth
+                              >
+                                Delete
+                              </Button>
+                            }
+                          />
+                        </GridListTile>
+                      ) : null}
+                    </div>
                   ))}
+                  ]
                 </GridList>
               </Paper>
               {/* pricing */}

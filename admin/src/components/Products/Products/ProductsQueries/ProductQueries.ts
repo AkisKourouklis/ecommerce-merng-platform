@@ -36,6 +36,7 @@ export const CREATE_PRODUCT = gql`
     $tags: [ProductTagsInput]
     $seo: ProductSeoInput
     $price: GeneralPriceInput
+    $vendor: String
   ) {
     createProduct(
       productInput: {
@@ -51,6 +52,47 @@ export const CREATE_PRODUCT = gql`
         tags: $tags
         seo: $seo
         price: $price
+        vendor: $vendor
+      }
+    ) {
+      _id
+    }
+  }
+`;
+
+export const UPDATE_PRODUCT = gql`
+  mutation(
+    $_id: ID
+    $name: String
+    $description: String
+    $sku: String
+    $barcode: String
+    $isActive: Boolean
+    $quantity: Int
+    $tax: Int
+    $images: [ProductImagesInput]
+    $variants: [ProductVariantsInput]
+    $tags: [ProductTagsInput]
+    $seo: ProductSeoInput
+    $price: GeneralPriceInput
+    $vendor: String
+  ) {
+    editProduct(
+      productInput: {
+        _id: $_id
+        name: $name
+        description: $description
+        sku: $sku
+        barcode: $barcode
+        isActive: $isActive
+        quantity: $quantity
+        tax: $tax
+        images: $images
+        variants: $variants
+        tags: $tags
+        price: $price
+        seo: $seo
+        vendor: $vendor
       }
     ) {
       _id
@@ -71,6 +113,7 @@ export const FIND_SINGLE_PRODUCT = gql`
       vendor
       tax
       images {
+        _id
         path
         alt
       }
