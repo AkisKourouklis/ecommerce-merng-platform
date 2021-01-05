@@ -11,10 +11,10 @@ export const orderFindAll = async (_, { search = null, page = 1, limit = 20 }, c
     if (search) {
       searchQuery = {
         $or: [
-          { firstname: { $regex: search, $options: 'i' } },
-          { lastname: { $regex: search, $options: 'i' } },
-          { email: { $regex: search, $options: 'i' } },
-          { address: { $regex: search, $options: 'i' } }
+          { 'customer.firstname': { $regex: search, $options: 'i' } },
+          { 'customer.lastname': { $regex: search, $options: 'i' } },
+          { 'customer.email': { $regex: search, $options: 'i' } },
+          { 'customer.address': { $regex: search, $options: 'i' } }
         ]
       };
     }

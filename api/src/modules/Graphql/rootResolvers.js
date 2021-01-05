@@ -56,12 +56,19 @@ import { cartFindByUuid } from '../Cart/resolvers/cartFindByUuid';
 import { cartRemoveProducts } from '../Cart/resolvers/cartRemoveProducts';
 
 // checkout
-import { orderAddProducts } from '../Checkout/Resolvers/OrderAddProducts';
-import { orderCreate } from '../Checkout/Resolvers/OrderCreate';
-import { orderDelete } from '../Checkout/Resolvers/OrderDelete';
-import { orderUpdate } from '../Checkout/Resolvers/OrderUpdate';
-import { orderFindAll } from '../Checkout/Resolvers/OrderFindAll';
-import { orderRemoveProducts } from '../Checkout/Resolvers/OrderRemoveProducts';
+import { orderAddProducts } from '../Checkout/resolvers/OrderAddProducts';
+import { orderCreate } from '../Checkout/resolvers/OrderCreate';
+import { orderDelete } from '../Checkout/resolvers/OrderDelete';
+import { orderUpdate } from '../Checkout/resolvers/OrderUpdate';
+import { orderFindAll } from '../Checkout/resolvers/OrderFindAll';
+import { orderRemoveProducts } from '../Checkout/resolvers/OrderRemoveProducts';
+
+// customers
+import { customerCreate } from '../Customers/resolvers/customerCreate';
+import { customerDelete } from '../Customers/resolvers/customerDelete';
+import { customerFindAll } from '../Customers/resolvers/customerFindAll';
+import { customerFindById } from '../Customers/resolvers/customerFindById';
+import { customerUpdate } from '../Customers/resolvers/customerUpdate';
 
 export default {
   Query: {
@@ -96,7 +103,11 @@ export default {
     cartFindByUuid,
 
     // Checkout
-    orderFindAll
+    orderFindAll,
+
+    // Customer
+    customerFindAll,
+    customerFindById
   },
   Mutation: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',
@@ -151,6 +162,11 @@ export default {
     orderDelete,
     orderUpdate,
     orderAddProducts,
-    orderRemoveProducts
+    orderRemoveProducts,
+
+    // customer
+    customerCreate,
+    customerUpdate,
+    customerDelete
   }
 };
