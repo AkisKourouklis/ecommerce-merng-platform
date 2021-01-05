@@ -39,4 +39,5 @@ export interface ICreateProduct {
   price: number;
   seoName: string;
   seoDescription: string;
+  vendor: string;
 }

@@ -12,14 +12,14 @@ import customerTypeDefs from '../Customers/customer.typeDefs';
 
 const rootTypes = gql`
   type GeneralPrice {
-    comparePrice: Int
-    price: Int
-    costPrice: Int
+    comparePrice: Float
+    price: Float
+    costPrice: Float
   }
   input GeneralPriceInput {
-    comparePrice: Int
-    price: Int
-    costPrice: Int
+    comparePrice: Float
+    price: Float
+    costPrice: Float
   }
   type GeneralImage {
     path: String

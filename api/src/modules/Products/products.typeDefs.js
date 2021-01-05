@@ -53,6 +53,7 @@ export default gql`
   }
 
   type ProductImages {
+    _id: ID
     path: String
     alt: String
     size: Int

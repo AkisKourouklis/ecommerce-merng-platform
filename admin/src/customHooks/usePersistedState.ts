@@ -9,7 +9,7 @@ const usePersistedState = (key: string, defaultValue: any) => {
     return persistedState ? JSON.parse(persistedState) : defaultValue;
   });
   useEffect(() => {
-    Cookie.set(key, state);
+    Cookie.set(key, state, { expires: 1, secure: true });
   }, [state, key]);
   return [state, setState];
 };
