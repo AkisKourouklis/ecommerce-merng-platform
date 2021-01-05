@@ -1,8 +1,27 @@
 import mongoose, { Schema } from 'mongoose';
 
-const cartSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
     uuid: String,
+    customer: {
+      firstname: String,
+      lastname: String,
+      email: String,
+      phone: {
+        code: Number,
+        number: String
+      },
+      country: String,
+      city: String,
+      state: String,
+      address: String,
+      notes: String,
+      price: {
+        price: Number,
+        comparePrice: Number,
+        paid: Number
+      }
+    },
     products: [
       {
         productId: String,
@@ -14,7 +33,7 @@ const cartSchema = new mongoose.Schema(
         color: String,
         material: String,
         size: String,
-        weight: String,
+        weight: Number,
         price: {
           comparePrice: Number,
           price: Number,
@@ -28,5 +47,5 @@ const cartSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Cart = mongoose.model('Cart', cartSchema);
-export default Cart;
+const Order = mongoose.model('Order', orderSchema);
+export default Order;

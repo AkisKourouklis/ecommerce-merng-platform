@@ -55,6 +55,21 @@ import { cartFindAll } from '../Cart/resolvers/cartFindAll';
 import { cartFindByUuid } from '../Cart/resolvers/cartFindByUuid';
 import { cartRemoveProducts } from '../Cart/resolvers/cartRemoveProducts';
 
+// checkout
+import { orderAddProducts } from '../Checkout/resolvers/OrderAddProducts';
+import { orderCreate } from '../Checkout/resolvers/OrderCreate';
+import { orderDelete } from '../Checkout/resolvers/OrderDelete';
+import { orderUpdate } from '../Checkout/resolvers/OrderUpdate';
+import { orderFindAll } from '../Checkout/resolvers/OrderFindAll';
+import { orderRemoveProducts } from '../Checkout/resolvers/OrderRemoveProducts';
+
+// customers
+import { customerCreate } from '../Customers/resolvers/customerCreate';
+import { customerDelete } from '../Customers/resolvers/customerDelete';
+import { customerFindAll } from '../Customers/resolvers/customerFindAll';
+import { customerFindById } from '../Customers/resolvers/customerFindById';
+import { customerUpdate } from '../Customers/resolvers/customerUpdate';
+
 export default {
   Query: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',
@@ -85,7 +100,14 @@ export default {
 
     // Cart
     cartFindAll,
-    cartFindByUuid
+    cartFindByUuid,
+
+    // Checkout
+    orderFindAll,
+
+    // Customer
+    customerFindAll,
+    customerFindById
   },
   Mutation: {
     hello: () => 'Welcome to the ecommmerce-graphql-api',
@@ -133,6 +155,18 @@ export default {
     cartCreate,
     cartEdit,
     cartAddProducts,
-    cartRemoveProducts
+    cartRemoveProducts,
+
+    // checkout
+    orderCreate,
+    orderDelete,
+    orderUpdate,
+    orderAddProducts,
+    orderRemoveProducts,
+
+    // customer
+    customerCreate,
+    customerUpdate,
+    customerDelete
   }
 };

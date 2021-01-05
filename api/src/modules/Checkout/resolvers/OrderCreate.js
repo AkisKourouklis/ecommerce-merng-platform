@@ -1,20 +1,21 @@
 import { ApolloError } from 'apollo-server';
-import CartModel from '../cart.model';
+import CheckoutModel from '../checkout.model';
 import jwtAuthentication from '../../../middleware/auth.middleware';
 
-export const cartCreate = async (_, { data }, context) => {
+export const orderCreate = async (_, { data }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
-    const { uuid, products } = data;
+    const { uuid, customer, products } = data;
 
-    const newCart = new CartModel({
+    const newOrder = new CheckoutModel({
       uuid,
+      customer,
       products
     });
 
-    await newCart.save();
+    await newOrder.save();
 
-    return newCart;
+    return newOrder;
   } catch (error) {
     return new ApolloError(`There was an error: ${error}`);
   }

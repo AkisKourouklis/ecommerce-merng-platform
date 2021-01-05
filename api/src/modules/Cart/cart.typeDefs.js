@@ -9,6 +9,8 @@ export default gql`
 
   type CartProduct {
     productId: String
+    name: String
+    description: String
     quantity: String
     sku: String
     barcode: String
@@ -36,6 +38,8 @@ export default gql`
   input CartProductInput {
     _id: ID
     productId: String
+    name: String
+    description: String
     quantity: Int
     sku: String
     barcode: String
