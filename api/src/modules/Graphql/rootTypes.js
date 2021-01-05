@@ -7,6 +7,7 @@ import productTypeDefs from '../Products/products.typeDefs';
 import errorTypeDefs from '../Errors/error.TypeDefs';
 import categoryTypeDefs from '../Categories/category.typeDefs';
 import cartTypeDefs from '../Cart/cart.typeDefs';
+import checkoutTypeDefs from '../Checkout/checkout.typeDefs';
 
 const rootTypes = gql`
   type GeneralPrice {
@@ -45,5 +46,6 @@ export default [
   productTypeDefs,
   errorTypeDefs,
   categoryTypeDefs,
-  cartTypeDefs
+  cartTypeDefs,
+  checkoutTypeDefs
 ];
