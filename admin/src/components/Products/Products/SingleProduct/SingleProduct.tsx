@@ -1,20 +1,39 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Paper, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../../Authentication/AuthContext";
+import { CreateError } from "../../../Error/ErrorActions";
+import { CreateNotification } from "../../../Notification/NotificationActions";
+import { DELETE_PRODUCT } from "../ProductsQueries/ProductQueries";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import GraphqlRequest from "../../../../graphql/graphql-request";
 import { IProduct } from "../../../../types/products";
+import { apiUrl } from "../../../../config/vars";
+import { useDispatch } from "react-redux";
 import useStyles from "../ProductStyles/Products.styles";
 
-const SingleProduct: React.FC<{ data: IProduct }> = ({ data }) => {
+const SingleProduct: React.FC<{ data: IProduct; fetchProducts: () => Promise<void>; showImages: boolean }> = ({
+  data,
+  fetchProducts,
+  showImages
+}) => {
+  const { auth } = useContext(AuthContext);
   const [canDelete, setCanDelete] = useState<boolean>(false);
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const toggleCanDelete = () => {
     setCanDelete((c) => !c);
   };
 
-  const deleteProduct = () => {
-    console.log("delete");
+  const deleteProduct = async (): Promise<void> => {
+    try {
+      await GraphqlRequest(auth.token).request(DELETE_PRODUCT, { _id: data._id });
+      dispatch(CreateNotification({ notification: "Variant deleted successfully!", notificationType: "success" }));
+      fetchProducts();
+    } catch (error) {
+      dispatch(CreateError({ errors: error, token: auth.token || "Bearer " }));
+    }
   };
 
   return (
@@ -73,21 +92,21 @@ const SingleProduct: React.FC<{ data: IProduct }> = ({ data }) => {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container direction="row" spacing={1}>
-            {/* {showImages ? (
-       <Grid item xs={12}>
-         <Paper className={classes.innerPaper} variant="outlined">
-           <Grid container direction="row" spacing={1}>
-             {data?.images?.map((image) => {
-               return (
-                 <Grid key={image._id} item xs={6} md={4}>
-                   <img alt={image.alt} src={`${apiUrl.staticUri}${image.path}`} width="100%" />
-                 </Grid>
-               );
-             })}
-           </Grid>
-         </Paper>
-       </Grid>
-     ) : null} */}
+            {showImages ? (
+              <Grid item xs={12}>
+                <Paper className={classes.innerPaper} variant="outlined">
+                  <Grid container direction="row" spacing={1}>
+                    {data?.images?.map((image, i) => {
+                      return (
+                        <Grid key={i} item xs={6} md={4}>
+                          <img alt={image.alt} src={`${apiUrl.staticUri}${image.path}`} width="100%" />
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </Paper>
+              </Grid>
+            ) : null}
             <Grid item xs={6}>
               <Paper className={classes.innerPaper} variant="outlined">
                 <Typography>Κωδικός: {data.sku}</Typography>

@@ -37,7 +37,7 @@ const Products: React.FC = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [search]);
+  }, [search, showImages]);
 
   return (
     <DashboardHOC>
@@ -84,7 +84,7 @@ const Products: React.FC = () => {
             {products?.map((data) => {
               return (
                 <Grid key={data._id} item xs={12} md={4}>
-                  <SingleProduct data={data} />
+                  <SingleProduct fetchProducts={fetchProducts} data={data} showImages={showImages} />
                 </Grid>
               );
             })}

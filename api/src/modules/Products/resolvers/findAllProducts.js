@@ -20,6 +20,7 @@ export const findAllProducts = async (_, { search = null, page = 1, limit = 20 }
     }
 
     const products = await ProductModel.find(searchQuery)
+      .populate(['tags', 'images', 'variants'])
       .limit(limit)
       .skip((page - 1) * limit)
       .lean();
