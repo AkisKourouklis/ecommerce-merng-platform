@@ -17,6 +17,10 @@ export const FIND_ALL_PRODUCTS = gql`
         price {
           price
         }
+        images {
+          path
+          alt
+        }
       }
     }
   }
@@ -141,6 +145,14 @@ export const FIND_SINGLE_PRODUCT = gql`
         name
         description
       }
+    }
+  }
+`;
+
+export const DELETE_PRODUCT = gql`
+  mutation($_id: ID) {
+    removeProduct(productInput: { _id: $_id }) {
+      _id
     }
   }
 `;
