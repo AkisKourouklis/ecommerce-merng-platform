@@ -7,7 +7,7 @@ export default gql`
     description: String
     images: [CategoryImages]
     products: [Product]
-    tags: [Tags]
+    tags: [String]
     seo: CategorySeo
   }
 
@@ -25,7 +25,6 @@ export default gql`
   type CategoryImages {
     path: String
     alt: String
-    size: Int
   }
 
   input CategoryInput {
@@ -48,7 +47,7 @@ export default gql`
   }
 
   extend type Query {
-    categoryFindAll(search: String, page: Int, limit: Int): [CategoryResults]
+    categoryFindAll(search: String, page: Int, limit: Int): CategoryResults
     categoryFindById(_id: ID!): Category
   }
   extend type Mutation {

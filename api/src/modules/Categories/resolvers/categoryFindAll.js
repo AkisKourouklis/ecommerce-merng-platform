@@ -20,7 +20,7 @@ export const categoryFindAll = async (_, { search = null, page = 1, limit = 20 }
     }
 
     const categories = await CategoryModel.find(searchQuery)
-      .populate(['images', 'tags', 'variants'])
+      .populate(['images', 'tags', 'products'])
       .limit(limit)
       .skip((page - 1) * limit)
       .lean();

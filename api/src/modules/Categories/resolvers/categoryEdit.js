@@ -5,14 +5,14 @@ import { graphqlError } from '../../Errors/error';
 export const categoryEdit = async (_, { categoryInput }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
   try {
-    const { name, description, images, products, tags, seo } = categoryInput;
+    const { name, description, images, products, tags, seo, _id } = categoryInput;
 
     const insertImages = images?.map((i) => i._id);
     const insertTags = tags?.map((i) => i._id);
     const insertProducts = products?.map((i) => i._id);
 
     const updatedCategory = await CategoryModel.findByIdAndUpdate(
-      { _id: categoryInput._id },
+      { _id },
       {
         name,
         description,

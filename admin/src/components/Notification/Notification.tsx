@@ -22,7 +22,7 @@ const NotificationAlert: React.FC = ({ children }) => {
           horizontal: "right"
         }}
         open={notification != null}
-        autoHideDuration={8000}
+        autoHideDuration={5000}
         onClose={clearNotification}
       >
         <Alert onClose={clearNotification} severity={notificationType}>
