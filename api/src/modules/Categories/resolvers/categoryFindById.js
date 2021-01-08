@@ -6,7 +6,7 @@ export const categoryFindById = async (_, { _id }, context) => {
   await jwtAuthentication.verifyTokenMiddleware(context);
 
   try {
-    const category = await CategoryModel.findById({ _id }).populate(['products', 'images', 'tags']);
+    const category = await CategoryModel.findById({ _id }).populate(['products', 'images']);
 
     return category;
   } catch (error) {

@@ -16,6 +16,7 @@ export const FIND_ALL_PRODUCTS = gql`
         isActive
         price {
           price
+          costPrice
         }
         images {
           path

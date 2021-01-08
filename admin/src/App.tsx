@@ -2,18 +2,21 @@ import React, { Suspense, lazy, useEffect } from "react";
 import { Redirect, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { AUTH_CHECK } from "./components/Authentication/AuthQuery";
 import { AuthContext } from "./components/Authentication/AuthContext";
+import Categories from "./components/Categories/Categories";
 import GraphqlRequest from "./graphql/graphql-request";
+import Home from "./components/Home/Home";
 import LoadingPage from "./components/Loading/LoadingPage";
 import Login from "./components/Authentication/Login";
 import NotFound from "./components/404/404";
+import Products from "./components/Products/Products/Products";
 import usePersistedState from "./customHooks/usePersistedState";
 
-const Home = lazy(() => import("./components/Home/Home"));
-const Products = lazy(() => import("./components/Products/Products/Products"));
 const ProductsCreate = lazy(() => import("./components/Products/Products/CreateProduct/CreateProduct"));
 const EditProduct = lazy(() => import("./components/Products/Products/EditProduct/EditProduct"));
 const ProductsTags = lazy(() => import("./components/Products/Tags/Tags"));
 const ProductsVariants = lazy(() => import("./components/Products/Variants/Variants"));
+const CategoryCreate = lazy(() => import("./components/Categories/CreateCategory/CreateCategory"));
+const CategoryEdit = lazy(() => import("./components/Categories/EditCategory/EditCategory"));
 
 const App: React.FC = () => {
   const [auth, setAuth] = usePersistedState("auth", {
@@ -56,6 +59,9 @@ const App: React.FC = () => {
               <Route exact path="/products/products/edit/:_id" component={EditProduct} />
               <Route exact path="/products/tags" component={ProductsTags} />
               <Route exact path="/products/variants" component={ProductsVariants} />
+              <Route exact path="/categories" component={Categories} />
+              <Route exact path="/categories/create" component={CategoryCreate} />
+              <Route exact path="/categories/edit/:_id" component={CategoryEdit} />
               <Route path="*" component={NotFound} />
             </Switch>
           </Suspense>
